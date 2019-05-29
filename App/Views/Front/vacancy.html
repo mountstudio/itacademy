@@ -1,0 +1,65 @@
+{% set page = 'vacancy' %}
+
+{% block metaInit %}
+{{ meta.setDescription(vacancy.getMetaDescription()) }}
+{{ meta.setKeywords(vacancy.getMetaKeywords()) }}
+{% endblock %}
+
+{% block title %}
+Вакансия на позицию "{{ vacancy.getName() }}"
+{% endblock %}
+
+{% extends "Front/base.html" %}
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-header static-page-header" data-jarallax='{"speed": 0.4}' style='background-image: url("/static/front/assets/images/pages/vacancies.png")'>
+    <div class="bg-overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 text-left mr-auto text-white">
+                <h2 class="display-4 mb-3 text-white">{{ vacancy.getName() }}</h2>
+                {{ include("Front/breadcrumb.html") }}
+            </div>
+        </div>
+    </div>
+    <svg class="svg-abs svg-f-btm z-index-9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 123" enable-background="new 0 0 1920 123" xml:space="preserve">
+            <polygon class="svg-white" opacity="1" points="0,123 1920,123 1920,0 "></polygon>
+          </svg>
+</div>
+<!--Page header end-->
+
+
+<div class="container pt80 pb70">
+    <div class="row">
+        <div class="col-lg-10 ml-auto mr-auto mb30 sticky-content course-detail">
+            <h2 class="mb-4">{{ vacancy.getName() }}</h2>
+            <ul class="course-detail-meta row list-unstyled">
+                <li class="col-sm-4 col-md-3 py-2 col-6">
+                    <i class="fa fa-dollar-sign float-left w40 rounded-circle bg-gray mr-3"></i>
+                    <div class="oHidden">
+                        <small class="d-block pt-1">Зарплата</small>
+                        <h6 class="text-secondary">{{ vacancy.getCurrentVacancyVacancySalary().getName() }}</h6>
+                    </div>
+                </li>
+            </ul>
+            <img src="{{ vacancy.getLogo()['normal'] }}" alt="Вакансия на позицию {{ vacancy.getName() }}" class="vacancy-logo mb10">
+            <div class="entry-content no-p">
+                <div class="entry-meta mb5">
+                    <span class="mr-3">
+                        <i class="icon-calendar-31 mr-1"></i> {{ vacancy.getCreatedAt()|formatRULocaleDateFull }}
+                    </span>
+                </div>
+            </div>
+            {{ vacancy.getDescription()|raw }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block endBodies %}
+
+{% endblock %}

@@ -1,0 +1,338 @@
+{% block title %}
+    Редактирование статической страницы «{{ staticPage.getName() }}»
+{% endblock %}
+
+
+{% extends "Admin/base.html" %}
+
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+
+<div class="page-inner">
+    <div class="page-title">
+
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Редактирование статической страницы</h4>
+                        <div class="panel-control">
+                            <button type="link" data-href="/admin/staticPages/all" class="btn btn-default btn-addon m-b-sm btn-sm"><i class="fa fa-chevron-left"></i> Все</button>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+
+                        <form class="form-horizontal" id="editStaticPage">
+                            <input type="hidden" id="staticPageId" value="{{ staticPage.getId() }}"/>
+
+                            <div class="form-group">
+                                <label for="title" class="col-sm-2 control-label">Название страницы</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="title" id="title" value="{{ staticPage.getTitle() }}" placeholder="Title страницы" required>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="status" class="col-sm-2 control-label">Доступность</label>
+                                <div class="col-sm-10">
+                                    <div class="ios-switch pull-right switch-md">
+                                        <input type="checkbox" id="status" name="status" {% if staticPage.getAvailable() %} checked {% endif %} value="true" class="js-switch pull-right fixed-header-check">
+                                    </div>
+                                    <p class="help-block">Если отключен, то на сайте страница не будет доступна</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="logo" class="col-sm-2 control-label">Изменить логотип</label>
+                                <div class="col-sm-10">
+                                    <input type="file" name="logo" accept="image/jpeg,image/png,image/gif" class="form-control" id="logo" placeholder="Choose a logo">
+                                    <br/>
+                                    <button type="button" id="deleteLogo" class="btn btn-danger btn-addon m-b-xs btn-rounded btn-xs pull-right"><i class="fa fa-trash"></i> Удалить</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cover" class="col-sm-2 control-label">Изменить обложку</label>
+                                <div class="col-sm-10">
+                                    <input type="file" name="cover" accept="image/jpeg,image/png,image/gif" class="form-control" id="cover" placeholder="Choose a cover">
+                                    <br/>
+                                    <button type="button" id="deleteCover" class="btn btn-danger btn-addon m-b-xs btn-rounded btn-xs pull-right"><i class="fa fa-trash"></i> Удалить</button>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Контекст</label>
+                                <div class="col-sm-10">
+                                    <div class="summernote-context">{{ staticPage.getContext()|raw }}</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Содержание</label>
+                                <div class="col-sm-10">
+                                    <div class="summernote">{{ staticPage.getContent()|raw }}</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="notes" class="col-sm-2 control-label">Примечание</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" id="notes" name="notes" placeholder="Примечание">{{ staticPage.getNotes() }}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="meta-description" class="col-sm-2 control-label">Meta Description</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" id="meta-description" name="meta-description" placeholder="Meta Description">{{ staticPage.getMetaDescription() }}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="meta-keywords" class="col-sm-2 control-label">Meta Keywords</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" id="meta-keywords" name="meta-keywords" placeholder="Meta Keywords">{{ staticPage.getMetaKeywords() }}</textarea>
+                                </div>
+                            </div>
+
+
+
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                            <button type="button" class="btn btn-danger" id="deleteStaticPageModalFocus" data-toggle="modal" data-target="#deleteStaticPageModal">Удалить</button>
+                        </form>
+
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="deleteStaticPageModal" tabindex="-1" role="dialog" aria-labelledby="deleteStaticPageModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="deleteStaticPageModalLabel">Удаление</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <p>
+                                                После проведенного действия назад невозможно возвратиться!
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                    <form>
+                                        <div class="modal-footer">
+                                            <button type="button" id="cancelDeleteStaticPage"class="btn btn-default" data-dismiss="modal">Отменить</button>
+                                            <button type="button" id="confirmDeleteStaticPage" staticpageid="none" class="btn btn-danger">Удалить</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include("Admin/copyrightFooter.html") }}
+</div>
+{% endblock %}
+
+
+{% block endBodies %}
+    <script src="/static/admin/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <link href="/static/admin/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css"/>
+
+
+    <style>
+        th.normal_font {
+            font-weight: normal;
+            padding-left: 10px;
+        }
+        i.silver {
+            color: #bfbcbc;
+            font-size: 11px;
+        }
+        .select2-results__option--highlighted table tr th i.silver {
+            color: #fff;
+        }
+        .customsize {
+            min-height: 36px;
+        }
+        .select2-search__field {
+            width: 100%!important;
+        }
+        #toast-container > div:hover{
+            opacity: 1;
+            box-shadow: 0px 0px 14px 0px #000;
+            cursor: pointer;
+        }
+
+        /* temporary fix for summernote*/
+        .note-group-select-from-files {
+          display: none;
+        }
+    </style>
+    <script src="/static/admin/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+    <script src="/static/admin/assets/plugins/summernote/summernote.js"></script>
+    <script src="/static/admin/assets/js/pages/form-elements.js"></script>
+
+    <link href="/static/admin/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/admin/assets/plugins/summernote/summernote.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/admin/assets/plugins/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" type="text/css"/>
+    <!--<script src="/static/admin/assets/js/pages/form-select2.js"></script>-->
+    <script src="/static/admin/assets/plugins/select2/js/select2.js"></script>
+    <link href="/static/admin/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
+    <script src="/static/admin/assets/js/pages/notifications.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            function fix(el){
+              $(el).next().find('.note-editable p > img').parent().addClass('flex-fix');
+            }
+            $('.summernote').summernote({
+                lang: 'ru-RU',
+                height: 300,   //set editable area's height
+                disableDragAndDrop: true,
+                callbacks:{
+                    onImageUpload: function(files, editor, $editable)
+                    {
+                        //sendFile_(files[0],editor,$editable);
+                    },
+                    onChange: function(){
+                        fix(this);
+                    },
+                    onInit: function(){
+                        fix(this);
+                    },
+                    onMediaDelete: function(files, editor, welEditable)
+                    {
+                        /*
+                        var imageUrl = $(files[0]).attr('src');
+                        var image = imageUrl.split('/');
+                        console.log(image[4]);
+                        */
+                    }
+                }
+            });
+
+            $('.summernote-context').summernote({
+                lang: 'ru-RU',
+                height: 300,   //set editable area's height
+                disableDragAndDrop: true,
+                callbacks:{
+                    onImageUpload: function(files, editor, $editable)
+                    {
+                        //sendFile_(files[0],editor,$editable);
+                    },
+                    onChange: function(){
+                        fix(this);
+                    },
+                    onInit: function(){
+                        fix(this);
+                    },
+                    onMediaDelete: function(files, editor, welEditable)
+                    {
+                        /*
+                        var imageUrl = $(files[0]).attr('src');
+                        var image = imageUrl.split('/');
+                        console.log(image[4]);
+                        */
+                    }
+                }
+            });
+
+            $('#deleteLogo').on('click', function(){
+                var courseId = $('#staticPageId').val();
+
+                postAjaxRequest('/admin/ajax/staticPage/deleteLogo',
+                    { id: courseId }
+                );
+
+                return false;
+            });
+
+
+            $('#deleteCover').on('click', function(){
+                var staticPageId = $('#staticPageId').val();
+
+                postAjaxRequest('/admin/ajax/staticPage/deleteCover',
+                    { id: staticPageId }
+                );
+
+                return false;
+            });
+
+
+
+            $('#editStaticPage').on('submit', function(){
+                var staticPageId = $('#staticPageId').val();
+                var title = $('input[name=title]').val();
+
+                var isAvailable = $('input[name=status]').is(":checked")?'true':'false';
+                var cover = $('input[name="cover"]').get(0).files[0];
+                var content = $('.summernote').summernote('code');
+                var context = $('.summernote-context').summernote('code');
+                var notes = $('textarea[name=notes]').val();
+                var metaDescription = $('textarea[name="meta-description"]').val();
+                var metaKeywords = $('textarea[name="meta-keywords"]').val();
+                var logo = $('input[name="logo"]').get(0).files[0];
+
+                let formData = new FormData();
+                formData.append('id', staticPageId);
+                formData.append('title', title);
+                formData.append('isAvailable', isAvailable);
+                formData.append('content', content);
+                formData.append('context', context);
+
+                formData.append('notes', notes);
+                formData.append('metaDescription', metaDescription);
+                formData.append('metaKeywords', metaKeywords);
+
+                if (cover != undefined){
+                    formData.append('cover', cover);
+                }
+
+                if (logo != undefined){
+                    formData.append('logo', logo);
+                }
+
+
+                ajaxRequest('/admin/ajax/staticPage/edit',
+                    formData
+                );
+
+                return false;
+            });
+
+
+            $('#confirmDeleteStaticPage').on('click', function(){
+                var staticPageId = $('#staticPageId').val();
+                postAjaxRequest('/admin/ajax/StaticPage/delete',
+                                {
+                                    id: staticPageId,
+                                    fromEditAction: true
+                                },
+                                function(data){
+                                            $('#cancelDeleteStaticPage').click();
+                                        },
+                                function(data){
+                                            $('#cancelDeleteStaticPage').click();
+                                        }
+                );
+                return false;
+            });
+
+        });
+    </script>
+{% endblock %}

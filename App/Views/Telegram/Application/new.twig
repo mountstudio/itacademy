@@ -1,0 +1,15 @@
+Новый запрос:
+Имя: {{ application.getName() }}
+Тел. номер: {{ application.getPhone() }}
+
+{% set course = application.getCurrentCourseApplication() %}
+{% set stream = application.getCurrentCourseStreamApplication() %}
+{% if course != null %}
+Курс: {{ course.getName() }}
+{% endif %}
+{% if stream != null %}
+Поток: {{ stream.getName() }}
+{% endif %}
+{% if application.getDescription() != null %}
+Сообщение: {{ application.getDescription() }}
+{% endif %}

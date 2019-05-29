@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="ru">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+        {% block metaInit %}{% endblock %}
+        {{ meta.build()|raw }}
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Favicon -->
+        <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+        <!-- Plugins CSS -->
+        <link rel="stylesheet" href="/static/front/assets/dist/css/plugins.css">
+        <!-- fonts CSS -->
+        <link rel="stylesheet" href="/static/front/assets/fonts/linearicons/fonts.css">
+        <link rel="stylesheet" href="/static/front/assets/fonts/font-awesome/css/fontawesome-all.min.css">
+        <!-- Custom CSS File -->
+        <link rel="stylesheet" href="/static/front/assets/dist/css/style.css">
+
+        <title>{% block title %}{% endblock %}{% if not (page is defined and (page == 'index' or page == 'listOfPlaces')) %}{{ titlePostfix }}{% endif %}{{ titleEndPostfix }}</title>
+
+        {% block headers %} {% endblock %}
+
+    </head>
+    <body data-spy="scroll" data-target="#navbar-scroll" data-offset="75">
+        <!--pre-loader-->
+        <div id="preloader">
+            <div id="preloader-inner"></div>
+        </div>
+        <!--pre-loader-->
+        <!--pre-loader-->
+        {% if defaultBranch %}
+        <prenav class="nav-contacts">
+            <div class="restrict-full-size">
+                <div class="pre-nav-left">
+                    <div class="pre-nav-social-links">
+                        {% if defaultBranch.getFacebookLink() %}
+                        <a href="{{ defaultBranch.getFacebookLink() }}">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        {% endif %}
+                        {% if defaultBranch.getInstagramLink() %}
+                        <a href="{{ defaultBranch.getInstagramLink() }}">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="pre-nav-right">
+                    <a href="mailto:{{ defaultBranch.getEmail() }}">
+                        <i class="fa fa-envelope"></i> {{ defaultBranch.getEmail() }}
+                    </a>
+                    <a href="tel:{{ defaultBranch.getTel() }}">
+                        <i class="fa fa-phone"></i> {{ defaultBranch.getTel() }}
+                    </a>
+                </div>
+            </div>
+        </prenav>
+        {% endif %}
+        <!--navbar-->
+        <nav id="navbar-fixed-top" class="navbar navbar-expand-lg navbar-dark fixed-top">
+
+            <div class="restrict-full-size fix-nav-bug">
+                <a class="navbar-brand" href="/">
+                    <img src="/static/front/assets/images/logo.png">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarsExample03">
+                    <ul class="navbar-nav mr-auto ml-auto">
+
+                        <li class="nav-item {{ (page == 'index') ? 'active' : '' }}">
+                            <a class="nav-link" href="/" data-link="index">Главная</a>
+                        </li>
+
+                        <li class="nav-item dropdown-fw {{ (page == 'courses' or page == 'course') ? 'active' : '' }}">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0);" data-link="courses" data-toggle="dropdown">Курсы</a>
+
+
+                            <div class="dropdown-menu dropdown-menu-fw">
+                                <div class="container">
+                                    <div class="row py-3 pb-0">
+                                        <div class="col-lg-3 ml-auto mb-3">
+                                            <p>
+                                                <strong>Наши курсы</strong>
+                                            </p>
+                                            <ul class="list-unstyled list-links">
+                                                {% for course in courses|slice(0, courses|length  // 2) %}
+                                                    <li class="dropdown-item {{ (page == 'course' and pageCourseId == course.getId()) ? 'active' : '' }}">
+                                                        <a href="/courses/{{ course.getAltUrl() }}" >{{ course.getName() }}</a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <!--/.col-->
+                                        <div class="col-lg-3 mb-3">
+                                            <p>
+                                                &nbsp;
+                                            </p>
+                                            <ul class="list-unstyled list-links">
+                                                {% for course in courses|slice(courses|length  // 2, courses|length - courses|length  // 2) %}
+                                                    <li class="dropdown-item {{ (page == 'course' and pageCourseId == course.getId()) ? 'active' : '' }}">
+                                                        <a href="/courses/{{ course.getAltUrl() }}" >{{ course.getName() }}</a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+
+                                            <a href="/courses" class="btn-link btn">Все курсы
+                                                <span class="badge rounded bg-secondary text-white d-inline-block ml-2">{{ courses|length }}</span>
+                                            </a>
+                                        </div>
+                                        <!--/.col-->
+                                        <div class="col-lg-4 mr-auto ml-auto clearfix">
+                                            <img src="/static/front/assets/images/header_dropdown_logo.png" alt="img" class="img-fluid">
+                                        </div>
+                                        <!--/.col-->
+                                    </div>
+                                </div>
+                            </div>
+
+                        </li>
+
+                        {% if page == 'index' %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-link="feedbacks">Отзывы</a>
+                            </li>
+                        {% endif %}
+
+                        {% if page == 'index' %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-link="instructors">Преподаватели</a>
+                            </li>
+                        {% endif %}
+
+                        <li class="nav-item {{ (page == 'projects' or page == 'project') ? 'active' : '' }}">
+                            <a class="nav-link" href="/projects">Проекты</a>
+                        </li>
+
+                        <li class="nav-item {{ (page == 'vacancies' or page == 'vacancy') ? 'active' : '' }}">
+                            <a class="nav-link" href="/vacancies">Вакансии</a>
+                        </li>
+
+                        <li class="nav-item {{ (page == 'contact') ? 'active' : '' }}">
+                            <a class="nav-link" href="/contacts" data-link="contacts">Контакты</a>
+                        </li>
+
+                        {% if page == 'index' %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-link="aboutUs">О нас</a>
+                            </li>
+                        {% endif %}
+
+
+                    </ul>
+                    {% if defaultBranch %}
+                    <div class="navbar-tools">
+                        <ul class="list-inline nav-social-icons">
+                            {% if defaultBranch.getFacebookLink() %}
+                            <li class="list-inline-item">
+                                <a href="{{ defaultBranch.getFacebookLink() }}">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% if defaultBranch.getInstagramLink() %}
+                            <li class="list-inline-item">
+                                <a href="{{ defaultBranch.getInstagramLink() }}">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+    {% block content %} {% endblock %}
+        <div class="modal fade bd-example-modal-md" id="applicationModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="applicationModalTitle">Заявка</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" id="sendApplicationFromModal">
+                            <div class="form-group">
+                                <label for="contact-name">Имя</label>
+                                <input type="text" name="contact-name" id="contact-name" class="form-control" placeholder="Ваше имя">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-tel">Тел. Номер</label>
+                                <input type="text" id="contact-tel" name="contact-tel" class="form-control" placeholder="+996 (551) 123 456">
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-md btn-primary">Отправить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div><!--modal-->
+        {% if not (page is defined and (page == 'error')) %}
+            <!--footer-->
+            <footer class="footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 mb-30">
+                            <h5>Полезные ссылки</h5>
+                            <ul class="list-unstyled list-links">
+                                <li>
+                                    <a href="/pages">
+                                        Статьи
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/courses">
+                                        Курсы
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/projects">
+                                        Проекты
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/vacancies">
+                                        Вакансии
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/contacts">
+                                        Контакты
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--/.col-->
+                        <div class="col-lg-2 col-md-6 mb30">
+                            <h5>Курсы</h5>
+                            <ul class="list-unstyled list-links">
+                                {% for course in courses %}
+                                <li>
+                                    <a href="/courses/{{ course.getAltUrl() }}">
+                                        {{ course.getName() }}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!--/.col-->
+                        <div class="col-lg-4 col-md-6 mb30">
+                            {% if defaultBranch %}
+                            <ul class="footer-social">
+                                {% if defaultBranch.getFacebookLink() %}
+                                <li>
+                                    <a href="{{ defaultBranch.getFacebookLink() }}">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% if defaultBranch.getInstagramLink() %}
+                                <li>
+                                    <a href="{{ defaultBranch.getInstagramLink() }}">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                </li>
+                                {% endif %}
+
+                            </ul>
+                            {% endif %}
+
+                            <div class="footer-branches">
+                                {% for branch in branches %}
+                                <div class="footer-branch">
+                                    <div class="f-address">
+                                        <i class="fa fa-map-marker"></i> {{ branch.getAddress() }}
+                                    </div>
+                                    <div class="f-phone">
+                                        <a href="tel:{{ branch.getTel() }}">
+                                            <i class="fa fa-phone"></i> {{ branch.getTel() }}
+                                        </a>
+                                    </div>
+                                    <div class="f-email">
+                                        <a href="mailto:{{ branch.getEmail() }}">
+                                            <i class="fa fa-envelope"></i> {{ branch.getEmail() }}
+                                        </a>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!--/.col-->
+                        <div class="col-lg-3 col-md-6 mb30">
+                            <h5>Подать заявку</h5>
+                            <div class="form-apply">
+                                <form role="form" id="applicationFromFooter">
+                                    <div class="form-group">
+                                        <label for="apply-form-name">Имя</label>
+                                        <input type="text" id="apply-form-name" class="form-control" placeholder="Имя">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="apply-form-tel">Номер телефона</label>
+                                        <input type="text" id="apply-form-tel" class="form-control" placeholder="+996 (551) 123 456">
+                                    </div>
+                                    <div class="text-left">
+                                        <button type="submit" class="btn btn-xs btn-outline-primary btn-rounded">Отправить</button>
+                                        <div style="display: none;">
+                                            <!--LiveInternet counter--><script type="text/javascript">
+document.write("<a href='//www.liveinternet.ru/click' "+
+"target=_blank><img src='//counter.yadro.ru/hit?t23.6;r"+
+escape(document.referrer)+((typeof(screen)=="undefined")?"":
+";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+";h"+escape(document.title.substring(0,150))+";"+Math.random()+
+"' alt='' title='LiveInternet: показано число посетителей за"+
+" сегодня' "+
+"border='0' width='88' height='15'><\/a>")
+</script><!--/LiveInternet-->
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--/.col-->
+                    </div>
+                    <!--row-->
+                    <hr>
+                    <div class="row text-center">
+                        <div class="col-lg-6 mr-auto ml-auto">
+                            <span>
+                                &COPY; Все права защищены 2019.
+                            </span>
+                            <span class="developer-copyright">
+                                Разработан и поддерживается компанией <a href="https://progeek.io">ProGeek.io</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        {% endif %}
+
+        <script src="/static/front/assets/dist/js/plugins.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="/static/front/assets/dist/js/education.custom.js"></script>
+        <script>
+            $('#applicationFromFooter').submit(function () {
+                var self = $(this);
+                var name = self.find('#apply-form-name');
+                var tel = self.find('#apply-form-tel');
+
+                postAjaxRequest('/ajax/application/add',
+                    {
+                        name: name.val(),
+                        tel: tel.val()
+                    },
+                    function (data) {
+                        name.val('');
+                        tel.val('');
+                    }
+                );
+                return false;
+
+            });
+
+
+
+
+            $('#sendApplicationFromModal').submit(function () {
+                var self = $(this);
+                var name = self.find('#contact-name');
+                var tel = self.find('#contact-tel');
+
+                postAjaxRequest('/ajax/application/add',
+                    {
+                        name: name.val(),
+                        tel: tel.val()
+                    },
+                    function (data) {
+                        $("#applicationModal .close").click();
+                        name.val('');
+                        tel.val('');
+                    }
+                );
+                return false;
+
+            });
+
+
+        </script>
+    {% block endBodies %} {% endblock %}
+    </body>
+</html>

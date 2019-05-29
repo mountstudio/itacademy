@@ -1,0 +1,200 @@
+{% block title %}
+Редактирование отзыва «{{ feedback.getName() }}»
+{% endblock %}
+
+
+{% extends "Admin/base.html" %}
+
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+
+<div class="page-inner">
+    <div class="page-title">
+
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Редактирование отзыва</h4>
+                        <div class="panel-control">
+                            <button type="link" data-href="/admin/feedbacks/all" class="btn btn-default btn-addon m-b-sm btn-sm"><i class="fa fa-chevron-left"></i> Все</button>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+
+                        <form class="form-horizontal" id="editFeedback">
+                            <input type="hidden" id="feedbackId" value="{{ feedback.getId() }}"/>
+
+                            <div class="form-group">
+                                <label for="workPlace" class="col-sm-2 control-label">Место работы</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="{{ feedback.getWorkPlace() }}" name="workPlace" id="workPlace" placeholder="Место работы">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="salary" class="col-sm-2 control-label">Зарплата</label>
+                                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-5">
+                                    <input type="number" class="form-control" value="{{ feedback.getSalary() }}" name="salary" id="salary" placeholder="Зарплата">
+                                </div>
+                                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-5">
+                                    <select name="currency" id="currency" class="form-control m-b-sm">
+                                        <option value="0"  {% if feedback.getCurrentCurrencyId() == null %}selected{% endif %}>-</option>
+                                        {% for currency in currencies %}
+                                            <option value="{{ currency.getId() }}" {% if currency.getId() == feedback.getCurrentCurrencyId() %}selected{% endif %}>{{ currency.getName() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="content" class="col-sm-2 control-label">Содержание</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="content" id="content" rows="10" placeholder="Содержание">{{ feedback.getContent() }}</textarea>
+                                </div>
+                            </div>
+
+
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                            <button type="button" class="btn btn-danger" id="deleteFeedbackModalFocus" data-toggle="modal" data-target="#deleteFeedbackModal">Удалить</button>
+                        </form>
+
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="deleteFeedbackModal" tabindex="-1" role="dialog" aria-labelledby="deleteFeedbackModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="deleteFeedbackModalLabel">Удаление</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <p>
+                                                После проведенного действия назад невозможно возвратиться!
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                    <form>
+                                        <div class="modal-footer">
+                                            <button type="button" id="cancelDeleteFeedback"class="btn btn-default" data-dismiss="modal">Отменить</button>
+                                            <button type="button" id="confirmDeleteFeedback" feedbackid="none" class="btn btn-danger">Удалить</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include("Admin/copyrightFooter.html") }}
+</div>
+{% endblock %}
+
+
+{% block endBodies %}
+<script src="/static/admin/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<link href="/static/admin/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css"/>
+
+
+<style>
+    th.normal_font {
+        font-weight: normal;
+        padding-left: 10px;
+    }
+    i.silver {
+        color: #bfbcbc;
+        font-size: 11px;
+    }
+    .select2-results__option--highlighted table tr th i.silver {
+        color: #fff;
+    }
+    .customsize {
+        min-height: 36px;
+    }
+    .select2-search__field {
+        width: 100%!important;
+    }
+    #toast-container > div:hover{
+        opacity: 1;
+        box-shadow: 0px 0px 14px 0px #000;
+        cursor: pointer;
+    }
+
+    /* temporary fix for summernote*/
+    .note-group-select-from-files {
+        display: none;
+    }
+</style>
+<script src="/static/admin/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+<script src="/static/admin/assets/plugins/summernote/summernote.min.js"></script>
+<script src="/static/admin/assets/js/pages/form-elements.js"></script>
+
+<link href="/static/admin/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/summernote/summernote.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" type="text/css"/>
+<!--<script src="/static/admin/assets/js/pages/form-select2.js"></script>-->
+<script src="/static/admin/assets/plugins/select2/js/select2.js"></script>
+<link href="/static/admin/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
+<script src="/static/admin/assets/js/pages/notifications.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+
+
+
+        $('#editFeedback').on('submit', function(){
+            var feedbackId = $('#feedbackId').val();
+            var workPlace = $('input[name=workPlace]').val();
+
+            var salary = $('input[name=salary]').val();
+            var currencyId = $('select[name=currency]').val();
+
+            var content =  $('textarea[name="content"]').val();
+
+            postAjaxRequest('/admin/ajax/feedback/edit',
+                {
+                    id: feedbackId,
+                    workPlace: workPlace,
+                    salary: salary,
+                    currencyId: currencyId,
+                    content: content
+                }
+            );
+            return false;
+        });
+
+
+        $('#confirmDeleteFeedback').on('click', function(){
+            var feedbackId = $('#feedbackId').val();
+            postAjaxRequest('/admin/ajax/feedback/delete',
+                {
+                    id: feedbackId,
+                    fromEditAction: true
+                },
+                function(data){
+                    $('#cancelDeleteFeedback').click();
+                },
+                function(data){
+                    $('#cancelDeleteFeedback').click();
+                }
+            );
+            return false;
+        });
+
+    });
+</script>
+{% endblock %}

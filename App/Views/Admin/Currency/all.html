@@ -1,0 +1,163 @@
+{% block title %}
+Все валюты
+{% endblock %}
+
+{% extends "Admin/base.html" %}
+
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-inner">
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Все валюты</h4>
+                        <div class="panel-control">
+                            <button type="link" data-href="/admin/currencies/add" class="btn btn-success btn-addon m-b-sm btn-sm"><i class="fa fa-plus"></i> Добавить</button>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <menu id="nestable-menu" class="no-m no-p m-b-sm">
+                            <button type="link" class="btn btn-primary" data-href="/admin/currencies/rates/add">Ввести валюту</button>
+                        </menu>
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="list">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Название</th>
+                                    <th>ISO Код</th>
+                                    <th>Символ</th>
+                                    <th>Состояние</th>
+                                    <th>Примечание</th>
+                                    <th class="actions-inline">Действие</th>
+                                </tr>
+                                </thead>
+                                <tbody data-swap-url="/admin/ajax/currency/update">
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="deleteCurrencyModal" tabindex="-1" role="dialog" aria-labelledby="deleteCurrencyModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="deleteCurrencyModalLabel">Удаление</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <p>
+                                                После проведенного действия назад невозможно возвратиться!
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="cancelDeleteCurrency" class="btn btn-default" data-dismiss="modal">Отменить</button>
+                                        <button type="button" id="confirmDeleteCurrency" currencyid="none" class="btn btn-danger">Удалить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include("Admin/copyrightFooter.html") }}
+</div>
+{% endblock %}
+
+
+{% block endBodies %}
+<!-- Scripts are shown there-->
+<script src="/static/admin/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<link href="/static/admin/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css"/>
+
+
+<style>
+    th.normal_font {
+        font-weight: normal;
+        padding-left: 10px;
+    }
+    i.silver {
+        color: #bfbcbc;
+        font-size: 11px;
+    }
+    .select2-results__option--highlighted table tr th i.silver {
+        color: #fff;
+    }
+    .customsize {
+        min-height: 36px;
+    }
+    .select2-search__field {
+        width: 100%!important;
+    }
+    #toast-container > div:hover{
+        opacity: 1;
+        box-shadow: 0px 0px 14px 0px #000;
+        cursor: pointer;
+    }
+</style>
+<script src="/static/admin/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+<script src="/static/admin/assets/plugins/summernote/summernote.min.js"></script>
+<script src="/static/admin/assets/js/pages/form-elements.js"></script>
+
+<link href="/static/admin/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/summernote/summernote.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" type="text/css"/>
+<!--<script src="/static/admin/assets/js/pages/form-select2.js"></script>-->
+<script src="/static/admin/assets/plugins/select2/js/select2.js"></script>
+<link href="/static/admin/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
+<script src="/static/admin/assets/js/pages/notifications.js"></script>
+<script src="/static/admin/assets/plugins/moment/moment.js"></script>
+
+<script type="text/javascript">
+
+
+    $(document).ready(function() {
+        $(document).on('click', '.currencyDelete', function(){
+            var currencyId = $(this).attr('currencyid');
+            $('#confirmDeleteCurrency').attr('currencyid', currencyId);
+        });
+
+        $('#confirmDeleteCurrency').on('click', function(){
+            var currencyId = $(this).attr('currencyid');
+
+            postAjaxRequest('/admin/ajax/currency/delete',
+                {
+                    id: currencyId
+                },
+                function(data){
+                    $('#cancelDeleteCurrency').click();
+                    $("tr[data-id=" + currencyId + "]").css("background-color","red").css("color","white").fadeOut(400, function(){
+                        $(this).remove();
+                    });
+                },
+                function(data){
+                    $('#cancelDeleteCurrency').click();
+                }
+            );
+            return false;
+        });
+
+        paginationRequest(  '/admin/ajax/currency/paginate',
+            '#list',
+            function(data){
+                result = '';
+                data.data.forEach(function(currency) {
+                    result += '<tr data-feature="swap" data-id="' + currency.id + '"><td>' + currency.id + '</td> <td>' + currency.name + '</td><td>' + currency.isoCode + '</td><td>' + currency.symbol + '</td><td>' + currency.currentRate + '</td> <td>' + ((currency.notes != null) ? ((currency.notes.length > 100) ? (currency.notes.substring(0, 100 - '...'.length) + '...') : currency.notes) : '-') + '</td> <td><div class="btn-group"> <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Действие <span class="caret"></span> </button> <ul class="dropdown-menu dropdown-menu-right" role="menu"> <li><a href="/admin/currencies/' + currency.id + '/edit">Изменить</a></li> <li><a href="#" data-toggle="modal" data-target="#deleteCurrencyModal" class="currencyDelete" currencyid="' + currency.id + '">Удалить</a></li> </ul> </div><div class="move-actions"><button type="button" class="btn btn-default btn-rounded" data-action="toTop" ' + ((currency.actions.isFirst) ? 'disabled' : '') + '><i class="fa fa-arrow-up"></i></button><button type="button" class="btn btn-default btn-rounded" data-action="toBottom" ' + ((currency.actions.isLast) ? 'disabled' : '') + '><i class="fa fa-arrow-down"></i></button></div></td> </tr>';
+                });
+                return result;
+            }
+        );
+    });
+</script>
+{% endblock %}

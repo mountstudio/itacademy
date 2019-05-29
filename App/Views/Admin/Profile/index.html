@@ -1,0 +1,329 @@
+{% block title %}
+    Профиль
+{% endblock %}
+
+{% extends "Admin/base.html" %}
+
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-inner">
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Редактирование пользователя</h4>
+                    </div>
+                    <div class="panel-body">
+                        <form id="change_data">
+
+                            {% if verificationEmail is defined %}
+                                <div class="alert alert-danger" role="alert">
+                                    Вам нужно перейти на почту и подтвердить свой email ({{ verificationEmail }})
+                                </div>
+                            {% endif %}
+
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" value="{{ user.getEmail() }}" name="email" class="form-control" id="email" placeholder="Email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="userName">Логин</label>
+                                <input type="text" value="{{ user.getUserName() }}" name="userName" class="form-control" id="userName" placeholder="Введите Логин">
+                                <p class="help-block">Можно оставить пустым </p>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="name">Имя</label>
+                                <input type="text" value="{{ user.getName() }}" name="name" class="form-control" id="name" placeholder="Введите имя">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">Тел. номер:</label>
+                                <input type="text" value="{{ user.getPhone() }}" class="form-control" name="phone" id="phone" placeholder="996XXXYYYYYY" >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="birthDate" >Дата рождения:</label>
+                                <input type="text" autocomplete="off" class="form-control"  name="birthDate" value="{% if user.getBirthDate() != null %}{{ user.getBirthDate()|getDate }}{% endif %}" id="birthDate" placeholder="Дата Рождения" >
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="address">Адрес:</label>
+                                <textarea class="form-control" name="address" id="address" placeholder="Адрес">{{ user.getAddress() }}</textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Обо мне</label>
+                                <div class="summernote">{{ user.getAbout()|raw }}</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="currency">Валюта</label>
+                                <select name="currency" id="currency" class="form-control m-b-sm">
+                                    <option value="0" {% if user.getCurrentCurrencyId() == null%}selected{% endif %}>-</option>
+                                    {% for currency in currencies %}
+                                    <option value="{{ currency.getId() }}" {% if user.getCurrentCurrencyId() == currency.getId() %} selected {% endif %}>{{ currency.getName() }} ({{ currency.getISOCode() }})</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label for="avatar">Изменить аватар</label>
+                                <input type="file" name="avatar" accept="image/jpeg,image/png,image/gif" class="form-control" id="avatar" placeholder="Выберите аватар">
+                                <br/>
+                                <button type="button" id="deleteAvatar" class="btn btn-danger btn-addon m-b-xs btn-rounded btn-xs pull-right"><i class="fa fa-trash"></i> Удалить Фото</button>
+
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" id="saveChanges">Сохранить</button>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUserModal">Удалить аккаунт</button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="deleteUserModalLabel">Удаление</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <p>
+                                                    После проведенного действия назад невозможно возвратиться!
+                                                </p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="deleteUserPassword" class="col-sm-2 control-label">Password</label>
+                                                <div class="col-sm-10">
+                                                    <input type="password" class="form-control" id="deleteUserPassword" placeholder="Password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <br/>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" id="cancelDeleteAccount"class="btn btn-default" data-dismiss="modal">Отменить</button>
+                                            <button type="button" id="confirmDeleteAccount" class="btn btn-danger">Удалить</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Изменение пароля</h4>
+                    </div>
+                    <div class="panel-body">
+                        <form id="change_pass" class="form-horizontal">
+                            <div class="form-group">
+                                <label for="currentPassword" class="col-sm-2 control-label">Текущий пароль</label>
+                                <div class="col-sm-10">
+                                    <input type="password" name="oldPassword" class="form-control" id="currentPassword" placeholder="Текущий пароль">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="col-sm-2 control-label">Новый пароль</label>
+                                <div class="col-sm-10">
+                                    <input type="password" name="newPassword" class="form-control" id="password" placeholder="Новый пароль">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password2" class="col-sm-2 control-label">Подтверждение нового пароля</label>
+                                <div class="col-sm-10">
+                                    <input type="password" name="confirmationNewPassword" class="form-control" id="password2" placeholder="Подтверждение нового пароля">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-success">Сохранить</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div><!-- Row -->
+    </div><!-- Main Wrapper -->
+    {{ include("Admin/copyrightFooter.html") }}
+</div>
+{% endblock %}
+
+
+{% block endBodies %}
+    <!-- Scripts are shown there-->
+<link href="/static/admin/assets/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+<script src="/static/admin/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/static/admin/assets/js/pages/notifications.js"></script>
+<script src="/static/admin/assets/plugins/summernote/summernote.min.js"></script>
+<link href="/static/admin/assets/plugins/summernote/summernote.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/admin/assets/plugins/toastr/toastr.min.css" rel="stylesheet"/>
+    <script src="/static/admin/assets/plugins/toastr/toastr.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var defaultDate = $('#birthDate').val();
+            let birthDate = $('#birthDate');
+            birthDate.datetimepicker({
+                format: 'YYYY-MM-DD',
+                viewMode: 'years',
+                maxDate: new Date(),
+                date: (defaultDate.length > 0) ? new Date(defaultDate) : null,
+            });
+
+            $('.summernote').summernote({
+                lang: 'ru-RU',
+                height: 200,   //set editable area's height
+                disableDragAndDrop: true,
+                callbacks:{
+                    onImageUpload: function(files, editor, $editable)
+                    {
+                        //sendFile_(files[0],editor,$editable);
+                    },
+                    onMediaDelete: function(files, editor, welEditable)
+                    {
+                        /*
+                        var imageUrl = $(files[0]).attr('src');
+                        var image = imageUrl.split('/');
+                        console.log(image[4]);
+                        */
+                    }
+                }
+            });
+
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            $('#change_data').on('submit', function(){
+                document.getElementById("saveChanges").disabled = true;
+                //console.log(getCookie('login_token'));
+
+                var email = $('input[name="email"]').val();
+                var name = $('input[name="name"]').val();
+                var userName = $('input[name="userName"]').val();
+                var phone = $('input[name="phone"]').val();
+                var address = $('textarea[name="address"]').val();
+                var avatar = $('input[name="avatar"]').get(0).files[0];
+                var birthDate = $('[name=birthDate]').val();
+                var currencyId = $('select[name=currency]').val();
+                var about = $('.summernote').summernote('code');
+
+
+                var formData = new FormData();
+                formData.append('email', email);
+                formData.append('name', name);
+                formData.append('userName', userName);
+                formData.append('about', about);
+                formData.append('birthDate', birthDate);
+                formData.append('currencyId', currencyId);
+
+
+                if (avatar != undefined){
+                    formData.append('avatar', avatar);
+                }
+                formData.append('phone', phone);
+                formData.append('address', address);
+
+
+                ajaxRequest('/admin/ajax/user/selfEdit',
+                            formData,
+                            function(data){
+                                                document.getElementById("saveChanges").disabled = false;
+                                                if (data.data.image != undefined){
+                                                    $('.reloadAvatar').attr("src", data.data.image.thumb).trigger("change");
+                                                }
+                                                $('.reloadUserName').text(data.data.name).trigger("change");
+                                            },
+                            function(data){
+                                                document.getElementById("saveChanges").disabled = false;
+                                            }
+                );
+                return false;
+        });
+
+            $('#change_pass').on('submit', function(){
+                //console.log(getCookie('login_token'));
+
+                var oldPassword = $('input[name="oldPassword"]').val();
+                var newPassword = $('input[name="newPassword"]').val();
+                var confirmationNewPassword = $('input[name="confirmationNewPassword"]').val();
+
+
+                postAjaxRequest('/admin/ajax/user/changePassword',
+                                {
+                                    currentPassword: oldPassword,
+                                    newPassword: newPassword,
+                                    confirmNewPassword: confirmationNewPassword
+                                }
+                );
+
+                return false;
+            });
+
+                $('#deleteAvatar').on('click', function(){
+                        postAjaxRequest('/admin/ajax/user/selfDeleteAvatar',
+                                {
+
+                                },
+                                function(data){
+                                                if (data.data.image != undefined){
+                                                    $('.reloadAvatar').attr("src", data.data.image.thumb).trigger("change");
+                                                }
+                                            }
+                                        );
+                return false;
+            });
+
+
+            $('#confirmDeleteAccount').on('click', function(){
+                var password = $('#deleteUserPassword').val();
+
+                postAjaxRequest('/admin/ajax/user/selfDelete',
+                        {
+                            password: password
+                        },
+                        function(data){
+                                        if (data.data.image != undefined){
+                                            $('.reloadAvatar').attr("src", data.data.image.thumb).trigger("change");
+                                        }
+                                    }
+                );
+
+                return false;
+            });
+
+        });
+
+
+    </script>
+{% endblock %}

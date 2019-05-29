@@ -1,0 +1,38 @@
+{% set jsonLDBreadcrumb = '' %}
+<ol class="breadcrumb {% if breadcrumbs.isOnRightSide() %}text-right{% endif %}">
+    {% for breadcrumb in breadcrumbs.getItems() %}
+    {% if loop.first %}
+    <li class="breadcrumb-item">
+        <a href="/">
+            <i class="fa fa-home"></i>
+        </a>
+    </li>
+    {% else %}
+    {% if breadcrumb.isActive() %}
+    <li class="breadcrumb-item">{{ breadcrumb.getName() }}</li>
+    {% else %}
+    <li class="breadcrumb-item"><a href="{{ breadcrumb.getUrl() }}">{{ breadcrumb.getName() }}</a></li>
+    {% endif %}
+    {% endif %}
+
+    {% set breadcrumb_ = '{"@type": "ListItem", "position": ' ~ loop.index ~ ', "name": "' ~ breadcrumb.getName() ~ '", "item": "' ~ siteName ~ breadcrumb.getUrl() ~ '"}' %}
+    {% if loop.first %}
+    {% set jsonLDBreadcrumb = breadcrumb_ %}
+    {% else %}
+    {% set jsonLDBreadcrumb = jsonLDBreadcrumb ~ ', ' ~ breadcrumb_ %}
+    {% endif %}
+
+    {% endfor %}
+</ol>
+
+{% if jsonLDBreadcrumb|length > 0 %}
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {{ jsonLDBreadcrumb|raw }}
+        ]
+    }
+</script>
+{% endif %}

@@ -1,0 +1,89 @@
+{% set page = 'vacancies' %}
+
+{% block metaInit %}
+{{ meta.setDescription(null) }}
+{{ meta.setKeywords(null) }}
+{% endblock %}
+
+{% block title %}
+Вакансии
+{% endblock %}
+
+{% extends "Front/base.html" %}
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-header static-page-header" data-jarallax='{"speed": 0.4}' style='background-image: url("/static/front/assets/images/pages/vacancies.png")'>
+    <div class="bg-overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 text-left mr-auto text-white">
+                <h2 class="display-4 mb-3 text-white">Вакансии</h2>
+                {{ include("Front/breadcrumb.html") }}
+            </div>
+        </div>
+    </div>
+    <svg class="svg-abs svg-f-btm z-index-9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 123" enable-background="new 0 0 1920 123" xml:space="preserve">
+            <polygon class="svg-white" opacity="1" points="0,123 1920,123 1920,0 "></polygon>
+          </svg>
+</div>
+<!--Page header end-->
+
+
+<!--Page header end-->
+<div class="pos-rel">
+    <div class="container pt60 pb60">
+        <div class="row">
+
+            {% for vacancy in vacancies %}
+                <div class="col-lg-4 mb30 wow fadeInUp" data-wow-delay="{% if loop.index is divisible by(3) %}.4s{% elseif loop.index is divisible by(2) %}.3s{% else %}.2s{% endif %}">
+                    <div class="entry-card">
+                        <a href="/vacancies/{{ vacancy.getAltUrl() }}" class="entry-thumb">
+                            <img src="{{ vacancy.getLogo()['normal'] }}" alt="Вакансия - {{ vacancy.getName() }}" class="img-fluid">
+                            <span class="thumb-hover ti-back-right"></span>
+                        </a><!--/entry thumb-->
+                        <div class="entry-content">
+                            <div class="entry-meta mb5">
+                                        <span class="mr-3">
+                                            <i class="icon-calendar-31 mr-1"></i> {{ vacancy.getCreatedAt()|formatRULocaleDateFull }}
+                                        </span>
+
+                                        <span>
+                                            <i class="icon-cash-dollar mr-1"></i> {{ vacancy.getCurrentVacancyVacancySalary().getName() }}
+                                        </span>
+                            </div>
+                            <h4 class="entry-title text-capitalize">
+                                <a href="/vacancies/{{ vacancy.getAltUrl() }}">
+                                    {{ vacancy.getName() }}
+                                </a>
+                            </h4>
+                            <p>
+                                {{ vacancy.getContext()|raw }}
+                            </p>
+                            <div class="text-right">
+                                <a href="/vacancies/{{ vacancy.getAltUrl() }}" class="btn-link btn">Подробнее</a>
+                            </div>
+                        </div><!--/entry content-->
+                    </div>
+                </div><!--/.col-->
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block endBodies %}
+
+    <script>
+        $(document).ready(function(){
+
+
+        });
+    </script>
+{% endblock %}

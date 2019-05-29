@@ -1,0 +1,16 @@
+<h3>Новая заявка с сайта:</h3> <br>
+Имя: {{ application.getName() }} <br>
+Телефон: {{ application.getPhone() }} <br>
+{% set course = application.getCurrentCourseApplication() %}
+{% set stream = application.getCurrentCourseStreamApplication() %}
+
+{% if course != null %}
+Курс: {{ course.getName() }} <br>
+{% endif %}
+
+{% if stream != null %}
+Поток: {{ stream.getName() }} <br>
+{% endif %}
+
+
+

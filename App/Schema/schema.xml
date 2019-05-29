@@ -1,0 +1,427 @@
+<database name="default" defaultIdMethod="native"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd"
+          namespace="Models"
+>
+    <table name="group" phpName="Group" identifierQuoting="true">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="alt" type="varchar" size="15" required="true" phpName="AltName"/>
+        <column name="name" type="varchar" size="32" required="true" phpName="Name"/>
+        <column name="allow_choose_group" type="BOOLEAN" required="true" defaultValue="false" phpName="AllowChooseGroup" phpType = "boolean"/>
+        <behavior name="query_cache" />
+        <behavior name="sortable" />
+    </table>
+
+    <table name="privilege" phpName="Privilege">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="name" type="varchar" required="true" phpName="Name"/>
+        <column name="alt" type="varchar" size="45" required="true" phpName="Alt"/>
+        <behavior name="query_cache" />
+    </table>
+
+    <table name="group_privilege" phpName="GroupPrivelege" isCrossRef="true">
+
+        <column name="group_id" type="integer" primaryKey="true"/>
+        <foreign-key foreignTable="group" phpName="CurrentGroupGroupPrivelege" refPhpName="CurrentGroupGroupPrivelege" onDelete="CASCADE">
+            <reference local="group_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="privilege_id" type="integer" primaryKey="true"/>
+        <foreign-key foreignTable="privilege" phpName="CurrentPrivilegeGroupPrivelege" refPhpName="CurrentPrivilegeGroupPrivelege" onDelete="CASCADE">
+            <reference local="privilege_id" foreign="id"/>
+        </foreign-key>
+
+        <behavior name="sortable" />
+        <behavior name="query_cache" />
+    </table>
+
+    <table name="admin_style" phpName="AdminStyle" identifierQuoting="true">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="b_layout" type="BOOLEAN" required="true" defaultValue="false" phpName="AllowBLayout" phpType = "boolean"/>
+        <column name="c_menu" type="BOOLEAN" required="true" defaultValue="false" phpName="AllowCMenu" phpType = "boolean"/>
+        <column name="f_header" type="BOOLEAN" required="true" defaultValue="true" phpName="AllowFHeader" phpType = "boolean"/>
+        <column name="f_sidebar" type="BOOLEAN" required="true" defaultValue="false" phpName="AllowFSidebar" phpType = "boolean"/>
+        <column name="h_bar" type="BOOLEAN" required="true" defaultValue="false" phpName="AllowHBar" phpType = "boolean"/>
+        <column name="h_menu" type="BOOLEAN" required="true" defaultValue="false" phpName="AllowHMenu" phpType = "boolean"/>
+        <column name="t_sidebar" type="BOOLEAN" required="true" defaultValue="false" phpName="AllowTSidebar" phpType = "boolean"/>
+        <column name="custom_style" type="varchar" size="15" required="true" defaultValue="green" phpName="CustomStyle"/>
+        <behavior name="query_cache" />
+    </table>
+
+    <table name="verification_token" phpName="VerificationToken" identifierQuoting="true">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="email" type="varchar" size="254" required="false" phpName="Email"/>
+        <column name="token" type="varchar" size="100" required="true" phpName="Token"/>
+        <column name="type" type="TINYINT" size="1" required="true" defaultValue="1" phpName="Type"/>
+        <column name="expires_at" type="timestamp" phpName="ExpiryDateTime"/>
+
+        <column name="user_id" type="integer" required="false" phpName="CurrentUserId"/>
+        <foreign-key foreignTable="user" phpName="CurrentUser" refPhpName="CurrentUserVerificationToken">
+            <reference local="user_id" foreign="id"/>
+        </foreign-key>
+
+        <behavior name="query_cache" />
+        <behavior name="timestampable" />
+    </table>
+
+
+    <table name="user" phpName="User" identifierQuoting="true">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="name" type="varchar" size="32" required="true" phpName="Name"/>
+        <column name="user_name" type="varchar" size="32" required="false" phpName="UserName"/>
+        <column name="email" type="varchar" size="128" required="false" phpName="Email"/>
+        <column name="about" type="LONGVARCHAR" required="false" phpName="About"/>
+        <column name="birth_date" type="DATE" required="false" phpName="BirthDate"/>
+        <column name="password" type="varchar" size="100" required="false" phpName="Password"/>
+        <column name="phone" type="varchar" size="12" required="false" phpName="Phone"/>
+        <column name="logo_name" type="varchar" size="32" required="false" phpName="LogoName"/>
+        <column name="cover_name" type="varchar" size="32" required="false" phpName="CoverName"/>
+        <column name="address" type="varchar" size="100" required="false" phpName="Address"/>
+        <column name="address_coordinates" type="ARRAY" required="false" phpName="AddressCoordinates"/>
+        <column name="is_activated" type="BOOLEAN" required="true" defaultValue="false" phpName="Activated" phpType = "boolean"/>
+        <column name="social_id" type="varchar" required="false" phpName="SocialId"/>
+        <column name="social_token" type="varchar" required="false" phpName="SocialToken"/>
+        <behavior name="timestampable" />
+
+
+        <column name="group_id" type="integer" required="true" phpName="CurrentGroupId"/>
+        <foreign-key foreignTable="group" phpName="CurrentGroup" refPhpName="CurrentGroupUser">
+            <reference local="group_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="currency_id" type="integer" required="false" phpName="CurrentCurrencyId"/>
+        <foreign-key foreignTable="currency" phpName="CurrentUserCurrency" refPhpName="CurrentCurrencyUser" onDelete="SETNULL">
+            <reference local="currency_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="admin_style_id" type="integer" required="false" phpName="CurrentAdminStyleId"/>
+        <foreign-key foreignTable="admin_style" phpName="CurrentAdminStyle" refPhpName="CurrentAdminStyleUser" onDelete="SETNULL">
+            <reference local="admin_style_id" foreign="id"/>
+        </foreign-key>
+        <behavior name="query_cache" />
+    </table>
+
+    <table name="application_status" phpName="ApplicationStatus" identifierQuoting="true">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="name" type="varchar" size="20" phpName="Name"/>
+        <column name="description" type="varchar" size="300" phpName="Description"/>
+        <column name="background_color" required="false"  type="varchar" size="30" phpName="BackgroundColor"/>
+        <column name="font_color" type="varchar" required="false"  size="30" phpName="FontColor"/>
+        <behavior name="sortable" />
+        <behavior name="query_cache" />
+    </table>
+
+
+    <table name="application" phpName="Application" identifierQuoting="true">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="name" type="varchar" size="60" phpName="Name"/>
+        <column name="phone" type="varchar" size="20" phpName="Phone"/>
+
+        <column name="application_status_id" type="integer" required="true" phpName="CurrentApplicationStatusId"/>
+        <foreign-key foreignTable="application_status" phpName="CurrentApplicationStatus" refPhpName="CurrentApplicationStatusApplication">
+            <reference local="application_status_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="course_id" type="integer" required="false" phpName="CurrentCourseId"/>
+        <foreign-key foreignTable="course" phpName="CurrentCourseApplication" refPhpName="CurrentApplicationCourse" onDelete="SETNULL">
+            <reference local="course_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="course_stream_id" type="integer" required="false" phpName="CurrentCourseStreamId"/>
+        <foreign-key foreignTable="course_stream" phpName="CurrentCourseStreamApplication" refPhpName="CurrentApplicationCourseStream" onDelete="SETNULL">
+            <reference local="course_stream_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="description" type="varchar" size="300" required="false" phpName="Description"/>
+        <column name="notes" type="varchar" size="300" phpName="Notes" description="for customers"/>
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+    </table>
+
+
+    <table name="faq" phpName="FAQ" identifierQuoting="true">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="question" type="varchar" phpName="Question"/>
+        <column name="answer" type="LONGVARCHAR" phpName="Answer"/>
+
+        <behavior name="sortable" />
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+    </table>
+
+
+    <table name="course_stream_status" phpName="CourseStreamStatus" identifierQuoting="true">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="name" type="varchar" size="20" phpName="Name"/>
+        <column name="description" type="varchar" size="300" phpName="Description"/>
+        <column name="background_color" required="false"  type="varchar" size="30" phpName="BackgroundColor"/>
+        <column name="font_color" type="varchar" required="false"  size="30" phpName="FontColor"/>
+        <behavior name="sortable" />
+        <behavior name="query_cache" />
+    </table>
+
+    <table name="course" phpName="Course" identifierQuoting="true" isCrossRef="true">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="name" type="varchar" size="20" phpName="Name"/>
+        <column name="description" type="LONGVARCHAR" phpName="Description"/>
+        <column name="alt_url" type="varchar" required="true"  phpName="AltUrl"/>
+        <column name="logo_name" type="varchar" required="false" phpName="LogoName"/>
+        <column name="cover_name" type="varchar" required="false" phpName="CoverName"/>
+
+        <column name="title" type="varchar" required="true" phpName="Title"/>
+        <column name="context" type="LONGVARCHAR" required="false" phpName="Context"/>
+        <column name="notes" type="varchar" required="false" size="300" phpName="Notes"/>
+
+        <column name="use_notes" type="varchar" required="true" size="700" phpName="UseNotes"/>
+        <column name="uses" phpName="Uses" type="object" phpType="\Core\Course\Uses"/>
+
+        <column name="meta_description" required="false" type="LONGVARCHAR" phpName="MetaDescription"/>
+        <column name="meta_keywords" required="false" type="LONGVARCHAR" phpName="MetaKeywords"/>
+
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+    </table>
+
+    <table name="course_stream" phpName="CourseStream" identifierQuoting="true" isCrossRef="true">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="name" type="varchar" size="20" phpName="Name"/>
+        <column name="description" type="LONGVARCHAR" phpName="Description"/>
+
+        <column name="number_of_places" type="integer" required="true" phpName="NumberOfPlaces" />
+        <column name="notes" type="varchar" required="false" size="300" phpName="Notes"/>
+
+        <column name="starts_at" type="DATE" required="true" phpName="StartsAt"/>
+        <column name="ends_at" type="DATE" required="true" phpName="EndsAt"/>
+        <column name="show_on_website" type="BOOLEAN" required="true" defaultValue="false" phpName="ShowOnWebSite" phpType = "boolean"/>
+        <column name="cost" type="FLOAT" required="true" phpName="Cost" phpType="float" />
+
+        <column name="branch_id" type="integer" required="true" phpName="CurrentBranchId"/>
+        <foreign-key foreignTable="branch" required="true" phpName="CurrentCourseStreamBranch" refPhpName="CurrentBranchCourseStream" onDelete="CASCADE">
+            <reference local="branch_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="currency_id" type="integer" required="true" phpName="CurrentCurrencyId"/>
+        <foreign-key foreignTable="currency" required="true" phpName="CurrentCourseStreamCurrency" refPhpName="CurrentCurrencyCourseStream" onDelete="CASCADE">
+            <reference local="currency_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="course_id" type="integer" required="true" phpName="CurrentCourseId"/>
+        <foreign-key foreignTable="course" phpName="CurrentCourseCourseStream" refPhpName="CurrentCourseStreamCourse" onDelete="CASCADE">
+            <reference local="course_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="course_stream_status_id" type="integer" required="true" phpName="CurrentCourseStreamStatusId"/>
+        <foreign-key foreignTable="course_stream_status" phpName="CurrentCourseCourseStreamStatus" refPhpName="CurrentCourseStreamCourseStatus">
+            <reference local="course_stream_status_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="instructor_id" type="integer" required="false" phpName="CurrentCourseStreamInstructorId"/>
+        <foreign-key foreignTable="user" phpName="CurrentCourseStreamInstructor" refPhpName="CurrentInstructorCourseStream" onDelete="SETNULL">
+            <reference local="instructor_id" foreign="id"/>
+        </foreign-key>
+
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+    </table>
+
+    <table name="course_skill" phpName="CourseSkill" identifierQuoting="true" isCrossRef="true">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="name" type="varchar" size="50" phpName="Name"/>
+        <column name="description" type="LONGVARCHAR" phpName="Description"/>
+
+        <column name="logo_name" type="varchar" required="false" phpName="LogoName"/>
+
+        <column name="course_id" type="integer" required="true" phpName="CurrentStatusId"/>
+        <foreign-key foreignTable="course" phpName="CurrentCourseSkillCourse" refPhpName="CurrentCourseCourseSkill" onDelete="CASCADE">
+            <reference local="course_id" foreign="id"/>
+        </foreign-key>
+
+        <behavior name="sortable">
+            <parameter name="use_scope" value="true" />
+            <parameter name="scope_column" value="course_id" />
+        </behavior>
+
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+    </table>
+
+    <table name="branch" phpName="Branch">
+        <column name="id" required="true" primaryKey="true" autoIncrement="true" type="integer" />
+        <column name="show_on_website" type="BOOLEAN" required="true" defaultValue="true" phpName="ShowOnWebSite" phpType = "boolean"/>
+        <column name="name" type="varchar" phpName="Name" />
+        <column name="address" type="varchar" phpName="Address" />
+        <column name="geographic_coordinates" type="object" phpName="GeographicCoordinates" phpType="\Core\Branch\GeographicCoordinates"/>
+        <column name="tel" type="varchar" size="25" phpName="Tel" />
+        <column name="email" type="varchar" size="128" phpName="Email" />
+        <column name="instagram_link" required="false" type="varchar" phpName="InstagramLink" />
+        <column name="facebook_link" required="false" type="varchar" phpName="FacebookLink" />
+        <behavior name="sortable" />
+        <behavior name="query_cache" />
+    </table>
+
+    <table name="project" phpName="Project">
+        <column name="id" required="true" primaryKey="true" autoIncrement="true" type="integer" />
+        <column name="name" type="varchar" phpName="Name" />
+        <column name="alt_url" type="varchar" required="true"  phpName="AltUrl"/>
+        <column name="description" type="LONGVARCHAR" phpName="Description"/>
+        <column name="logo_name" type="varchar" required="false" phpName="LogoName"/>
+        <column name="cover_name" type="varchar" required="false" phpName="CoverName"/>
+        <column name="context" type="LONGVARCHAR" phpName="Context"/>
+
+        <column name="meta_description" required="false" type="LONGVARCHAR" phpName="MetaDescription"/>
+        <column name="meta_keywords" required="false" type="LONGVARCHAR" phpName="MetaKeywords"/>
+
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+    </table>
+
+    <table name="vacancy_salary" phpName="VacancySalary" identifierQuoting="true">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="name" type="varchar" required="true" size="20" phpName="Name"/>
+        <column name="description" type="varchar" required="false" size="300" phpName="Description"/>
+        <behavior name="sortable" />
+        <behavior name="query_cache" />
+    </table>
+
+
+    <table name="notification" phpName="Notification">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="type" type="integer" phpName="Type"/>
+
+        <column name="to_user_id" type="integer" required="true" phpName="ToUserId"/>
+        <foreign-key foreignTable="user" required="true" phpName="ToUserNotification" refPhpName="ToUserNotification" onDelete="CASCADE">
+            <reference local="to_user_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="from_user_id" type="integer" required="false" phpName="FromUserId"/>
+        <foreign-key foreignTable="user" required="false" phpName="FromUserNotification" refPhpName="FromUserNotification" onDelete="CASCADE">
+            <reference local="from_user_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="is_seen" type="BOOLEAN" required="true" defaultValue="false" phpName="Seen" phpType = "boolean"/>
+        <column name="is_over" type="BOOLEAN" required="true" defaultValue="false" phpName="Over" phpType = "boolean"/>
+        <column name="quantity" type="integer" required="true" default="1" phpName="Quantity"/>
+
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+    </table>
+
+
+    <table name="currency" phpName="Currency">
+        <column name="id" required="true" primaryKey="true" autoIncrement="true" type="integer" />
+        <column name="name" type="varchar" required="true" phpName="Name" />
+        <column name="iso_code" type="varchar" required="true" phpName="ISOCode" />
+        <column name="symbol" type="varchar" required="true" phpName="Symbol" />
+        <column name="is_symbol_before" type="BOOLEAN" required="true" defaultValue="false" phpType = "boolean" phpName="IsSymbolBefore" />
+        <column name="notes" type="varchar" required="false" phpName="Notes"/>
+        <behavior name="sortable" />
+        <behavior name="query_cache" />
+    </table>
+
+    <table name="currency_rate" phpName="CurrencyRate" identifierQuoting="true">
+        <column name="id" required="true" primaryKey="true" autoIncrement="true" type="integer" />
+        <column name="rate" required="true" type="FLOAT" defaultValue="1.0" phpName="Rate" />
+
+        <column name="default_currency_id" type="integer" required="true" phpName="CurrentDefaultCurrencyId"/>
+        <foreign-key foreignTable="currency" required="true" phpName="CurrentDefaultCurrency" refPhpName="CurrentDefaultCurrencyRate" onDelete="CASCADE">
+            <reference local="default_currency_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="to_currency_id" type="integer" required="true" phpName="CurrentToCurrencyId"/>
+        <foreign-key foreignTable="currency" required="true" phpName="CurrentToCurrency" refPhpName="CurrentToCurrencyRate" onDelete="CASCADE">
+            <reference local="to_currency_id" foreign="id"/>
+        </foreign-key>
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+    </table>
+
+    <table name="vacancy" phpName="Vacancy">
+        <column name="id" required="true" primaryKey="true" autoIncrement="true" type="integer" />
+        <column name="name" type="varchar" phpName="Name" />
+        <column name="description" type="LONGVARCHAR" phpName="Description"/>
+        <column name="context" type="LONGVARCHAR" phpName="Context"/>
+
+        <column name="alt_url" type="varchar" required="true"  phpName="AltUrl"/>
+
+        <column name="logo_name" type="varchar" required="false" phpName="LogoName"/>
+
+        <column name="vacancy_salary_id" type="integer" required="true" phpName="CurrentVacancySalaryId"/>
+        <foreign-key foreignTable="vacancy_salary" phpName="CurrentVacancyVacancySalary" refPhpName="CurrentVacancyVacancySalary" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="vacancy_salary_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="meta_description" required="false" type="LONGVARCHAR" phpName="MetaDescription"/>
+        <column name="meta_keywords" required="false" type="LONGVARCHAR" phpName="MetaKeywords"/>
+
+        <behavior name="sortable" />
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+    </table>
+
+    <!--
+        <table name="static_page_image" phpName="StaticPageImage" identifierQuoting="true">
+            <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+            <column name="image_name" type="varchar" size="30" phpName="ImageName"/>
+
+            <column name="static_page_id" type="integer" required="true" phpName="CurrentStaticPageId"/>
+            <foreign-key foreignTable="static_page" phpName="CurrentStaticPage" refPhpName="CurrentStaticPage">
+                <reference local="static_page_id" foreign="id"/>
+            </foreign-key>
+
+            <behavior name="timestampable" />
+        </table>
+      -->
+
+    <table name="static_page" phpName="StaticPage" identifierQuoting="true">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="title" type="varchar" size="90" phpName="Title"/>
+        <column name="logo_name" type="varchar" required="false" phpName="LogoName"/>
+        <column name="cover_name" type="varchar" size="32" required="false" phpName="CoverName"/>
+        <column name="alt_url" type="varchar" required="true"  phpName="AltUrl"/>
+        <column name="is_available" type="BOOLEAN" required="true" defaultValue="false" phpName="Available" phpType = "boolean"/>
+        <column name="content" type="LONGVARCHAR" phpName="Content"/>
+        <column name="context" type="LONGVARCHAR" phpName="Context"/>
+        <column name="notes" type="varchar" size="500" phpName="Notes"/>
+
+        <column name="meta_description" required="false" type="LONGVARCHAR" phpName="MetaDescription"/>
+        <column name="meta_keywords" required="false" type="LONGVARCHAR" phpName="MetaKeywords"/>
+
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+    </table>
+
+
+    <table name="feedback" phpName="Feedback" identifierQuoting="true">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <column name="work_place" type="varchar" required="fasle"  phpName="WorkPlace"/>
+        <column name="salary" type="FLOAT" required="false" phpName="Salary" phpType="float" />
+
+        <column name="currency_id" type="integer" required="false" phpName="CurrentCurrencyId"/>
+        <foreign-key foreignTable="currency" required="false" phpName="CurrentFeedbackCurrency" refPhpName="CurrentCurrencyFeedback" onDelete="SETNULL">
+            <reference local="currency_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="user_id" type="integer" required="true" phpName="CurrentUserId"/>
+        <foreign-key foreignTable="user" phpName="CurrentFeedbackUser" refPhpName="CurrentUserFeedback"  onDelete="CASCADE">
+            <reference local="user_id" foreign="id"/>
+        </foreign-key>
+
+        <column name="is_available" type="BOOLEAN" required="true" defaultValue="false" phpName="Available" phpType = "boolean"/>
+        <column name="content" type="LONGVARCHAR" phpName="Content"/>
+        <column name="notes" type="varchar" size="500" phpName="Notes"/>
+
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+    </table>
+
+    <table name="config" phpName="Config">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="key" primaryString="true" type="varchar" size="60" phpName="Key"/>
+        <column name="value" type="integer" required="false" phpName="Value"/>
+        <column name="data" type="varchar" required="false" phpName="Data"/>
+        <column name="seo" type="object" required="false" phpName="Seo" phpType="\Core\Seo"/>
+        <behavior name="query_cache" />
+    </table>
+
+</database>

@@ -1,0 +1,310 @@
+{% set page = 'course' %}
+{% set pageCourseId = course.getId() %}
+
+{% block metaInit %}
+{{ meta.setDescription(course.getMetaDescription()) }}
+{{ meta.setKeywords(course.getMetaKeywords()) }}
+{% endblock %}
+
+{% block title %}
+{{ course.getTitle() }}
+{% endblock %}
+
+{% extends "Front/base.html" %}
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-header static-page-header" data-jarallax='{"speed": 0.4}' style='background-image: url("{{ course.getCover()['normal'] }}")'>
+    <div class="bg-overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 text-left mr-auto text-white">
+                <h2 class="display-4 mb-3 text-white">{{ course.getTitle() }}</h2>
+                <p class="text-muted">
+                    {{ course.getNotes() }}
+                </p>
+                {{ include("Front/breadcrumb.html") }}
+            </div>
+        </div>
+    </div>
+    <svg class="svg-abs svg-f-btm z-index-9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 123" enable-background="new 0 0 1920 123" xml:space="preserve">
+            <polygon class="svg-white" opacity="1" points="0,123 1920,123 1920,0 "></polygon>
+          </svg>
+</div>
+<!--Page header end-->
+
+{% set courseStreams = course.getActiveStreams() %}
+<div class="container pt80 pb70">
+    <div class="row">
+        <div class="col-lg-10 ml-auto mr-auto mb30 sticky-content course-detail">
+
+
+
+
+            {% set skills = course.getCurrentCourseCourseSkills() %}
+
+
+            <div class="carouse-detail-content pt-4">
+                <ul class="nav tab-list nav-justified">
+                    <li class="nav-item" role="presentation">
+                        <a data-toggle="tab" class="nav-link active" href="#c-desc">
+                            <i class="far fa-sticky-note mr-2"></i> Описание</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a data-toggle="tab" class="nav-link" href="#c-streams">
+                            <i class="fa fa-play mr-2"></i> Потоки <span class="badge rounded bg-secondary text-white d-inline-block ml-2">{{ courseStreams|length }}</span></a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a data-toggle="tab" class="nav-link" href="#c-curriculum">
+                            <i class="fa fa-clock mr-2"></i> Расписание</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a data-toggle="tab" class="nav-link" href="#c-reviews">
+                            <i class="fa fa-thumbs-up mr-2"></i> Оценки</a>
+
+                    </li>
+                </ul>
+                <!--tabs nav-->
+                <div class="tab-content">
+                    <div class="tab-pane active show" id="c-desc">
+
+                        <div class="row">
+                            {% set uses = course.getUses() %}
+                            <div class="col-md-8 mb-30">
+                                <h3 class="mb-4">{{ course.getName() }}</h3>
+
+                                {% if course.getLogoName() != null %}
+                                <img src="{{ course.getLogo()['normal'] }}" alt="{{ course.getTitle() }}" class="course-logo mb30">
+                                {% endif %}
+                                {{ course.getDescription()|raw }}
+                            </div>
+
+                            <div class="col-md-4 mb-30 sticky-sidebar">
+                                {% if uses|length > 0 %}
+                                    <h5>Где используется язык</h5>
+                                    <hr>
+                                    <p class="course-use-notes">
+                                        {{ course.getUseNotes() }}
+                                    </p>
+                                    <ul class="list-uses pl-4">
+                                        {% for use in uses %}
+                                            <li>
+                                                {{ use }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    <br>
+                                {% endif %}
+                                <a href="#!" class="btn btn-secondary btn-lg open-application-course-modal" data-toggle="modal" data-target="#applicationCourseModal">
+                                    <i class="fa fa-user-circle mr-2"></i> Подать заявку
+                                </a>
+                            </div>
+
+
+                        </div>
+
+                        {% if skills|length > 0 %}
+                        <div class="course-skills">
+                            <h5>После курса вы будете уметь</h5>
+                            <hr>
+                            <div class="row">
+                                <div class="owl-carousel owl-theme owl-loaded carousel-course-skills">
+                                    <div class="owl-stage-outer">
+                                        <div class="owl-stage">
+                                            {% for skill in skills %}
+
+                                            <div class="mb30 owl-item">
+                                                <div class="skill-card-default">
+                                                    <img src="{{ skill.getLogo()['normal'] }}" alt="" class="img-fluid">
+                                                    <div class="team-default-content text-center pt30">
+                                                        <h6 class="mb10 skill-name text-uppercase">{{ skill.getName() }}</h6>
+                                                        <div class="about-skill">
+                                                            {{ skill.getDescription()|raw }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!--/col-->
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="tab-pane" id="c-streams">
+
+                        {% for stream in courseStreams %}
+                            <div class="row {{ (not loop.first) ? 'mt-5' : ''}}" data-stream-id="{{ stream.getId() }}">
+                                <div class="col-md-8 mb-30">
+                                    <h5>{{ stream.getName() }}</h5>
+                                    <hr>
+                                    {{ stream.getDescription()|raw }}
+                                    {% set instructor = stream.getCurrentCourseStreamInstructor() %}
+
+                                    {% if instructor != null %}
+                                        <div class="about-course-instructor mt-5">
+                                            <h5 class="mb-30">Преподаватель</h5>
+
+                                            <div class="media clearfix">
+                                                <img src="{{ instructor.getLogo()['normal'] }}" class="rounded-circle mr-3 d-flex" width="60" alt="">
+                                                <div class="media-body">
+                                                    <h6>{{ instructor.getName() }}</h6>
+                                                    <div class="stream-instructor-about">
+                                                        {{ instructor.getAbout()|raw }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-4 mb-30 sticky-sidebar">
+                                    <h5>О потоке</h5>
+                                    <hr>
+                                    <ul class="list-features list-unstyled">
+                                        <li>
+                                            <span class="float-right">{{ stream.getCurrentCourseStreamBranch().getName() }}</span>
+                                            <i class="icon-apartment mr-2 text-secondary"></i>
+                                            <span class="text-secondary">Филиал</span>
+                                        </li>
+                                        <li>
+                                            <span class="float-right">{{ stream.getStartDate() }}</span>
+                                            <i class="icon-calendar-31 mr-2 text-secondary"></i>
+                                            <span class="text-secondary">Дата начала</span>
+                                        </li>
+                                        <li>
+                                            <span class="float-right">{{ stream.getDuration() }}</span>
+                                            <i class="icon-clock mr-2 text-secondary"></i>
+                                            <span class="text-secondary">Срок обучения</span>
+                                        </li>
+                                        <li>
+                                            {% set streamCostData = helper.getDefaultCurrency(stream.getCost(), stream.getCurrentCourseStreamCurrency()) %}
+                                            <span class="float-right">{{ streamCostData['value'] }} {{ streamCostData['currency'].getISOCode() }}</span>
+                                            <i class="icon-cash-dollar mr-2 text-secondary"></i>
+                                            <span class="text-secondary">Стоимость обучения</span>
+                                        </li>
+                                    </ul>
+
+                                    <br>
+                                    <a href="javascript:void(0);" class="btn btn-secondary btn-lg open-application-course-stream-modal" data-toggle="modal" data-target="#applicationCourseModal">
+                                        <i class="fa fa-user-circle mr-2"></i> Подать заявку
+                                    </a>
+                                </div>
+
+
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!--tab pane-->
+                    <div class="tab-pane" id="c-curriculum">
+                        В разработке
+                    </div>
+                    <!--tab pane-->
+                    <div class="tab-pane" id="c-reviews">
+                        В разработке
+                    </div>
+                    <!--tab pane-->
+                </div>
+                <!--tab content-->
+            </div>
+    </div>
+</div>
+</div>
+
+
+<div class="modal fade bd-example-modal-md" id="applicationCourseModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="applicationCourseModalTitle">Заявка</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="sendCourseApplicationFromModal">
+                    <div class="form-group">
+                        <label for="apply-course-name">Имя</label>
+                        <input type="text" name="apply-course-name" id="apply-course-name" class="form-control" placeholder="Ваше имя">
+                    </div>
+                    <div class="form-group">
+                        <label for="apply-course-tel">Тел. Номер</label>
+                        <input type="text" id="apply-course-tel" name="apply-course-tel" class="form-control" placeholder="+996 (551) 123 456">
+                    </div>
+
+                    <input type="hidden" name="modal-course" id="modal-course" value="{{ course.getId() }}">
+                    <input type="hidden" name="modal-course-stream" id="modal-course-stream" value="0">
+
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-md btn-primary">Отправить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div><!--modal-->
+
+{% endblock %}
+
+{% block endBodies %}
+<script>
+    $(function () {
+        $('.open-application-course-modal').click(function () {
+            $('#sendCourseApplicationFromModal').find('input[name="modal-course-stream"]').val(0);
+        });
+
+        $('.open-application-course-stream-modal').click(function () {
+            var streamId = $(this).closest('[data-stream-id]').attr('data-stream-id');
+            $('#sendCourseApplicationFromModal').find('input[name="modal-course-stream"]').val(streamId);
+        });
+
+        $('.carousel-course-skills').owlCarousel({
+            autoPlay: true,
+            rewind: true,
+            nav: false,
+            dots: true,
+            autoplayHoverPause: true,
+            autoplayTimeout: 3500,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                768: {
+                    items: 2
+                },
+                860: {
+                    items: 3
+                }
+            }
+        });
+
+        $('#sendCourseApplicationFromModal').submit(function () {
+            var self = $(this);
+            var name = self.find('#apply-course-name');
+            var tel = self.find('#apply-course-tel');
+            var courseId = self.find('input[name="modal-course"]').val();
+            var courseStreamId = self.find('input[name="modal-course-stream"]').val();
+
+            postAjaxRequest('/ajax/application/add',
+                {
+                    name: name.val(),
+                    tel: tel.val(),
+                    courseId: courseId,
+                    courseStreamId: courseStreamId
+                },
+                function (data) {
+                    name.val('');
+                    tel.val('');
+                    $("#applicationCourseModal .close").click();
+                }
+            );
+            return false;
+
+        });
+    })
+</script>
+{% endblock %}

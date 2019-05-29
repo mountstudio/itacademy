@@ -1,0 +1,60 @@
+{% set page = 'project' %}
+
+{% block metaInit %}
+{{ meta.setDescription(project.getMetaDescription()) }}
+{{ meta.setKeywords(project.getMetaKeywords()) }}
+{% endblock %}
+
+{% block title %}
+Проект "{{ project.getName() }}"
+{% endblock %}
+
+{% extends "Front/base.html" %}
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-header static-page-header" data-jarallax='{"speed": 0.4}' style='background-image: url("{{ project.getCover()['normal'] }}")'>
+    <div class="bg-overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 text-left mr-auto text-white">
+                <h2 class="display-4 mb-3 text-white">{{ project.getName() }}</h2>
+                <p class="text-muted">
+                    {{ project.getNotes() }}
+                </p>
+                {{ include("Front/breadcrumb.html") }}
+            </div>
+        </div>
+    </div>
+    <svg class="svg-abs svg-f-btm z-index-9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 123" enable-background="new 0 0 1920 123" xml:space="preserve">
+            <polygon class="svg-white" opacity="1" points="0,123 1920,123 1920,0 "></polygon>
+          </svg>
+</div>
+<!--Page header end-->
+
+<div class="container pt80 pb70">
+    <div class="row">
+        <div class="col-lg-10 ml-auto mr-auto mb30 sticky-content course-detail">
+            <h2 class="mb-4">{{ project.getName() }}</h2>
+            {% if project.getLogoName() != null %}
+                <img src="{{ project.getLogo()['normal'] }}" alt="Проект {{ project.getName() }}" class="vacancy-logo mb10">
+            {% endif %}
+            <div class="entry-content no-p">
+                <div class="entry-meta mb5">
+                    <span class="mr-3">
+                        <i class="icon-calendar-31 mr-1"></i> {{ project.getCreatedAt()|formatRULocaleDateFull }}
+                    </span>
+                </div>
+            </div>
+            {{ project.getDescription()|raw }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block endBodies %}
+
+{% endblock %}

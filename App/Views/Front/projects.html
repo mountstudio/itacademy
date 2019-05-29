@@ -1,0 +1,193 @@
+{% set page = 'projects' %}
+
+{% block metaInit %}
+{{ meta.setDescription(null) }}
+{{ meta.setKeywords(null) }}
+{% endblock %}
+
+{% block title %}
+Проекты
+{% endblock %}
+
+{% extends "Front/base.html" %}
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-header static-page-header" data-jarallax='{"speed": 0.4}' style='background-image: url("/static/front/assets/images/pages/projects.png")'>
+    <div class="bg-overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 text-left mr-auto text-white">
+                <h2 class="display-4 mb-3 text-white">Проекты</h2>
+                {{ include("Front/breadcrumb.html") }}
+            </div>
+        </div>
+    </div>
+    <svg class="svg-abs svg-f-btm z-index-9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 123" enable-background="new 0 0 1920 123" xml:space="preserve">
+            <polygon class="svg-white" opacity="1" points="0,123 1920,123 1920,0 "></polygon>
+          </svg>
+</div>
+<!--Page header end-->
+
+<!--Page header end-->
+<div class="container pt60 pb60">
+    {% if listType == 'grid' %}
+    <div class="row align-items-center mb-3">
+        <div class="col-sm-6 text-right ml-auto">
+            <div class="btn-group">
+                <a href="/projects/page/{{ projects.getPage() }}?listType=list" class="btn btn-light {{ (listType == 'list') ? 'disabled' : '' }}">
+                    <i class="fa fa-list"></i>
+                </a>
+                <a href="/projects/page/{{ projects.getPage() }}?listType=grid" class="btn btn-light {{ (listType == 'grid') ? 'disabled' : '' }}">
+                    <i class="fa fa-th"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="row">
+        {% if listType == 'list' %}<div class="col-lg-10 ml-auto mr-auto mb30">
+
+        <div class="row align-items-center mb-3">
+            <div class="col-sm-6 text-right ml-auto">
+                <div class="btn-group">
+                    <a href="/projects/page/{{ projects.getPage() }}?listType=list" class="btn btn-light {{ (listType == 'list') ? 'disabled' : '' }}">
+                        <i class="fa fa-list"></i>
+                    </a>
+                    <a href="/projects/page/{{ projects.getPage() }}?listType=grid" class="btn btn-light {{ (listType == 'grid') ? 'disabled' : '' }}">
+                        <i class="fa fa-th"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+
+
+
+        {% for project in projects %}
+        {% if listType == 'list' %}
+        <div class="course-list-item course-item mb30">
+            <div class="row align-items-center">
+                <div class="col-md-3 col-sm-12 py-2">
+                    <a href="/projects/{{ project.getAltUrl() }}">
+                        <img src="{{ project.getLogo()['normal'] }}" alt="" class="img-fluid">
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-12 py-3">
+                    <a href="/projects/{{ project.getAltUrl() }}">
+                        <h5>{{ project.getName() }}</h5>
+                    </a>
+                    <div class="mb-0">
+                        {{ project.getContext()|raw }}
+                    </div>
+                </div>
+                <div class="col-md-3 py-2 col-12">
+                    <a href="/projects/{{ project.getAltUrl() }}" class="btn btn-outline-primary btn-lg">
+                        Подробнее
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% elseif listType == 'grid' %}
+        <div class="col-lg-6 mb course-item">
+            <div class="img-card-alt mb-30">
+                <a class="img-thumb" href="/projects/{{ project.getAltUrl() }}">
+                    <img src="{{ project.getLogo()['normal'] }}" alt="" class="img-fluid">
+                    <span class="thumb-overlay">
+                        <i class="icon-link"></i>
+                    </span>
+                </a>
+                <div class="img-desc">
+                    <a href="/projects/{{ project.getAltUrl() }}" class="h5">
+                        {{ project.getName() }}
+                    </a>
+                    <div class="pt-2">
+                        {{ project.getContext()|raw }}
+                    </div>
+                    <div class="text-right">
+                        <a href="/projects/{{ project.getAltUrl() }}" class="btn-link btn">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+
+        {% endfor %}
+
+
+
+
+
+        {% if listType == 'list' %}</div>{% endif %}
+
+
+    </div>
+    {% set numberOfPages = (projects.getNbResults() / projects.getMaxPerPage())|round(0, 'ceil') %}
+
+    {% if numberOfPages > 1 %}
+        <div class="row">
+            <nav class="nav justify-content-end">
+                <div class="pagination">
+                    <a href="{% if projects.isFirstPage() %}javascript:void(0);{% else %}{{ projects.getPage() - 1 }}{% endif %}" class="page-link"><i class="fa fa-caret-left"></i></a>
+
+                    {% set startPage = ((projects.getPage() - 2) >= 1 ? projects.getPage() - 2 : 1) %}
+                    {% set endPage = ((projects.getPage() + 2) <= numberOfPages) ? projects.getPage() + 2 : numberOfPages %}
+
+                    {% set addToStartPage = ((projects.getPage() + 2) > numberOfPages) ? (numberOfPages - (projects.getPage() + 2)) : 0 %}
+                    {% set addToEndPage = ((projects.getPage() - 2) < 1 ? projects.getPage() - 2 - 1 : 0) %}
+
+
+                    {% for pageNumber in startPage..endPage %}
+                    <a href="/projects/page/{{ pageNumber }}" class="page-link {{ pageNumber == projects.getPage() ? 'active' : '' }}">{{ pageNumber }}</a>
+                    {% endfor %}
+                    <a href="{% if projects.isLastPage() %}javascript:void(0);{% else %}{{ projects.getPage() + 1 }}{% endif %}" class="page-link"><i class="fa fa-caret-right"></i></a>
+                </div>
+            </nav>
+        </div>
+    {% endif %}
+</div>
+
+
+{% endblock %}
+
+{% block endBodies %}
+
+<script>
+    $(document).ready(function(){
+
+        function carouselEventHandler(e){
+            let pos = e.item.index - 2;
+            let el = $($(e.target).find('.owl-stage').children(':not(.cloned)').get(pos));
+            $(e.target).closest('.course-item').find('.overlay-branch').text(el.attr('data-branch-name'));
+            let statusEl = $(e.target).closest('.course-item').find('.course-card-status');
+            if (el.attr('data-status-is-on-recruitment') == 'true'){
+                statusEl.addClass('course-status-going');
+                statusEl.text(el.attr('data-status-name'));
+            } else {
+                statusEl.removeClass('course-status-going');
+                statusEl.text(el.attr('data-status-name'));
+            }
+
+        }
+
+        $(".course-owl").owlCarousel({
+            items: 1,
+            rewind: true,
+            margin: 5,
+            dots: false,
+            autoplay: true,
+            autoplayHoverPause: true,
+            autoplayTimeout: 3500,
+            onInitialized: function (e) {
+                carouselEventHandler(e);
+            }
+        }).on('changed.owl.carousel', function(e) {
+            carouselEventHandler(e);
+        });
+    });
+</script>
+{% endblock %}

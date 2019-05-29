@@ -1,0 +1,476 @@
+{% block title %}
+Список всех заявок
+{% endblock %}
+
+{% extends "Admin/base.html" %}
+
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-inner">
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Заявки</h4>
+                        <div class="panel-control">
+                            <button type="link" data-href="/admin/applications/add" class="btn btn-success btn-addon m-b-sm btn-sm"><i class="fa fa-plus"></i> Добавить</button>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div role="tabpanel">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#applicationStatus-0" role="tab" data-toggle="tab">Все</a></li>
+                                {% set applicationTabsNumber = 5 %}
+                                {% set applicationStatusI = 1 %}
+                                {% for applicationStatus in applicationStatuses %}
+                                {% if applicationStatusI <= applicationTabsNumber %}
+                                {% set applicationStatusI = applicationStatusI + 1 %}
+                                <li role="presentation"><a href="#applicationStatus-{{ applicationStatus.getId() }}" role="tab" data-toggle="tab">{{ applicationStatus.getName() }}</a></li>
+                                {% endif %}
+                                {% endfor %}
+
+                                {% if applicationStatuses|length > applicationTabsNumber %}
+                                {% set applicationStatusI = 1 %}
+                                <li role="presentation" class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                        Ещё <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        {% for applicationStatus in applicationStatuses %}
+                                        {% set applicationStatusI = applicationStatusI + 1 %}
+                                        {% if applicationStatusI > applicationTabsNumber %}
+                                        <li><a href="#applicationStatus-{{ applicationStatus.getId() }}" role="tab" data-toggle="tab">{{ applicationStatus.getName() }}</a></li>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% endif %}
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active fade in" id="applicationStatus-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="0-List">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Имя</th>
+                                                <th>Тел. номер</th>
+                                                <th>Состояние</th>
+                                                <th>Примечание</th>
+                                                <th>Курс</th>
+                                                <th>Время</th>
+                                                {% if user.getCurrentGroup().getAllowAdmin() %}
+                                                    <th class="actions">Действие</th>
+                                                {% endif %}
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                {% for applicationStatus in applicationStatuses %}
+                                <div role="tabpanel" class="tab-pane fade in" id="applicationStatus-{{ applicationStatus.getId() }}">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="{{ applicationStatus.getId() }}-List">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Имя</th>
+                                                <th>Тел. номер</th>
+                                                <th>Состояние</th>
+                                                <th>Примечание</th>
+                                                <th>Курс</th>
+                                                <th>Время</th>
+                                                {% if user.getCurrentGroup().getAllowAdmin() %}
+                                                <th>Действие</th>
+                                                {% endif %}
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+
+                        </div>
+
+
+                        {% if user.getCurrentGroup().getAllowAdmin() %}
+                        <!-- Modal -->
+                        <div class="modal fade" id="deleteApplicationModal" tabindex="-1" role="dialog" aria-labelledby="deleteApplicationModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="deleteApplicationModalLabel">Удаление</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <p>
+                                                После проведенного действия назад невозможно возвратиться!
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="cancelDeleteApplication" class="btn btn-default" data-dismiss="modal">Отменить</button>
+                                        <button type="button" id="confirmDeleteApplication" applicationid="none" class="btn btn-danger">Удалить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="editApplicationModal" tabindex="-1" role="dialog" aria-labelledby="editApplicationModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="editApplicationModalLabel">Редактирование</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="form-horizontal" id="editApplication">
+                                            <input type="hidden" name="id"/>
+
+                                            <div class="form-group">
+                                                <label for="time" class="col-sm-2 control-label">Время</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" name="time" id="time" disabled>
+                                                    <p class="help-block"></p>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="name" class="col-sm-2 control-label">Имя:</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" name="name" id="name" placeholder="Имя" disabled>
+                                                    <p class="help-block"></p>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="phone" class="col-sm-2 control-label">Тел. номер</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" name="phone" id="phone" placeholder="996XXXYYYYYY" disabled>
+                                                    <p class="help-block"></p>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="description" class="col-sm-2 control-label">Описание</label>
+                                                <div class="col-sm-10">
+                                                    <textarea class="form-control" name="description" id="description" placeholder="Описание" disabled></textarea>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label for="status" class="col-sm-2 control-label">Курс</label>
+                                                <div class="col-sm-10">
+                                                    <select name="course" id="course" class="form-control m-b-sm" disabled>
+
+                                                    </select>
+                                                    <p class="help-block"></p>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="status" class="col-sm-2 control-label">Поток</label>
+                                                <div class="col-sm-10">
+                                                    <select name="courseStream" id="courseStream" class="form-control m-b-sm" disabled>
+
+                                                    </select>
+                                                    <p class="help-block"></p>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="status" class="col-sm-2 control-label">Состояние</label>
+                                                <div class="col-sm-10">
+                                                    <select name="status" id="status" class="form-control m-b-sm">
+                                                        {% for applicationStatus in applicationStatuses %}
+                                                        <option value="{{ applicationStatus.getId() }}">{{ applicationStatus.getName() }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <p class="help-block"></p>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label for="notes" class="col-sm-2 control-label">Примечание</label>
+                                                <div class="col-sm-10">
+                                                    <textarea class="form-control" name="notes" id="notes" placeholder="Примечание"></textarea>
+                                                    <p class="help-block"></p>
+                                                </div>
+                                            </div>
+
+
+                                        </form>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="closeEditApplication" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                        <button type="button" id="saveEditApplication" class="btn btn-primary">Сохранить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include("Admin/copyrightFooter.html") }}
+</div>
+{% endblock %}
+
+
+{% block endBodies %}
+<!-- Scripts are shown there-->
+<script src="/static/admin/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<link href="/static/admin/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css"/>
+
+
+<style>
+    th.normal_font {
+        font-weight: normal;
+        padding-left: 10px;
+    }
+    tbody tr {
+        cursor: pointer;
+    }
+    i.silver {
+        color: #bfbcbc;
+        font-size: 11px;
+    }
+    .select2-results__option--highlighted table tr th i.silver {
+        color: #fff;
+    }
+    .customsize {
+        min-height: 36px;
+    }
+    .select2-search__field {
+        width: 100%!important;
+    }
+    #toast-container > div:hover{
+        opacity: 1;
+        box-shadow: 0px 0px 14px 0px #000;
+        cursor: pointer;
+    }
+</style>
+<script src="/static/admin/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+<script src="/static/admin/assets/plugins/summernote/summernote.min.js"></script>
+<script src="/static/admin/assets/js/pages/form-elements.js"></script>
+
+<link href="/static/admin/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/summernote/summernote.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" type="text/css"/>
+<!--<script src="/static/admin/assets/js/pages/form-select2.js"></script>-->
+<script src="/static/admin/assets/plugins/select2/js/select2.js"></script>
+<link href="/static/admin/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
+<script src="/static/admin/assets/js/pages/notifications.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        var tabs = $('ul[role=tablist] > li[role=presentation]:not(.dropdown), li.dropdown[role=presentation] > ul[role=menu] > li');
+        var activeTab = '0';
+        var gotTabsList = [];
+
+        tabs.each(function( index ) {
+            var tab = $(this).children('a').attr('href').replace("#applicationStatus-", "");
+            gotTabsList[tab] = false;
+        });
+
+        //init first load
+        loadPaginationData(activeTab, '#' + activeTab + '-List');
+
+        tabs.on('click', function(){
+            var currentTab = $(this).children('a').attr('href').replace("#applicationStatus-", "");
+            if (currentTab != activeTab){
+                activeTab = currentTab;
+                if (!gotTabsList[activeTab]){
+                    loadPaginationData(activeTab, '#' + activeTab + '-List');
+                }
+
+            }
+        });
+
+        function loadPaginationData(applicationStatusId, listElement) {
+            filteredPaginationRequest(  '/admin/ajax/application/paginate',
+                {
+                    applicationStatusId: applicationStatusId
+                },
+                listElement,
+                function(data){
+                    result = '';
+                    data.data.forEach(function(application) {
+                        result += '<tr ' + ((application.status['backgroundColor'] != null) ? 'style="background: ' + application.status['backgroundColor'] + '; color: ' + application.status['fontColor'] + '!important; "' : '') + ' data-toggle="modal" data-target="#editApplicationModal" data-id="' + application.id + '" data-description="' + ((application.description == null) ? '' : application.description) + '"><th>' + application.id + '</th><th scope="row" data-name="' + application.name + '">' + application.name + '</th><th scope="row" data-phone="' + application.phone + '">' + application.phone + '</th> <th scope="row" data-statusid="' + application.status['id'] + '">' + application.status['name'] + '</th><th data-notes="' + ((application.notes == null) ? '' : application.notes) + '">' + ((application.notes != null && application.notes.length > 50) ? (application.notes.substring(0, 50 - '...'.length) + '...') : (application.notes == null) ? '-' : application.notes) + '</th><th scope="row" data-course-stream-id="' + (application.courseStream != null ? application.courseStream['id'] : '0' ) + '" data-course-stream-name="' + (application.courseStream != null ? application.courseStream['name'] : '' ) + '" data-course-id="' + (application.course != null ? application.course['id'] : '0' ) + '" data-course-name="' + (application.course != null ? application.course['name'] : '' ) + '">' + (application.course != null ? application.course['name'] + ((application.courseStream != null) ? ' (' + application.courseStream['name'] + ')' : '') : '-' ) + '</th><th data-time="' + application.createdAt.date + '">' + moment(application.createdAt.date).fromNow() + '</th> {% if user.getCurrentGroup().getAllowAdmin() %} <td><div class="btn-group m-b-sm"> <button type="button" class="btn btn-primary dropdown-toggle" ' + ((application.status['backgroundColor'] != null) ? 'style="background: ' + application.status['backgroundColor'] + ';"' : '') + ' data-toggle="dropdown" aria-expanded="false"> Действие <span class="caret"></span> </button> <ul class="dropdown-menu dropdown-menu-right" role="menu"> <li><a href="/admin/applications/' + application.id + '/edit">Изменить</a></li> <li><a href="#" data-toggle="modal" data-target="#deleteApplicationModal" class="applicationDelete" applicationid="' + application.id + '">Удалить</a></li> </ul> </div></td>{% endif %} </tr>';
+                    });
+                    if (!gotTabsList[applicationStatusId]) gotTabsList[applicationStatusId] = true;
+                    return result;
+                }
+
+
+            );
+        }
+
+        $(document).on('click', 'tr[data-target=#editApplicationModal]', function() {
+            var applicationElement = $('#editApplication');
+
+            var thisElement = $(this);
+            console.log(thisElement);
+            var id = thisElement.attr('data-id');
+            applicationElement.find('input[name=name]').val(thisElement.find('th[data-name]').attr('data-name'));
+            applicationElement.find('input[name=id]').val(id);
+            applicationElement.find('input[name=phone]').val(thisElement.find('th[data-phone]').attr('data-phone'));
+            applicationElement.find('textarea[name=notes]').val(thisElement.find('th[data-notes]').attr('data-notes'));
+            let description = thisElement.attr('data-description');
+            if (description.length == 0) {
+                applicationElement.find('textarea[name=description]').closest('.form-group').hide();
+            } else {
+                applicationElement.find('textarea[name=description]').val(description);
+                applicationElement.find('textarea[name=description]').closest('.form-group').show();
+            }
+
+            let courseId = thisElement.find('th[data-course-id]').attr('data-course-id');
+            let courseName = thisElement.find('th[data-course-name]').attr('data-course-name');
+
+
+            if (courseId == 0) {
+                applicationElement.find('select[name=course]').closest('.form-group').hide();
+            } else {
+                applicationElement.find('select[name=course]').find('option').remove();
+                applicationElement.find('select[name=course]').append($("<option/>", {
+                    value: courseId,
+                    text: courseName
+                }));
+                applicationElement.find('select[name=course]').val(courseId);
+                applicationElement.find('select[name=course]').closest('.form-group').show();
+            }
+
+
+            let courseStreamId = thisElement.find('th[data-course-stream-id]').attr('data-course-stream-id');
+            let courseStreamName = thisElement.find('th[data-course-stream-name]').attr('data-course-stream-name');
+
+
+            if (courseStreamId == 0) {
+                applicationElement.find('select[name=courseStream]').closest('.form-group').hide();
+            } else {
+                applicationElement.find('select[name=courseStream]').find('option').remove();
+                applicationElement.find('select[name=courseStream]').append($("<option/>", {
+                    value: courseStreamId,
+                    text: courseStreamName
+                }));
+                applicationElement.find('select[name=courseStream]').val(courseStreamId);
+                applicationElement.find('select[name=courseStream]').closest('.form-group').show();
+            }
+
+
+            applicationElement.find('select[name=status]').val(thisElement.find('th[data-statusid]').attr('data-statusid'));
+            applicationElement.find('input[name=time]').val(moment(thisElement.find('th[data-time]').attr('data-time')).format('LLL'));
+        });
+
+        $('#saveEditApplication').click(function() {
+            var applicationElement = $('#editApplication');
+            var id = applicationElement.find('input[name=id]').val();
+            var statusId = applicationElement.find('select[name=status]').val();
+            var notes = applicationElement.find('textarea[name=notes]').val();
+            var trElement = $('tr[data-id=' + id + ']');
+            var lastStatus = trElement.find('th[data-statusid]').attr('data-statusid');
+
+            if (lastStatus != statusId){
+                //$('table#' + statusId + '-List').find('tbody').prepend(trElement);
+                if ($('#' + statusId + '-List').find('tr').length > 0 || $('#' + statusId + '-ListAlert').is(':visible')){
+                    $('#' + statusId + '-List').find('tbody').prepend($(trElement.get(0)).clone());
+                }
+                var toDelete = $('#' + lastStatus + '-List').find('tr[data-id=' + id + ']');
+                if (toDelete.length > 0){
+                    toDelete.remove();
+                }
+                //var tb = $('table#' + lastStatus + '-List').find('tr[data-refferer=' + id + ']');
+
+            }
+
+            trElement.find('th[data-statusid]').attr('data-statusid', statusId);
+            trElement.find('th[data-statusid]').html(applicationElement.find('select[name=status]').find('option:selected').html());
+
+            postAjaxRequest('/admin/ajax/application/update',
+                {
+                    id: id,
+                    statusId: statusId,
+                    notes: notes
+                },
+                function(data) {
+                    $('#closeEditApplication').click();
+                    let notesEl = trElement.find('[data-notes]');
+                    notesEl.attr('data-notes', notes);
+                    notesEl.text((notes.trim().length > 0) ? ((notes.length > 50) ? (notes.substring(0, 50 - '...'.length) + '...') : notes) : '-' );
+                }
+            );
+            return false;
+
+        });
+
+
+
+        {% if user.getCurrentGroup().getAllowAdmin() %}
+        $(document).on('click', '.applicationDelete', function(){
+            var applicationId = $(this).attr('applicationid');
+
+            $('#confirmDeleteApplication').attr('applicationid', applicationId);
+            $('#newApplication').children().prop( "selected", false );
+            $('#newApplication').children('[value=-1]').prop( "selected", true );
+            $('#newApplication').children().prop( "disabled", false );
+            $('#newApplication').children('[value=' + applicationId + ']').prop( "disabled", true );
+        });
+
+        $('#confirmDeleteApplication').on('click', function(){
+            var applicationId = $(this).attr('applicationid');
+
+            if (applicationId == 'none') {
+                toastr["error"]("Неверный ID заявки", "Ошибка");
+            } else {
+                postAjaxRequest('/admin/ajax/application/delete',
+                    {
+                        id: applicationId
+                    },
+                    function(data){
+                        $('#cancelDeleteApplication').click();
+                        $("tr[data-id=" + applicationId + "]").css("background-color","red").css("color","white").fadeOut(400, function(){
+                            $(this).remove();
+                        });
+                    },
+                    function(data){
+                        $('#cancelDeleteApplication').click();
+                    }
+                );
+            }
+            return false;
+        });
+        {% endif %}
+
+
+    });
+</script>
+{% endblock %}

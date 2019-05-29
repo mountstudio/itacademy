@@ -1,0 +1,252 @@
+{% block title %}
+Параметры сайта по умолчанию
+{% endblock %}
+
+{% extends "Admin/base.html" %}
+
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-inner">
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Изменение конфигурации</h4>
+                    </div>
+                    <div class="panel-body">
+
+                        <form class="form-horizontal" id="editConfig">
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="checkbox" name="allowChooseGroup" id="allowChooseGroup" value="true" {% if defaults['allow_users_choose_group'].getValue() %} checked {% endif %}> <label for="allowChooseGroup">Дать возможность пользователям выбрать группу</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="defaultUserGroup">
+                                <label for="defaultUserGroup" class="col-sm-2 control-label">Группа пользователей по умолчанию</label>
+                                <div class="col-sm-10">
+                                    <select name="defaultUserGroup" id="defaultUserGroup" class="form-control m-b-sm" >
+                                        {% for userGroup in userGroups %}
+                                        <option value="{{ userGroup.getId() }}" {% if userGroup.getId() == defaults['default_user_group'].getValue() %} selected {% endif %}>{{ userGroup.getName() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="defaultInstructorGroup" class="col-sm-2 control-label">Группа преподавателей по умолчанию</label>
+                                <div class="col-sm-10">
+                                    <select name="defaultInstructorGroup" id="defaultInstructorGroup" class="form-control m-b-sm" >
+                                        {% for userGroup in userGroups %}
+                                        <option value="{{ userGroup.getId() }}" {% if userGroup.getId() == defaults['default_instructor_group'].getValue() %} selected {% endif %}>{{ userGroup.getName() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="multipleUserGroup" {% if defaults['allow_users_choose_group'].getValue() == 0 %} style="display: none;" {% endif %}>
+                            <label for="multipleUserGroup_" class="col-sm-2 control-label">Разрешенные группы пользователей</label>
+                            <div class="col-sm-10">
+                                <select multiple name="multipleUserGroup" id="multipleUserGroup_" class="form-control m-b-sm">
+                                    {% for userGroup in userGroups %}
+                                    <option value="{{ userGroup.getId() }}" {% if userGroup.getAllowChooseGroup() %} selected {% endif %}>{{ userGroup.getName() }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="defaultApplicationStatus" class="col-sm-2 control-label"> Главный филиал</label>
+                        <div class="col-sm-10">
+                            <select name="defaultBranchId" id="defaultBranchId" class="form-control m-b-sm">
+                                {% for branch in branches %}
+                                <option value="{{ branch.getId() }}" {% if branch.getId() == defaults['default_branch'].getValue() %} selected {% endif %}>{{ branch.getName() }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="defaultApplicationStatus" class="col-sm-2 control-label">Состояние заявки по умолчанию</label>
+                        <div class="col-sm-10">
+                            <select name="defaultApplicationStatus" id="defaultApplicationStatus" class="form-control m-b-sm">
+                                {% for applicationStatus in applicationStatuses %}
+                                <option value="{{ applicationStatus.getId() }}" {% if applicationStatus.getId() == defaults['default_application_status'].getValue() %} selected {% endif %}>{{ applicationStatus.getName() }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="defaultCourseStreamStatus" class="col-sm-2 control-label">Состояние набора курса по умолчанию</label>
+                        <div class="col-sm-10">
+                            <select name="defaultCourseStreamStatus" id="defaultCourseStreamStatus" class="form-control m-b-sm">
+                                {% for courseStreamStatus in courseStreamStatuses %}
+                                <option value="{{ courseStreamStatus.getId() }}" {% if courseStreamStatus.getId() == defaults['default_course_stream_status'].getValue() %} selected {% endif %}>{{ courseStreamStatus.getName() }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="courseRecruitmentStatus" class="col-sm-2 control-label">Состояние набора курса, указывающая "Идет Набор"</label>
+                        <div class="col-sm-10">
+                            <select name="courseRecruitmentStatus" id="courseRecruitmentStatus" class="form-control m-b-sm">
+                                {% for courseStreamStatus in courseStreamStatuses %}
+                                <option value="{{ courseStreamStatus.getId() }}" {% if courseStreamStatus.getId() == defaults['course_stream_recruitment_status'].getValue() %} selected {% endif %}>{{ courseStreamStatus.getName() }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="defaultCurrency" class="col-sm-2 control-label">Валюта по умолчанию</label>
+                        <div class="col-sm-10">
+                            <select name="defaultCurrency" id="defaultCurrency" class="form-control m-b-sm" >
+                                {% for currency in currencies %}
+                                <option value="{{ currency.getId() }}" {% if currency.getId() == defaults['default_currency_id'].getValue() %} selected {% endif %}>{{ currency.getName() }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="defaultShownCurrency" class="col-sm-2 control-label">Валюта показа по умолчанию</label>
+                        <div class="col-sm-10">
+                            <select name="defaultShownCurrency" id="defaultShownCurrency" class="form-control m-b-sm" >
+                                {% for currency in currencies %}
+                                <option value="{{ currency.getId() }}" {% if currency.getId() == defaults['default_shown_currency_id'].getValue() %} selected {% endif %}>{{ currency.getName() }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+
+
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ include("Admin/copyrightFooter.html") }}
+</div>
+{% endblock %}
+
+
+{% block endBodies %}
+<script src="/static/admin/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<link href="/static/admin/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css"/>
+
+
+<style>
+    th.normal_font {
+        font-weight: normal;
+        padding-left: 10px;
+    }
+    i.silver {
+        color: #bfbcbc;
+        font-size: 11px;
+    }
+    .select2-results__option--highlighted table tr th i.silver {
+        color: #fff;
+    }
+    .customsize {
+        min-height: 36px;
+    }
+    .select2-search__field {
+        width: 100%!important;
+    }
+    #toast-container > div:hover{
+        opacity: 1;
+        box-shadow: 0px 0px 14px 0px #000;
+        cursor: pointer;
+    }
+</style>
+<script src="/static/admin/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+<script src="/static/admin/assets/plugins/summernote/summernote.min.js"></script>
+<script src="/static/admin/assets/js/pages/form-elements.js"></script>
+
+<link href="/static/admin/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/summernote/summernote.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" type="text/css"/>
+<!--<script src="/static/admin/assets/js/pages/form-select2.js"></script>-->
+<script src="/static/admin/assets/plugins/select2/js/select2.js"></script>
+<link href="/static/admin/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
+<script src="/static/admin/assets/js/pages/notifications.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+
+
+        currentForm_ = $('#editConfig');
+
+
+
+        $('input[name=allowChooseGroup]').change(function() {
+            if ($(this).is(":checked")){
+                $('#multipleUserGroup').fadeIn();
+            } else {
+                $('#multipleUserGroup').fadeOut();
+            }
+        });
+        $('#editConfig').on('submit', function(){
+
+
+            var formData = new FormData();
+
+
+
+
+            var defaultUserGroup = $('select[name=defaultUserGroup]').val();
+            var defaultInstructorGroup = $('select[name=defaultInstructorGroup]').val();
+
+            var defaultApplicationStatus = $('select[name=defaultApplicationStatus]').val();
+            var defaultCourseStreamStatus = $('select[name=defaultCourseStreamStatus]').val();
+            var defaultBranchId = $('select[name=defaultBranchId]').val();
+            var courseRecruitmentStatus = $('select[name=courseRecruitmentStatus]').val();
+            var allowedUserGroups = $('select[name=multipleUserGroup]');
+            var defaultCurrency = $('select[name=defaultCurrency]').val();
+            var defaultShownCurrency = $('select[name=defaultShownCurrency]').val();
+            allowedUserGroups.children('option:selected').each(function() {
+                formData.append('allowedUserGroups[]', $(this).val());
+            });
+
+            var allowChooseGroup = $('input[name=allowChooseGroup]').is(":checked");
+
+
+            formData.append('defaultUserGroup', defaultUserGroup);
+            formData.append('defaultInstructorGroup', defaultInstructorGroup);
+            formData.append('defaultBranchId', defaultBranchId);
+
+            formData.append('defaultApplicationStatus', defaultApplicationStatus);
+            formData.append('defaultCourseStreamStatus', defaultCourseStreamStatus);
+            formData.append('courseRecruitmentStatus', courseRecruitmentStatus);
+            formData.append('defaultCurrency', defaultCurrency);
+            formData.append('defaultShownCurrency', defaultShownCurrency);
+
+
+            formData.append('allowChooseGroup', allowChooseGroup);
+
+
+            ajaxRequest('/admin/ajax/defaults/save',
+                formData
+            );
+            return false;
+        });
+
+    });
+</script>
+{% endblock %}

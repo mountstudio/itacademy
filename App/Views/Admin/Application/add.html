@@ -1,0 +1,200 @@
+{% block title %}
+Добавление заявки
+{% endblock %}
+
+{% extends "Admin/base.html" %}
+
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-inner">
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Добавление заявки</h4>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" id="addApplication">
+
+                            <div class="form-group">
+                                <label for="name" class="col-sm-2 control-label">Имя</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="Имя" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone" class="col-sm-2 control-label">Телефон</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="phone" id="phone" placeholder="996XXXYYYYYY" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="status" class="col-sm-2 control-label">Состояние</label>
+                                <div class="col-sm-10">
+                                    <select name="status" id="status" class="form-control m-b-sm">
+                                        {% for applicationStatus in applicationStatuses %}
+                                        <option value="{{ applicationStatus.getId() }}" {% if applicationStatus.getId() == defaultApplicationStatusId %} selected {% endif %}>{{ applicationStatus.getName() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="course" class="col-sm-2 control-label">Курс</label>
+                                <div class="col-sm-10">
+                                    <select name="course" id="course" class="form-control m-b-sm">
+                                        <option value="0">-</option>
+                                        {% for course in courses %}
+                                        <option value="{{ course.getId() }}">{{ course.getName() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group d-none">
+                                <label for="course" class="col-sm-2 control-label">Поток</label>
+                                <div class="col-sm-10">
+                                    <select name="courseStream" id="courseStream" class="form-control m-b-sm">
+                                        <option value="0">-</option>
+
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label for="description" class="col-sm-2 control-label">Описание</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="description" id="description" placeholder="Описание"></textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="notes" class="col-sm-2 control-label">Примечание</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="notes" id="notes" placeholder="Примечание"></textarea>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Создать</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include("Admin/copyrightFooter.html") }}
+</div>
+{% endblock %}
+
+
+{% block endBodies %}
+<script src="/static/admin/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<link href="/static/admin/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css"/>
+
+
+<style>
+    th.normal_font {
+        font-weight: normal;
+        padding-left: 10px;
+    }
+    i.silver {
+        color: #bfbcbc;
+        font-size: 11px;
+    }
+    .select2-results__option--highlighted table tr th i.silver {
+        color: #fff;
+    }
+    .customsize {
+        min-height: 36px;
+    }
+    .select2-search__field {
+        width: 100%!important;
+    }
+    #toast-container > div:hover{
+        opacity: 1;
+        box-shadow: 0px 0px 14px 0px #000;
+        cursor: pointer;
+    }
+</style>
+<script src="/static/admin/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+<script src="/static/admin/assets/plugins/summernote/summernote.min.js"></script>
+<script src="/static/admin/assets/js/pages/form-elements.js"></script>
+
+<link href="/static/admin/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/summernote/summernote.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" type="text/css"/>
+<!--<script src="/static/admin/assets/js/pages/form-select2.js"></script>-->
+<script src="/static/admin/assets/plugins/select2/js/select2.js"></script>
+<link href="/static/admin/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
+<script src="/static/admin/assets/js/pages/notifications.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $('select[name="course"]').on('change', function() {
+            var self = $(this);
+            var courseId = this.value;
+            if (courseId != 0){
+                postAjaxRequest('/admin/ajax/course/stream/byCourse',
+                    {
+                        courseId: courseId
+                    },
+                    function (data) {
+                        $('select[name="courseStream"]').find('option').not('option[value=0]').remove();
+                        $.each(data.data, function( index, value ) {
+                            $('select[name="courseStream"]').append($('<option>', {
+                                value: value.id,
+                                text: value.name
+                            }));
+                        });
+                        $('select[name="courseStream"]').closest('.form-group').removeClass('d-none');
+                    },
+                    function (data) {
+
+                    },
+                    false
+                );
+            } else {
+                $('select[name="courseStream"]').closest('.form-group').addClass('d-none');
+            }
+
+        });
+
+        $('#addApplication').on('submit', function(){
+
+            var name = $('input[name=name]').val();
+            var phone = $('input[name=phone]').val();
+            var statusId = $('select[name=status]').val();
+            var courseId = $('select[name=course]').val();
+            var courseStreamId = $('select[name=courseStream]').val();
+            var notes = $('textarea[name=notes]').val();
+            var description = $('textarea[name=description]').val();
+
+            postAjaxRequest('/admin/ajax/application/add',
+                {
+                    name: name,
+                    phone: phone,
+                    statusId: statusId,
+                    notes: notes,
+                    courseId: courseId,
+                    courseStreamId: courseStreamId,
+                    description: description
+                }
+            );
+
+            return false;
+        });
+
+    });
+</script>
+{% endblock %}

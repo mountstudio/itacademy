@@ -1,0 +1,283 @@
+{% set page = 'courses' %}
+
+{% block metaInit %}
+{{ meta.setDescription(null) }}
+{{ meta.setKeywords(null) }}
+{% endblock %}
+
+{% block title %}
+Курсы
+{% endblock %}
+
+{% extends "Front/base.html" %}
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-header static-page-header" data-jarallax='{"speed": 0.4}' style='background-image: url("/static/front/assets/images/pages/courses.png")'>
+    <div class="bg-overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 text-left mr-auto text-white">
+                <h2 class="display-4 mb-3 text-white">Курсы</h2>
+                {{ include("Front/breadcrumb.html") }}
+            </div>
+        </div>
+    </div>
+    <svg class="svg-abs svg-f-btm z-index-9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 123" enable-background="new 0 0 1920 123" xml:space="preserve">
+            <polygon class="svg-white" opacity="1" points="0,123 1920,123 1920,0 "></polygon>
+          </svg>
+</div>
+<!--Page header end-->
+
+<!--Page header end-->
+<div class="container pt60 pb60">
+    {% if listType == 'grid' %}
+        <div class="row align-items-center mb-3">
+            <div class="col-sm-6 text-right ml-auto">
+                <div class="btn-group">
+                    <a href="/courses/page/{{ courses.getPage() }}?listType=list" class="btn btn-light {{ (listType == 'list') ? 'disabled' : '' }}">
+                        <i class="fa fa-list"></i>
+                    </a>
+                    <a href="/courses/page/{{ courses.getPage() }}?listType=grid" class="btn btn-light {{ (listType == 'grid') ? 'disabled' : '' }}">
+                        <i class="fa fa-th"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="row">
+        {% if listType == 'list' %}<div class="col-lg-10 ml-auto mr-auto mb30">
+
+        <div class="row align-items-center mb-3">
+            <div class="col-sm-6 text-right ml-auto">
+                <div class="btn-group">
+                    <a href="/courses/page/{{ courses.getPage() }}?listType=list" class="btn btn-light {{ (listType == 'list') ? 'disabled' : '' }}">
+                        <i class="fa fa-list"></i>
+                    </a>
+                    <a href="/courses/page/{{ courses.getPage() }}?listType=grid" class="btn btn-light {{ (listType == 'grid') ? 'disabled' : '' }}">
+                        <i class="fa fa-th"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+
+
+
+            {% for course in courses %}
+            {% if listType == 'list' %}
+                <div class="course-list-item course-item mb30">
+                    {% set courseStreams = course.getActiveStreams() %}
+                    {% if courseStreams|length > 0 %}
+
+                    <span class="overlay-branch">
+                                        -
+                                    </span>
+                    <div class="course-card-status">
+                        -
+                    </div>
+                    {% endif %}
+                    <div class="row align-items-center">
+                        <div class="col-md-3 col-sm-12 py-2">
+                            <a href="/courses/{{ course.getAltUrl() }}">
+                                <img src="{{ course.getLogo()['normal'] }}" alt="" class="img-fluid">
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-sm-12 py-3">
+                            <a href="/courses/{{ course.getAltUrl() }}">
+                                <h5>{{ course.getTitle() }}</h5>
+                            </a>
+                            <div class="mb-0">
+                                {{ course.getContext()|raw }}
+                            </div>
+
+                            {% if courseStreams|length > 0 %}
+                            <div class="owl-carousel owl-theme owl-loaded course-owl">
+                                <div class="owl-stage-outer">
+                                    <div class="owl-stage">
+                                        {% for courseStream in courseStreams %}
+                                            {% set courseStreamBranch = courseStream.getCurrentCourseStreamBranch() %}
+                                            {% set courseStreamStatus = courseStream.getCurrentCourseCourseStreamStatus() %}
+
+                                            <ul class="list-inline owl-item" data-stream-id="{{ courseStream.getId() }}" data-branch-id="{{ courseStreamBranch.getId() }}" data-branch-name="{{ courseStreamBranch.getName() }}" data-status-id="{{ courseStreamStatus.getId() }}" data-status-name="{{ courseStreamStatus.getName() }}" data-status-is-on-recruitment="{% if courseStream.getIsOnRecruitment() %}true{% else %}false{% endif %}">
+                                                <li class="list-inline-item mr-3">
+                                                    <i class="fas fa-calendar mr-2"></i>
+                                                    {{ courseStream.getStartDate() }}
+                                                </li>
+                                                <li class="list-inline-item mr-3">
+                                                    <i class="fa fa-user mr-2"></i>
+                                                    {% set instructor = courseStream.CurrentCourseStreamInstructor() %}
+                                                    {% if instructor != null %}
+                                                    {{ instructor.getName() }}
+                                                    {% else %}
+                                                    -
+                                                    {% endif %}
+                                                </li>
+                                                <li class="list-inline-item mr-3">
+                                                    <i class="fas fa-clock mr-2"></i>
+                                                    {{ courseStream.getDuration() }}
+                                                </li>
+                                                {% set streamCostData = helper.getDefaultCurrency(courseStream.getCost(), courseStream.getCurrentCourseStreamCurrency()) %}
+                                                <li class="list-inline-item">
+                                                    <i class="fas fa-dollar-sign mr-2"></i> {{ streamCostData['value'] }} {{ streamCostData['currency'].getISOCode() }}</li>
+                                            </ul>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+
+
+                        </div>
+                        <div class="col-md-3 py-2 col-12">
+                            <a href="/courses/{{ course.getAltUrl() }}" class="btn btn-outline-primary btn-lg">
+                                Подробнее
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% elseif listType == 'grid' %}
+                    <div class="col-lg-6 mb course-item">
+                        {% set courseStreams = course.getActiveStreams() %}
+                        {% if courseStreams|length > 0 %}
+                            <span class="overlay-branch">
+                                -
+                            </span>
+                            <div class="course-card-status">
+                                -
+                            </div>
+                        {% endif %}
+                        <div class="img-card-alt mb-30">
+                            <a class="img-thumb" href="/courses/{{ course.getAltUrl() }}">
+                                <img src="{{ course.getLogo()['normal'] }}" alt="" class="img-fluid">
+                                <span class="thumb-overlay">
+                                            <i class="icon-link"></i>
+                                        </span>
+                            </a>
+                            <div class="img-desc">
+                                <a href="/courses/{{ course.getAltUrl() }}" class="h5">
+                                    {{ course.getTitle() }}
+                                </a>
+                                <div class="pt-2">
+                                    {{ course.getContext()|raw }}
+                                </div>
+
+                                {% if courseStreams|length > 0 %}
+                                <div class="owl-carousel owl-theme owl-loaded course-owl">
+                                    <div class="owl-stage-outer">
+                                        <div class="owl-stage">
+                                            {% for courseStream in courseStreams %}
+                                            {% set courseStreamBranch = courseStream.getCurrentCourseStreamBranch() %}
+                                            {% set courseStreamStatus = courseStream.getCurrentCourseCourseStreamStatus() %}
+
+                                            <ul class="list-inline owl-item mb-0" data-stream-id="{{ courseStream.getId() }}" data-branch-id="{{ courseStreamBranch.getId() }}" data-branch-name="{{ courseStreamBranch.getName() }}" data-status-id="{{ courseStreamStatus.getId() }}" data-status-name="{{ courseStreamStatus.getName() }}" data-status-is-on-recruitment="{% if courseStream.getIsOnRecruitment() %}true{% else %}false{% endif %}">
+                                                <li class="list-inline-item mr-3">
+                                                    <i class="fas fa-calendar mr-2"></i>
+                                                    {{ courseStream.getStartDate() }}
+                                                </li>
+                                                <li class="list-inline-item mr-3">
+                                                    <i class="fa fa-user mr-2"></i>
+                                                    {% set instructor = courseStream.CurrentCourseStreamInstructor() %}
+                                                    {% if instructor != null %}
+                                                    {{ instructor.getName() }}
+                                                    {% else %}
+                                                    -
+                                                    {% endif %}
+                                                </li>
+                                                <li class="list-inline-item mr-3">
+                                                    <i class="fas fa-clock mr-2"></i>
+                                                    {{ courseStream.getDuration() }}
+                                                </li>
+                                                {% set streamCostData = helper.getDefaultCurrency(courseStream.getCost(), courseStream.getCurrentCourseStreamCurrency()) %}
+                                                <li class="list-inline-item">
+                                                    <i class="fas fa-dollar-sign mr-2"></i> {{ streamCostData['value'] }} {{ streamCostData['currency'].getISOCode() }}</li>
+                                            </ul>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+
+
+
+
+        {% if listType == 'list' %}</div>{% endif %}
+
+
+    </div>
+    {% set numberOfPages = (courses.getNbResults() / courses.getMaxPerPage())|round(0, 'ceil') %}
+    {% if numberOfPages > 1 %}
+        <div class="row">
+            <nav class="nav justify-content-end">
+                <div class="pagination">
+                    <a href="{% if courses.isFirstPage() %}javascript:void(0);{% else %}{{ courses.getPage() - 1 }}{% endif %}" class="page-link"><i class="fa fa-caret-left"></i></a>
+
+                    {% set startPage = ((courses.getPage() - 2) >= 1 ? courses.getPage() - 2 : 1) %}
+                    {% set endPage = ((courses.getPage() + 2) <= numberOfPages) ? courses.getPage() + 2 : numberOfPages %}
+
+                    {% set addToStartPage = ((courses.getPage() + 2) > numberOfPages) ? (numberOfPages - (courses.getPage() + 2)) : 0 %}
+                    {% set addToEndPage = ((courses.getPage() - 2) < 1 ? courses.getPage() - 2 - 1 : 0) %}
+
+
+                    {% for pageNumber in startPage..endPage %}
+                    <a href="/courses/page/{{ pageNumber }}" class="page-link {{ pageNumber == courses.getPage() ? 'active' : '' }}">{{ pageNumber }}</a>
+                    {% endfor %}
+                    <a href="{% if courses.isLastPage() %}javascript:void(0);{% else %}{{ courses.getPage() + 1 }}{% endif %}" class="page-link"><i class="fa fa-caret-right"></i></a>
+                </div>
+            </nav>
+        </div>
+    {% endif %}
+
+</div>
+
+
+{% endblock %}
+
+{% block endBodies %}
+
+    <script>
+        $(document).ready(function(){
+
+            function carouselEventHandler(e){
+                let pos = e.item.index;
+                let el = $($(e.target).find('.owl-stage').children(':not(.cloned)').get(pos));
+                $(e.target).closest('.course-item').find('.overlay-branch').text(el.attr('data-branch-name'));
+                let statusEl = $(e.target).closest('.course-item').find('.course-card-status');
+                if (el.attr('data-status-is-on-recruitment') == 'true'){
+                    statusEl.addClass('course-status-going');
+                    statusEl.text(el.attr('data-status-name'));
+                } else {
+                    statusEl.removeClass('course-status-going');
+                    statusEl.text(el.attr('data-status-name'));
+                }
+
+            }
+
+            $(".course-owl").owlCarousel({
+                items: 1,
+                rewind: true,
+                margin: 5,
+                dots: false,
+                autoplay: true,
+                autoplayHoverPause: true,
+                autoplayTimeout: 3500,
+                onInitialized: function (e) {
+                    carouselEventHandler(e);
+                }
+            }).on('changed.owl.carousel', function(e) {
+                carouselEventHandler(e);
+            });
+        });
+    </script>
+{% endblock %}

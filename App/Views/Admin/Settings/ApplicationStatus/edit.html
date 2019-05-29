@@ -1,0 +1,237 @@
+{% block title %}
+Редактирование состоянии заявки «{{ applicationStatus.getName() }}»
+{% endblock %}
+
+{% extends "Admin/base.html" %}
+
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-inner">
+    <div class="page-title">
+
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Изменение</h4>
+                        <div class="panel-control">
+                            <button type="link" data-href="/admin/settings/applicationStatuses/all" class="btn btn-default btn-addon m-b-sm btn-sm"><i class="fa fa-chevron-left"></i> Все</button>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+
+                        <form class="form-horizontal" id="editApplicationStatus">
+                            <input type="hidden" id="applicationStatusId" value="{{ applicationStatus.getId() }}"/>
+
+
+                            <div class="form-group">
+                                <label for="name" class="col-sm-2 control-label">Имя:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" value="{{ applicationStatus.getName() }}" class="form-control" name="name" id="name" placeholder="Имя" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="backgroundColor" class="col-sm-2 control-label">Цвет фона</label>
+                                <div class="col-sm-10">
+                                    <input autocomplete="off" value="{{ applicationStatus.getBackgroundColor() }}" type="text" class="form-control" name="backgroundColor" id="backgroundColor" placeholder="Выберите фон">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description" class="col-sm-2 control-label">Описание</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="description" id="description" placeholder="Описание">{{ applicationStatus.getDescription() }}</textarea>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                            <button type="button" class="btn btn-danger" id="deleteApplicationStatusModalFocus" data-toggle="modal" data-target="#deleteApplicationStatusModal">Удалить</button>
+                        </form>
+
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="deleteApplicationStatusModal" tabindex="-1" role="dialog" aria-labelledby="deleteApplicationStatusModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="deleteApplicationStatusModalLabel">Удаление</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <p>
+                                                После проведенного действия назад невозможно возвратиться!
+                                            </p>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newApplicationStatus" class="col-sm-2 control-label">Группа</label>
+                                            <div class="col-sm-10">
+                                                <select name="newApplicationStatus" id="newApplicationStatus" class="form-control m-b-sm">
+                                                    {% for applicationStatus_ in applicationStatuses %}
+                                                    <option value="{{ applicationStatus_.getId() }}" {% if applicationStatus_.getId() == -1 %} selected {% endif %} {% if applicationStatus_.getId() == applicationStatus.getId() %} disabled {% endif %}>{{ applicationStatus_.getName() }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <p class="help-block">Состояние заявок будет изменен для тех заявок, которые имеют текущий удаляемый состояние заявок</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <form>
+                                        <div class="modal-footer">
+                                            <button type="button" id="cancelDeleteApplicationStatus" class="btn btn-default" data-dismiss="modal">Отменить</button>
+                                            <button type="button" id="confirmDeleteApplicationStatus" applicationstatusid="none" class="btn btn-danger">Удалить</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include("Admin/copyrightFooter.html") }}
+</div>
+{% endblock %}
+
+
+{% block endBodies %}
+<script src="/static/admin/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<link href="/static/admin/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css"/>
+
+
+<style>
+    th.normal_font {
+        font-weight: normal;
+        padding-left: 10px;
+    }
+    i.silver {
+        color: #bfbcbc;
+        font-size: 11px;
+    }
+    .select2-results__option--highlighted table tr th i.silver {
+        color: #fff;
+    }
+    .customsize {
+        min-height: 36px;
+    }
+    .select2-search__field {
+        width: 100%!important;
+    }
+    #toast-container > div:hover{
+        opacity: 1;
+        box-shadow: 0px 0px 14px 0px #000;
+        cursor: pointer;
+    }
+</style>
+<script src="/static/admin/assets/plugins/summernote/summernote.min.js"></script>
+<script src="/static/admin/assets/js/pages/form-elements.js"></script>
+
+<link href="/static/admin/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/summernote/summernote.css" rel="stylesheet" type="text/css"/>
+<!--<script src="/static/admin/assets/js/pages/form-select2.js"></script>-->
+<script src="/static/admin/assets/plugins/select2/js/select2.js"></script>
+<link href="/static/admin/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
+<script src="/static/admin/assets/js/pages/notifications.js"></script>
+
+<link href="/static/admin/assets/plugins/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" type="text/css"/>
+<script src="/static/admin/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('input[name=backgroundColor]').colorpicker({
+            format: 'rgba'
+        });
+
+        function pad(n, width, z) {
+            z = z || '0';
+            n = n + '';
+            return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+        }
+
+        function invertColor(rgba, bw) {
+            rgba = rgba.replace(/^rgba?\(|\s+|\)$/g,'').split(',');
+            if (rgba.length != 4) {
+                throw new Error('Invalid HEX color.');
+            }
+            var r = parseInt(rgba[0]),
+                g = parseInt(rgba[1]),
+                b = parseInt(rgba[2]);
+            a = parseFloat(rgba[3]);
+            if (bw) {
+                // http://stackoverflow.com/a/3943023/112731
+                return (r * 0.299 + g * 0.587 + b * 0.114) > 186
+                    ? '#000000'
+                    : '#FFFFFF';
+            }
+            // invert color components
+            r = (255 - r).toString(16);
+            g = (255 - g).toString(16);
+            b = (255 - b).toString(16);
+            // pad each with zeros and return
+            return "#" + pad(r, 2) + pad(g, 2) + pad(b, 2);
+        }
+
+        $('#editApplicationStatus').on('submit', function(){
+            var applicationStatusId = $('#applicationStatusId').val();
+            var name = $('input[name=name]').val();
+            var description = $('textarea[name=description]').val();
+
+            var backgroundColor, fontColor;
+            backgroundColor = $('input[name=backgroundColor]').val();
+            if (backgroundColor.length != 0){
+                fontColor = invertColor(backgroundColor, true);
+            }
+
+            postAjaxRequest('/admin/ajax/applicationStatus/edit',
+                {
+                    id: applicationStatusId,
+                    name: name,
+                    backgroundColor: backgroundColor,
+                    fontColor: fontColor,
+                    description: description
+                }
+            );
+            return false;
+        });
+
+
+        $('#confirmDeleteApplicationStatus').on('click', function(){
+            var applicationStatusId = $('#applicationStatusId').val();
+            var newApplicationStatusId = $('#newApplicationStatus').val();
+
+
+
+            if (newApplicationStatusId == '-1'){
+                toastr["error"]("Пожалуйста выберите альтернативный состояние заявки", "Ошибка");
+            } else {
+                postAjaxRequest('/admin/ajax/applicationStatus/delete',
+                    {
+                        id: applicationStatusId,
+                        newId: newApplicationStatusId,
+                        'fromEditAction': true
+                    },
+                    function(data){
+                        $('#cancelDeleteApplicationStatus').click();
+                    },
+                    function(data){
+                        $('#cancelDeleteApplicationStatus').click();
+                    }
+                );
+            }
+
+            return false;
+        });
+
+    });
+</script>
+{% endblock %}

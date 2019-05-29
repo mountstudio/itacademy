@@ -1,0 +1,164 @@
+{% block title %}
+Все FAQ
+{% endblock %}
+
+{% extends "Admin/base.html" %}
+
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-inner">
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Часто задаваемые вопросы</h4>
+                        <div class="panel-control">
+                            <button type="link" data-href="/admin/faqs/add" class="btn btn-success btn-addon m-b-sm btn-sm"><i class="fa fa-plus"></i> Добавить</button>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="list">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Вопрос</th>
+                                    <th>Ответ</th>
+                                    <th>Дата создания</th>
+                                    <th>Дата изменения</th>
+                                    <th class="actions">Действие</th>
+                                </tr>
+                                </thead>
+                                <tbody data-swap-url="/admin/ajax/faq/update">
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="deleteFAQModal" tabindex="-1" role="dialog" aria-labelledby="deleteFAQModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="deleteFAQModalLabel">Удаление</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <p>
+                                                После проведенного действия назад невозможно возвратиться!
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="cancelDeleteFAQ" class="btn btn-default" data-dismiss="modal">Отменить</button>
+                                        <button type="button" id="confirmDeleteFAQ" faqid="none" class="btn btn-danger">Удалить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include("Admin/copyrightFooter.html") }}
+</div>
+{% endblock %}
+
+
+{% block endBodies %}
+<!-- Scripts are shown there-->
+<script src="/static/admin/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<link href="/static/admin/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css"/>
+
+
+<style>
+    th.normal_font {
+        font-weight: normal;
+        padding-left: 10px;
+    }
+    i.silver {
+        color: #bfbcbc;
+        font-size: 11px;
+    }
+    .select2-results__option--highlighted table tr th i.silver {
+        color: #fff;
+    }
+    .customsize {
+        min-height: 36px;
+    }
+    .select2-search__field {
+        width: 100%!important;
+    }
+    #toast-container > div:hover{
+        opacity: 1;
+        box-shadow: 0px 0px 14px 0px #000;
+        cursor: pointer;
+    }
+</style>
+<script src="/static/admin/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+<script src="/static/admin/assets/plugins/summernote/summernote.min.js"></script>
+<script src="/static/admin/assets/js/pages/form-elements.js"></script>
+
+<link href="/static/admin/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/summernote/summernote.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" type="text/css"/>
+<!--<script src="/static/admin/assets/js/pages/form-select2.js"></script>-->
+<script src="/static/admin/assets/plugins/select2/js/select2.js"></script>
+<link href="/static/admin/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
+<script src="/static/admin/assets/js/pages/notifications.js"></script>
+<script src="/static/admin/assets/plugins/moment/moment.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $(document).on('click', '.faqDelete', function(){
+            var faqId = $(this).attr('faqid');
+            $('#confirmDeleteFAQ').attr('faqid', faqId);
+        });
+
+        $('#confirmDeleteFAQ').on('click', function(){
+            var faqId = $(this).attr('faqid');
+
+            if (faqId == 'none') {
+                toastr["error"]("Неверный ID FAQ страницы", "Ошибка");
+            } else {
+                postAjaxRequest('/admin/ajax/faq/delete',
+                    {
+                        id: faqId
+                    },
+                    function(data){
+                        $('#cancelDeleteFAQ').click();
+                        $("tr[data-id=" + faqId + "]").css("background-color","red").css("color","white").fadeOut(400, function(){
+                            $(this).remove();
+                        });
+                    },
+                    function(data){
+                        $('#cancelDeleteFAQ').click();
+                    }
+                );
+            }
+            return false;
+        });
+
+        paginationRequest(  '/admin/ajax/faq/paginate',
+            '#list',
+            function(data){
+                let result = '';
+                data.data.forEach(function(faq) {
+                    result += '<tr data-feature="swap" data-id="' + faq.id + '"><td>' + faq.id + '</td><td scope="row">' + ((faq['question'] != null) ? ((faq['question'].length > 50) ? (faq['question'].substring(0, 50 - '...'.length) + '...') : faq['question']) : '-') + '</td> <td>' + ((faq['answer'] != null) ? ((faq['answer'].length > 100) ? (faq['answer'].substring(0, 100 - '...'.length) + '...') : faq['answer']) : '-') + '</td> <td>' + moment(faq.createdAt.date).fromNow() + '</td><td>' + moment(faq.updatedAt.date).fromNow() + '</td> <td><div class="btn-group m-b-sm"> <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Действие <span class="caret"></span> </button> <ul class="dropdown-menu dropdown-menu-right" role="menu"> <li><a href="/admin/faqs/' + faq.id + '/edit">Изменить</a></li> <li><a href="#" data-toggle="modal" data-target="#deleteFAQModal" class="faqDelete" faqid="' + faq.id + '">Удалить</a></li> </ul> </div><div class="move-actions"><button type="button" class="btn btn-default btn-rounded" data-action="toTop" ' + ((faq.actions.isFirst) ? 'disabled' : '') + '><i class="fa fa-arrow-up"></i></button><button type="button" class="btn btn-default btn-rounded" data-action="toBottom" ' + ((faq.actions.isLast) ? 'disabled' : '') + '><i class="fa fa-arrow-down"></i></button></div></td> </tr>';
+                });
+                return result;
+            }
+        );
+    });
+</script>
+{% endblock %}

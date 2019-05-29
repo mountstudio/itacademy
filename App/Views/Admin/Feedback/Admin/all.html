@@ -1,0 +1,451 @@
+{% block title %}
+Список всех отзывов
+{% endblock %}
+
+{% extends "Admin/base.html" %}
+
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-inner">
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Отзывы</h4>
+                        <div class="panel-control">
+                            <button type="link" data-href="/admin/feedbacks/my/add" class="btn btn-success btn-addon m-b-sm btn-sm"><i class="fa fa-plus"></i> Добавить</button>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div role="tabpanel">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#feedbackStatus-0" role="tab" data-toggle="tab">Все</a></li>
+                                <li role="presentation"><a href="#feedbackStatus-1" role="tab" data-toggle="tab">В ожидании</a></li>
+                                <li role="presentation"><a href="#feedbackStatus-2" role="tab" data-toggle="tab">Опубликованные</a></li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active fade in" id="feedbackStatus-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="0-List">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Место работы</th>
+                                                <th>Зарплата</th>
+                                                <th>Опубликован</th>
+                                                <th>Содержание</th>
+                                                <th>Примечания</th>
+                                                <th>Дата создания</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane fade in" id="feedbackStatus-1">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="1-List">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Место работы</th>
+                                                <th>Зарплата</th>
+                                                <th>Опубликован</th>
+                                                <th>Содержание</th>
+                                                <th>Примечания</th>
+                                                <th>Дата создания</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane fade in" id="feedbackStatus-2">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="2-List">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Место работы</th>
+                                                <th>Зарплата</th>
+                                                <th>Опубликован</th>
+                                                <th>Содержание</th>
+                                                <th>Примечания</th>
+                                                <th>Дата создания</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+
+                        </div>
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="deleteFeedbackModal" tabindex="-1" role="dialog" aria-labelledby="deleteFeedbackModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="deleteFeedbackModalLabel">Удаление</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <p>
+                                                После проведенного действия назад невозможно возвратиться!
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="cancelDeleteFeedback" class="btn btn-default" data-dismiss="modal">Отменить</button>
+                                        <button type="button" id="confirmDeleteFeedback" feedbackid="none" class="btn btn-danger">Удалить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="editFeedbackModal" tabindex="-1" role="dialog" aria-labelledby="editFeedbackModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="editFeedbackModalLabel">Редактирование</h4>
+                                    </div>
+                                    <form id="editFeedback">
+
+                                        <div class="modal-body">
+                                            <div class="form-horizontal">
+                                                <input type="hidden" name="id"/>
+
+                                                <div class="form-group">
+                                                    <label for="date" class="col-sm-2 control-label">Дата создания:</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" name="date" id="date" disabled>
+                                                        <p class="help-block"></p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="workPlace" class="col-sm-2 control-label">Место работы:</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" name="workPlace" id="workPlace" placeholder="Место работы" disabled>
+                                                        <p class="help-block"></p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="salary" class="col-sm-2 control-label">Зарплата:</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" name="salary" id="salary" placeholder="Зарплата" disabled>
+                                                        <p class="help-block"></p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="content" class="col-sm-2 control-label">Содержание</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea class="form-control" name="content" id="content" placeholder="Содержание" disabled></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="isAvailable" class="col-sm-2 control-label">Опубликован</label>
+                                                    <div class="col-sm-10">
+                                                        <div class="ios-switch pull-right switch-md">
+                                                            <input type="checkbox" id="isAvailable" name="isAvailable" class="js-switch pull-right fixed-header-check">
+                                                        </div>
+                                                        <p class="help-block">Если отключен, то на сайте отзыв не будет виден</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="notes" class="col-sm-2 control-label">Примечание</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea class="form-control" name="notes" id="notes" placeholder="Примечание"></textarea>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" id="closeEditFeedback" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                            <button type="submit" id="saveEditFeedback" class="btn btn-primary">Сохранить</button>
+                                            <button type="button" class="btn btn-danger feedbackDelete" data-toggle="modal" data-target="#deleteFeedbackModal" feedbackid="">Удалить</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include("Admin/copyrightFooter.html") }}
+</div>
+{% endblock %}
+
+
+{% block endBodies %}
+<!-- Scripts are shown there-->
+<script src="/static/admin/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<link href="/static/admin/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css"/>
+
+
+<style>
+    th.normal_font {
+        font-weight: normal;
+        padding-left: 10px;
+    }
+    tbody tr {
+        cursor: pointer;
+    }
+    i.silver {
+        color: #bfbcbc;
+        font-size: 11px;
+    }
+    .select2-results__option--highlighted table tr th i.silver {
+        color: #fff;
+    }
+    .customsize {
+        min-height: 36px;
+    }
+    .select2-search__field {
+        width: 100%!important;
+    }
+    #toast-container > div:hover{
+        opacity: 1;
+        box-shadow: 0px 0px 14px 0px #000;
+        cursor: pointer;
+    }
+</style>
+<script src="/static/admin/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+<script src="/static/admin/assets/plugins/summernote/summernote.min.js"></script>
+<script src="/static/admin/assets/js/pages/form-elements.js"></script>
+
+<link href="/static/admin/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/summernote/summernote.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" type="text/css"/>
+<!--<script src="/static/admin/assets/js/pages/form-select2.js"></script>-->
+<script src="/static/admin/assets/plugins/select2/js/select2.js"></script>
+<link href="/static/admin/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
+<script src="/static/admin/assets/js/pages/notifications.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        var tabs = $('ul[role=tablist] > li[role=presentation]:not(.dropdown), li.dropdown[role=presentation] > ul[role=menu] > li');
+        var activeTab = '0';
+        var gotTabsList = [];
+
+        tabs.each(function( index ) {
+            var tab = $(this).children('a').attr('href').replace("#feedbackStatus-", "");
+            gotTabsList[tab] = false;
+        });
+
+        //init first load
+        loadPaginationData(activeTab, '#' + activeTab + '-List');
+
+        tabs.on('click', function(){
+            var currentTab = $(this).children('a').attr('href').replace("#feedbackStatus-", "");
+            if (currentTab != activeTab){
+                activeTab = currentTab;
+                if (!gotTabsList[activeTab]){
+                    loadPaginationData(activeTab, '#' + activeTab + '-List');
+                }
+
+            }
+        });
+
+        function loadPaginationData(isAvailable, listElement) {
+            filteredPaginationRequest(  '/admin/ajax/feedback/paginate',
+                {
+                    isAvailable: isAvailable
+                },
+                listElement,
+                function(data){
+                    result = '';
+                    data.data.forEach(function(feedback) {
+                        result += '<tr data-toggle="modal" data-target="#editFeedbackModal" data-id="' + feedback.id + '"><td>' + feedback.id + '</td><td scope="row" data-work-place="' + feedback.workPlace + '">' + ((feedback.workPlace == null) ? '-' : feedback.workPlace) + '</td> <td data-salary="' + ((feedback.salary != null && feedback.currency != null) ? (feedback.salary + ' ' + feedback.currency.ISOCode) : '-')  + '">' + ((feedback.salary != null && feedback.currency != null) ? (feedback.salary + ' ' + feedback.currency.ISOCode) : '-')  + '</td> <td data-available="' + ((feedback.isAvailable) ? "true" : "false") + '"><i class="fa ' + ((feedback.isAvailable) ? "fa-check" : "fa-close") + '"></i></td><td data-content="' + feedback.content + '">' + ((feedback.content != null) ? ((feedback.content.length > 50) ? (feedback.content.substring(0, 50 - '...'.length) + '...') : feedback.content) : '-') + '</td><td data-notes="' + feedback.notes + '">' + ((feedback.notes != null) ? ((feedback.notes.length > 50) ? (feedback.notes.substring(0, 50 - '...'.length) + '...') : feedback.notes) : '-') + '</td><td data-date="'+ feedback.createdAt.date +'">' + moment(feedback.createdAt.date).fromNow() + '</td> </tr>';
+                    });
+                    if (!gotTabsList[isAvailable]) gotTabsList[isAvailable] = true;
+                    return result;
+                }
+            );
+        }
+
+        $('[data-target="#deleteFeedbackModal"]').click(function () {
+            $('#editFeedbackModal').modal('hide');
+        });
+
+        $(document).on('click', 'tr[data-target=#editFeedbackModal]', function() {
+            var feedbackElement = $('#editFeedback');
+
+            var thisElement = $(this);
+            var id = thisElement.data('id');
+
+
+
+            feedbackElement.find('.feedbackDelete').attr('feedbackid', id);
+            feedbackElement.find('input[name=date]').val(thisElement.find('[data-date]').data('date'));
+
+            feedbackElement.find('input[name=id]').val(id);
+
+            let workPlace = thisElement.find('[data-work-place]').data('work-place');
+            if (workPlace == null) {
+                feedbackElement.find('input[name=workPlace]').closest('.form-group').hide();
+            } else {
+                feedbackElement.find('input[name=workPlace]').val(workPlace);
+                feedbackElement.find('input[name=workPlace]').closest('.form-group').show();
+            }
+
+
+            let salary = thisElement.find('[data-salary]').data('salary');
+            if (salary == '-') {
+                feedbackElement.find('input[name=salary]').closest('.form-group').hide();
+            } else {
+                feedbackElement.find('input[name=salary]').val(salary);
+                feedbackElement.find('input[name=salary]').closest('.form-group').show();
+            }
+
+            feedbackElement.find('textarea[name=content]').val(thisElement.find('[data-content]').data('content'));
+
+            feedbackElement.find('textarea[name=notes]').val(thisElement.find('[data-notes]').data('notes'));
+
+            var switcher = feedbackElement.find('input[name=isAvailable]');
+
+            let swtcvhr = thisElement.find('[data-available]').data('available');
+            if (swtcvhr == true || swtcvhr == 'true'){
+                if (!switcher.prop('checked')){
+                    switcher.click();
+                    switcher.prop('checked', true);
+                }
+            } else {
+                if (switcher.prop('checked')){
+                    switcher.click();
+                    switcher.prop('checked', false);
+                }
+            }
+        });
+
+        $('#editFeedback').submit(function() {
+            var feedbackElement = $('#editFeedback');
+            var id = feedbackElement.find('input[name=id]').val();
+            var status =  $('input[name=isAvailable]').is(":checked")?'true':'false';
+            var notes = feedbackElement.find('textarea[name=notes]').val();
+            var trElement = $('tr[data-id=' + id + ']');
+            var lastStatus = trElement.find('[data-available]').data('available').toString();
+
+
+            postAjaxRequest('/admin/ajax/feedback/update',
+                {
+                    id: id,
+                    isAvailable: status,
+                    notes: notes
+                },
+                function(data) {
+                    $('#closeEditFeedback').click();
+                    let notesEl = trElement.find('[data-notes]');
+                    notesEl.data('notes', notes);
+                    notesEl.text((notes.trim().length > 0) ? ((notes.length > 100) ? (notes.substring(0, 100 - '...'.length) + '...') : notes) : '-' );
+
+
+
+                    let isAvailableEl = trElement.find('[data-available]');
+                    isAvailableEl.data('available', status);
+
+                    if (status == 'true'){
+                        isAvailableEl.children('i').removeClass('fa-close').addClass('fa-check');
+                    } else {
+                        isAvailableEl.children('i').removeClass('fa-check').addClass('fa-close');
+                    }
+
+                    if (lastStatus != status){
+                        status = (status == 'true') ? '2' : '1';
+                        lastStatus = (lastStatus == 'true') ? '2' : '1';
+                        //$('table#' + statusId + '-List').find('tbody').prepend(trElement);
+                        if ($('#' + status + '-List').find('tr').length > 0 || $('#' + status + '-ListAlert').is(':visible')){
+                            $('#' + status + '-List').find('tbody').prepend($(trElement.get(0)).clone());
+                        }
+                        var toDelete = $('#' + lastStatus + '-List').find('tr[data-id=' + id + ']');
+                        if (toDelete.length > 0){
+                            toDelete.remove();
+                        }
+                        //var tb = $('table#' + lastStatus + '-List').find('tr[data-refferer=' + id + ']');
+
+                    }
+
+
+
+
+
+                }
+            );
+            return false;
+
+        });
+
+
+
+        $(document).on('click', '.feedbackDelete', function(){
+            var feedbackId = $(this).attr('feedbackid');
+            console.log(feedbackId);
+            $('#confirmDeleteFeedback').attr('feedbackid', feedbackId);
+            $('#newFeedback').children().prop( "selected", false );
+            $('#newFeedback').children('[value=-1]').prop( "selected", true );
+            $('#newFeedback').children().prop( "disabled", false );
+            $('#newFeedback').children('[value=' + feedbackId + ']').prop( "disabled", true );
+        });
+
+        $('#confirmDeleteFeedback').on('click', function(){
+            var feedbackId = $(this).attr('feedbackid');
+
+            postAjaxRequest('/admin/ajax/feedback/delete',
+                {
+                    id: feedbackId
+                },
+                function(data){
+                    $('#cancelDeleteFeedback').click();
+                    $("tr[data-id=" + feedbackId + "]").css("background-color","red").css("color","white").fadeOut(400, function(){
+                        $(this).remove();
+                    });
+                },
+                function(data){
+                    $('#cancelDeleteFeedback').click();
+                }
+            );
+            return false;
+        });
+
+
+    });
+</script>
+{% endblock %}

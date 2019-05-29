@@ -1,0 +1,119 @@
+{% block title %}
+Добавление курса валюты
+{% endblock %}
+
+{% extends "Admin/base.html" %}
+
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-inner">
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Добавление курса валюты</h4>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" id="addRate">
+
+                            <div class="form-group">
+                                <label for="defaultCurrency" class="col-sm-2 control-label">Валюта по умолчанию</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="defaultCurrency" class="form-control" value="{{ defaultCurrency.getName() }} ({{ defaultCurrency.getSymbol() }})" disabled>
+                                </div>
+                            </div>
+
+                            {% for currency in currencies %}
+                                <div class="form-group">
+                                    <label for="currency-{{ currency.getId() }}" class="col-sm-2 control-label">{{ currency.getName() }} ({{ currency.getSymbol() }})</label>
+                                    <div class="col-sm-10">
+                                        <input type="float" class="form-control" data-type="rates" data-rate-id="{{ currency.getId() }}" id="currency-{{ currency.getId() }}" required>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            <button type="submit" class="btn btn-primary">Создать</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include("Admin/copyrightFooter.html") }}
+</div>
+{% endblock %}
+
+
+{% block endBodies %}
+<script src="/static/admin/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<link href="/static/admin/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css"/>
+
+<style>
+    th.normal_font {
+        font-weight: normal;
+        padding-left: 10px;
+    }
+    i.silver {
+        color: #bfbcbc;
+        font-size: 11px;
+    }
+    .select2-results__option--highlighted table tr th i.silver {
+        color: #fff;
+    }
+    .customsize {
+        min-height: 36px;
+    }
+    .select2-search__field {
+        width: 100%!important;
+    }
+    #toast-container > div:hover{
+        opacity: 1;
+        box-shadow: 0px 0px 14px 0px #000;
+        cursor: pointer;
+    }
+
+
+    /* temporary fix for summernote*/
+    .note-group-select-from-files {
+        display: none;
+    }
+
+</style>
+<script src="/static/admin/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+
+<link href="/static/admin/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+<!--<script src="/static/admin/assets/js/pages/form-select2.js"></script>-->
+
+<script src="/static/admin/assets/plugins/summernote/summernote.js"></script>
+<link href="/static/admin/assets/plugins/summernote/summernote.css" rel="stylesheet" type="text/css"/>
+
+<script src="/static/admin/assets/js/pages/notifications.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+
+        $('#addRate').on('submit', function(){
+
+            var rates = $('[data-type="rates"]');
+
+            var formData = new FormData();
+            rates.each(function() {
+                let self = $(this);
+                formData.append('rates[' + self.data('rate-id') + ']', self.val());
+            });
+
+
+            ajaxRequest('/admin/ajax/currency/rate/add',
+                formData
+            );
+            return false;
+        });
+
+    });
+</script>
+{% endblock %}

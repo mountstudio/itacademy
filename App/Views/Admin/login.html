@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <!-- Title -->
+    <title>Вход | IT-Academy.kg</title>
+
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta charset="UTF-8">
+    <meta name="author" content="Crypto07" />
+
+    <!-- Styles -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+    <link href="/static/admin/assets/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet"/>
+    <link href="/static/admin/assets/plugins/uniform/css/uniform.default.min.css" rel="stylesheet"/>
+    <link href="/static/admin/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/admin/assets/plugins/fontawesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/admin/assets/plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/admin/assets/plugins/offcanvasmenueffects/css/menu_cornerbox.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/admin/assets/plugins/waves/waves.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/admin/assets/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/admin/assets/plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css"/>
+
+    <!-- Theme Styles -->
+    <link href="/static/admin/assets/css/modern.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/admin/assets/css/themes/white.css" class="theme-color" rel="stylesheet" type="text/css"/>
+    <link href="/static/admin/assets/css/custom.css" rel="stylesheet" type="text/css"/>
+
+    <script src="/static/admin/assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
+    <script src="/static/admin/assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body class="page-login">
+<main class="page-content">
+    <div class="page-inner">
+        <div id="main-wrapper">
+            <div class="row">
+                <div class="col-md-3 center">
+                    <div class="login-box">
+                        <a href="/" class="logo-name text-lg text-center">IT-Academy.kg</a>
+                        <p class="text-center m-t-md">Пожалуйста войдите в свой аккаунт</p>
+                        <form class="m-t-md" id="ajax-login" method="post">
+                            <div class="form-group">
+                                <input name="LoginOrEmail" class="form-control" placeholder="Email или логин" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="password" class="form-control" placeholder="Пароль" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" name="rememberMe" value="true"> Запомнить
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-success btn-block">Login</button>
+                            <a href="/admin/forgotPassword" class="display-block text-center m-t-md text-sm">Забыли пароль?</a>
+                            <p class="text-center m-t-xs text-sm">Ещё нет аккаунта?</p>
+                            <a href="/admin/registration" class="btn btn-default btn-block m-t-md">Создать аккаунт</a>
+                        </form>
+                        <button type="button" style="display: none;" id="modal_" data-toggle="modal" data-target=".bs-example-modal-sm"></button>
+
+                        <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="mySmallModalLabel">Уупс!</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id="textmodal"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-center m-t-xs text-sm">2019 &copy; IT-Academy.kg by ProGeek</p>
+                    </div>
+                </div>
+            </div><!-- Row -->
+        </div><!-- Main Wrapper -->
+    </div><!-- Page Inner -->
+</main><!-- Page Content -->
+
+<!-- Javascripts -->
+<script src="/static/admin/assets/plugins/jquery/jquery-2.1.3.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        $('#ajax-login').submit(function(event) {
+            LoginOrEmail = $('input[name=LoginOrEmail]').val();
+            password = $('input[name=password]').val();
+            checkbox = ($('input[name=rememberMe]').is(':checked')) ? $('input[name=rememberMe]').val() : "false";
+
+            Pace.restart();
+            Pace.track(function () {
+                $.post('/admin/ajax/login', {
+                    LoginOrEmail: LoginOrEmail,
+                    password: password,
+                    isRemember: checkbox
+                }).done(
+                    function(data){
+                        if (data.status == 'success') {
+                            window.location.href = data.redirect;
+                        } else {
+                            toastr["error"]("Ошибка. " + data.message, "Уупс");
+                            if (data.redirect) {
+                                setTimeout(function () {
+                                    window.location.href = data.redirect;
+                                }, 2000);
+                            }
+                        }
+                     }
+                   ).fail(
+                    function(jqXHR, textStatus, errorThrown) {
+                          if (jqXHR.responseJSON){
+                              toastr["error"]("Ошибка. " + jqXHR.responseJSON.message, "Уупс");
+                              if (jqXHR.responseJSON.redirect) {
+                                  setTimeout(function () {
+                                      window.location.href = jqXHR.responseJSON.redirect;
+                                  }, 2000);
+                              }
+                          } else {
+                              toastr["error"]("Ошибка. Что-то пошло не так.", "Уупс");
+                          }
+                     }
+                 );
+            });
+            event.preventDefault();
+        });
+    });
+</script>
+<script src="/static/admin/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script src="/static/admin/assets/plugins/pace-master/pace.min.js"></script>
+<script src="/static/admin/assets/plugins/jquery-blockui/jquery.blockui.js"></script>
+<script src="/static/admin/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/admin/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/static/admin/assets/plugins/switchery/switchery.min.js"></script>
+<script src="/static/admin/assets/plugins/uniform/jquery.uniform.min.js"></script>
+<script src="/static/admin/assets/plugins/offcanvasmenueffects/js/classie.js"></script>
+<script src="/static/admin/assets/plugins/waves/waves.min.js"></script>
+<script src="/static/admin/assets/js/modern.min.js"></script>
+<link href="/static/admin/assets/plugins/toastr/toastr.min.css" rel="stylesheet"/>
+<script src="/static/admin/assets/plugins/toastr/toastr.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,326 @@
+{% block title %}
+Добавление контакта
+{% endblock %}
+
+{% extends "Admin/base.html" %}
+
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-inner">
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Добавление филиала</h4>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" id="addBranch">
+
+
+
+                            <div class="form-group">
+                                <label for="name" class="col-sm-2 control-label">Название</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="Название Филиала" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="showOnWebSite" class="col-sm-2 control-label">Показать на сайте</label>
+                                <div class="col-sm-10">
+                                    <div class="ios-switch pull-right switch-md">
+                                        <input type="checkbox" id="showOnWebSite" name="showOnWebSite" value="true"  class="js-switch pull-right fixed-header-check">
+                                    </div>
+                                    <p class="help-block">Если отключен, то на сайте не будет показана</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="col-sm-2 control-label">Email</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="email" id="email" placeholder="Email" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tel" class="col-sm-2 control-label">Тел. номер</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="tel" id="tel" placeholder="996XXXYYYYYY" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="instagramLink" class="col-sm-2 control-label">Instagram</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="instagramLink" id="instagramLink" placeholder="https://instagram.com/username/">
+                                    <p class="help-block">Ссылка на социальный профиль instagram</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="facebookLink" class="col-sm-2 control-label">Facebook</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="facebookLink" id="facebookLink" placeholder="https://www.facebook.com/groups/123456789101112">
+                                    <p class="help-block">Ссылка на социальный профиль facebook</p>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="address" class="col-sm-2 control-label">Адрес</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" id="address" name="address" placeholder="Адрес"></textarea>
+                                    <p class="help-block">
+                                        <button type="button" class="btn btn-success btn-rounded" id="findLocationFromAddress"><i class="fa fa-search"></i> Найти местоположение</button>
+                                        <button type="button" class="btn btn-primary btn-rounded" id="getCurrentLocation"><i class="fa fa-location-arrow"></i> Текущее местоположение</button>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="form-group full-height" style="margin-left: -20px!important; margin-right: -20px!important;">
+                                <div id="map-canvas" style="height: 400px; width: 100%; "></div>
+
+                                <input type="hidden" value="42.87113976020583" name="lat"/>
+                                <input type="hidden" value="74.59693165764156" name="long"/>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Создать</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include("Admin/copyrightFooter.html") }}
+</div>
+{% endblock %}
+
+
+{% block endBodies %}
+<script src="/static/admin/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<link href="/static/admin/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css"/>
+
+<style>
+    th.normal_font {
+        font-weight: normal;
+        padding-left: 10px;
+    }
+    i.silver {
+        color: #bfbcbc;
+        font-size: 11px;
+    }
+    .select2-results__option--highlighted table tr th i.silver {
+        color: #fff;
+    }
+    .customsize {
+        min-height: 36px;
+    }
+    .select2-search__field {
+        width: 100%!important;
+    }
+    #toast-container > div:hover{
+        opacity: 1;
+        box-shadow: 0px 0px 14px 0px #000;
+        cursor: pointer;
+    }
+
+
+    /* temporary fix for summernote*/
+    .note-group-select-from-files {
+        display: none;
+    }
+
+</style>
+<script src="/static/admin/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+
+<link href="/static/admin/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+<!--<script src="/static/admin/assets/js/pages/form-select2.js"></script>-->
+
+<script src="/static/admin/assets/js/pages/notifications.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ random(helper.getConfigConstant('GOOGLE_MAPS_APIS')) }}&language=ru"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+
+        var map, geocoder, marker;
+        function initMap() {
+            var defaultPosition = {
+                lat: 42.87113976020583,
+                lng: 74.59693165764156
+            };
+
+            map = new google.maps.Map(document.getElementById('map-canvas'), {
+                center: defaultPosition,
+                zoom: 15
+            });
+
+            geocoder = new google.maps.Geocoder();
+
+            marker = new google.maps.Marker({
+                position: defaultPosition,
+                map: map,
+                title: 'Выбранное местоположение',
+                draggable: true
+            });
+
+            marker.addListener('dragend', function(event){
+
+                initMarker(event.latLng);
+
+            });
+
+            google.maps.event.addListener(map, 'click', function(event) {
+                initMarker(event.latLng);
+            });
+
+        }
+
+        function defineCurrentLocation(){
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    initMarker(pos, true);
+                }, function() {
+                    handleLocationError(true, map.getCenter());
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, map.getCenter());
+            }
+        }
+        function handleLocationError(browserHasGeolocation, pos) {
+            if (browserHasGeolocation) toastr['error']('Пожалуйста дайте доступ к вашему местоположению', 'Ошибка');
+            else toastr['error']('Ваш браузер не поддерживает определение местоположения', 'Ошибка');
+        }
+
+        function initMarker(latLng, setCenter = false, changeAddressInput = true){
+
+            marker.setPosition(latLng);
+
+            if (setCenter) map.setCenter(latLng);
+
+            if (changeAddressInput){
+                geocoder.geocode({
+                    'latLng': latLng
+                }, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        if (results.length > 0){
+                            var address = results[0].address_components.reverse();
+                            formattedAddress = '';
+                            for (var component in address) {
+                                if (!(address[component].types.includes('country') || address[component].types.includes('administrative_area_level_1') || address[component].types.includes('postal_code'))){
+                                    formattedAddress += address[component].long_name + ', ';
+                                }
+
+                            }
+
+
+                            $('input[name=lat]').val(latLng.lat);
+                            $('input[name=long]').val(latLng.lng);
+                            $('textarea[name=address]').val(formattedAddress.trim().replace(/,$/, ''));
+                        }
+                    }
+                });
+            } else {
+                $('input[name=lat]').val(latLng.lat);
+                $('input[name=long]').val(latLng.lng);
+            }
+        }
+
+        function addressToCoordinates(address){
+            geocoder.geocode( { 'address': address}, function(results, status) {
+                if (status == 'OK') {
+                    initMarker(results[0].geometry.location, true, false);
+                } else {
+                    toastr['error']('Не смог определить местоположение по вашему запросу: \'' + address + '\'. Причина: ' + status, 'Ошибка');
+                }
+            });
+        }
+
+        google.maps.event.addDomListener(window, 'load', initMap);
+
+
+        $('#getCurrentLocation').click(function(){
+            defineCurrentLocation();
+        });
+
+        $('#findLocationFromAddress').click(function(){
+            var address = $('textarea[name=address]').val();
+            addressToCoordinates(address);
+        });
+
+        //temporary fix
+
+        /*
+                    function sendFile_(file, editor, welEditable) {
+
+                        data = new FormData();
+                        data.append("file", file);
+
+                        $.ajax({
+                            url: baseURL + 'home/uploader',
+                            data: data,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            type: 'POST',
+                            success: function(data){
+                                console.log(data);
+
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.log(textStatus+" "+errorThrown);
+                            }
+                        });
+                        console.log("sdsd");
+                        $('.summernote').summernote("editor.insertImage", 'https://www.gettyimages.ie/gi-resources/images/EnterpriseSolutions/StandOut_Creative.jpg', 'StandOut_Creative.jpg');
+                    }
+        */
+        $('#addBranch').on('submit', function(){
+
+            var showOnWebSite = $('input[name=showOnWebSite]').is(":checked")?'true':'false';
+            var name = $('input[name=name]').val();
+
+            var address = $('textarea[name=address]').val();
+            var tel = $('input[name=tel]').val();
+            var email = $('input[name=email]').val();
+
+            var instagramLink = $('input[name=instagramLink]').val();
+            var facebookLink = $('input[name=facebookLink]').val();
+
+            var lat = $('input[name=lat]').val().trim();
+            var long = $('input[name=long]').val().trim();
+
+            var formData = new FormData();
+            formData.append('name', name);
+            formData.append('showOnWebSite', showOnWebSite);
+            formData.append('tel', tel);
+            formData.append('email', email);
+            formData.append('address', address);
+
+            formData.append('instagramLink', instagramLink);
+            formData.append('facebookLink', facebookLink);
+
+
+            formData.append('geographicCoordinates[lat]', lat);
+            formData.append('geographicCoordinates[long]', long);
+
+            ajaxRequest('/admin/ajax/branch/add',
+                formData
+            );
+            return false;
+        });
+
+    });
+</script>
+{% endblock %}

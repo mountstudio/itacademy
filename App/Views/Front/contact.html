@@ -1,0 +1,217 @@
+{% set page = 'contact' %}
+
+{% block metaInit %}
+{{ meta.setDescription(staticPage.getNotes()) }}
+{% endblock %}
+
+{% block title %}
+Контакты
+{% endblock %}
+
+{% extends "Front/base.html" %}
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-header page-header-shape" data-jarallax='{"speed": 0.4}' style='background-image: url("/static/front/assets/images/pages/contact.png")'>
+    <div class="bg-overlay"></div>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7 mr-auto ml-auto text-white">
+                <h2 class="display-4 mb-1 text-white">Контакты</h2>
+                <p class="text-muted">
+                    Мы будем рады услышать от вас
+                </p>
+            </div>
+            <div class="col-md-5">
+                {{ include("Front/breadcrumb.html") }}
+            </div>
+        </div>
+    </div>
+    <svg class="svg-abs svg-f-btm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 140" style="margin-bottom: -9px; enable-background:new 0 0 1920 140;" xml:space="preserve">
+            <path class="svg-white" d="M960,92.9C811.4,93.3,662.8,89.4,515.3,79c-138.6-9.8-277.1-26.2-409-53.3C97.8,24,0,6.5,0,0c0,0,0,140,0,140
+              l960-1.2l960,1.2c0,0,0-140,0-140c0,2.7-42.1,11.3-45.8,12.2c-45.1,11-91.5,20.1-138.4,28.1c-176.2,30.1-359.9,43.8-542.9,48.9
+              C1115.4,91.4,1037.7,92.7,960,92.9z"></path>
+          </svg>
+</div>
+<!--Page header end-->
+
+
+<!--Page header end-->
+<div class="pos-rel">
+    <div class="container pt60 pb60">
+        <div class="row d-flex flex">
+            <div class="col-md-5 mr-auto mb-30 sticky-sidebar">
+                <div class="p-4 rounded shadow">
+                    <form role="form" id="sendApplication">
+                        <div class="form-group">
+                            <label for="contact-name">Имя</label>
+                            <input type="text" name="contact-name" id="contact-name" class="form-control" placeholder="Ваше имя">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-tel">Тел. Номер</label>
+                            <input type="text" id="contact-tel" name="contact-tel" class="form-control" placeholder="+996 (551) 123 456">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-message">Сообщение</label>
+                            <textarea id="contact-message" name="message" class="form-control" rows="6" placeholder="Введите ваше сообщенние"></textarea>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-lg btn-primary">Отправить</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- end .smart-wrap section -->
+            </div>
+            <!--/.col-->
+            <div class="col-md-6 mb-30">
+                <h4>
+                    Не стесняйтесь оставить сообщение
+                </h4>
+                <hr>
+                <div class="contact-list">
+                    {% for branch in branches %}
+                    <div class="contact-item my-4">
+
+                        <div class="media py-1 align-items-center">
+                            <div class="d-flex mr-3 rounded-circle avatar avatar40 bg-secondary text-white">
+                                <i class="icon-pushpin"></i>
+                            </div>
+                            <div class="media-body">
+                                {{ branch.getName() }}
+                            </div>
+                        </div>
+                        <div class="media py-1 align-items-center">
+                            <div class="d-flex mr-3 rounded-circle avatar avatar40 bg-secondary text-white">
+                                <i class="icon-map-marker"></i>
+                            </div>
+                            <div class="media-body">
+                                {{ branch.getAddress() }}
+                            </div>
+                        </div>
+                        <div class="media py-1 align-items-center">
+                            <div class="d-flex mr-3 rounded-circle avatar avatar40 bg-secondary text-white">
+                                <i class="icon-envelope"></i>
+                            </div>
+                            <div class="media-body">
+                                <a href="mailto:{{ branch.getEmail() }}">
+                                    {{ branch.getEmail() }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="media py-1 align-items-center">
+                            <div class="d-flex mr-3 rounded-circle avatar avatar40 bg-secondary text-white">
+                                <i class="icon-phone"></i>
+                            </div>
+                            <div class="media-body">
+                                <a href="tel:{{ branch.getTel() }}">
+                                    {{ branch.getTel() }}
+                                </a>
+                            </div>
+                        </div>
+
+
+                        {% if branch.getFacebookLink() and branch.getInstagramLink() %}
+                        <div class="media pt-2 align-items-center">
+                            <div class="d-flex mr-3 rounded-circle avatar avatar40 bg-secondary text-white">
+                                <i class="icon-share2"></i>
+                            </div>
+                            <div class="media-body">
+                                <ul class="list-inline mb-0 contact-social p-0">
+                                    {% if branch.getFacebookLink() %}
+                                    <li class="list-inline-item">
+                                        <a href="{{ branch.getFacebookLink() }}">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                    {% if branch.getInstagramLink() %}
+                                    <li class="list-inline-item">
+                                        <a href="{{ branch.getInstagramLink() }}">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% set coordinates = branch.getGeographicCoordinates() %}
+                        <div class="contact-map mt-4" data-lat="{{ coordinates.getLat() }}" data-lng="{{ coordinates.getLong() }}" data-branch-name="{{ branch.getName() }}" data-address="{{ branch.getAddress() }}">
+
+                        </div>
+                    </div>
+                    {% if not loop.last %}
+                        <hr>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block endBodies %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ random(helper.getConfigConstant('GOOGLE_MAPS_APIS')) }}&language=ru"></script>
+    <script src="/static/front/assets/plugins/gmaps/jquery.gmap.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+
+            $('.contact-map').each(function( index ) {
+                let self = this;
+                let selfJquery = $(this);
+                let lat = selfJquery.data('lat');
+                let lng = selfJquery.data('lng');
+                let branchName = selfJquery.data('branch-name');
+                let branchAddress = selfJquery.data('branch-address');
+
+                map = new GMaps({
+                    scrollwheel: false,
+                    el: self,
+                    lat: lat,
+                    lng: lng
+                });
+                map.addMarker({
+                    lat: lat,
+                    lng: lng,
+                    title: branchName,
+                    infoWindow: {
+                        content: '<p>' + branchAddress + '</p>'
+                    }
+                });
+            });
+
+
+            $('#sendApplication').submit(function () {
+                var self = $(this);
+                var name = self.find('#contact-name');
+                var tel = self.find('#contact-tel');
+                var description = self.find('#contact-message');
+
+                postAjaxRequest('/ajax/application/add',
+                    {
+                        name: name.val(),
+                        tel: tel.val(),
+                        description: description.val()
+                    },
+                    function (data) {
+                        name.val('');
+                        tel.val('');
+                        description.val('');
+                    }
+                );
+                return false;
+
+            });
+
+        });
+    </script>
+{% endblock %}
