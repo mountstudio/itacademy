@@ -30,6 +30,11 @@ class Dashboard extends Base
          View::renderTemplate('Admin/Dashboard/index.html', $this->data);
      }
 
+     public function calendarAction()
+     {
+         View::renderTemplate('Admin/Calendar/index.html', $this->data);
+     }
+
      public function testAction()
      {
 

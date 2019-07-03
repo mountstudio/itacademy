@@ -233,10 +233,18 @@
                 </div>
             </div>
             <ul class="menu accordion-menu">
+                {% if user.getCurrentGroup().getAltName() == 'ADMIN' %}
+                {% endif %}
                 <li>
                     <a href="/admin/dashboard" class="waves-effect waves-button">
                         <span class="menu-icon glyphicon glyphicon-home"></span>
                         <p>Панель</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/calendar" class="waves-effect waves-button">
+                        <span class="menu-icon glyphicon glyphicon-calendar"></span>
+                        <p>Календарь</p>
                     </a>
                 </li>
                 <li>
@@ -297,6 +305,7 @@
                     </a>
                 </li>
 
+                {% if user.getCurrentGroup().getAltName() == 'ADMIN'  %}
                 <li>
                     <a href="/admin/users" class="waves-effect waves-button">
                         <span class="menu-icon glyphicon glyphicon-group"></span>
@@ -304,7 +313,6 @@
                         <p>Пользователи</p>
                     </a>
                 </li>
-
 
                 <li class="droplink">
                     <a href="javascript:void();" class="waves-effect waves-button">
@@ -327,6 +335,8 @@
                         <p>Статические страницы</p>
                     </a>
                 </li>
+                {% endif %}
+
             </ul>
         </div>
         <!-- Page Sidebar Inner -->

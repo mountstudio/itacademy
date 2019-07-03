@@ -36,6 +36,7 @@ $router->add('', ['controller' => 'Front\Index', 'action' => 'index']);
 
 $router->add('admin', ['controller' => 'Admin\Dashboard', 'action' => 'index']);
 $router->add('admin/dashboard', ['controller' => 'Admin\Dashboard', 'action' => 'index']);
+$router->add('admin/calendar', ['controller' => 'Admin\Dashboard', 'action' => 'calendar']);
 
 $router->add('admin/login', ['controller' => 'Admin\Auth', 'action' => 'login']);
 $router->add('admin/logout', ['controller' => 'Admin\Auth', 'action' => 'logout']);
