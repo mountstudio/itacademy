@@ -40,6 +40,16 @@
             center: 'title',
             right: 'month,agendaWeek,agendaDay,listWeek'
         },
+        dayClick: function(date, jsEvent, view) {
+            $('#calendar').fullCalendar('renderEvent', {
+                title: 'new Event',
+                start: date.format()
+            });
+
+            // change the day's background color just for fun
+            $(this).css('background-color', 'red');
+
+        },
         defaultDate: new Date(),
         navLinks: true, // can click day/week names to navigate views
         editable: true,
