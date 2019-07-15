@@ -34,20 +34,27 @@
 <!-- Scripts are shown there-->
 <script src="/static/admin/assets/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script>
-    $('#calendar').fullCalendar({
+    let calendar = $('#calendar');
+    calendar.fullCalendar({
         header: {
             left: 'prev,next today',
             center: 'title',
             right: 'month,agendaWeek,agendaDay,listWeek'
         },
         dayClick: function(date, jsEvent, view) {
-            $('#calendar').fullCalendar('renderEvent', {
+            calendar.fullCalendar('renderEvent', {
                 title: 'new Event',
                 start: date.format()
             });
+        },
+        eventClick: function(calEvent, jsEvent, view) {
+            calEvent.title = 'Edited Event';
+            calendar.fullCalendar('updateEvent', calEvent);
 
-            // change the day's background color just for fun
-            $(this).css('background-color', 'red');
+            // alert('Event: ' + calEvent.title);
+            // alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+            // alert('View: ' + view.name);
+            // $(this).css('border-color', 'red');
 
         },
         defaultDate: new Date(),
