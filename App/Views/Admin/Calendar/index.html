@@ -42,14 +42,22 @@
             right: 'month,agendaWeek,agendaDay,listWeek'
         },
         dayClick: function(date, jsEvent, view) {
-            calendar.fullCalendar('renderEvent', {
-                title: 'new Event',
-                start: date.format()
-            });
+            let title = prompt('Title');
+            if (title != null || title != "") {
+                calendar.fullCalendar('renderEvent', {
+                    title: title,
+                    start: date.format()
+                });
+            }
+
         },
         eventClick: function(calEvent, jsEvent, view) {
-            calEvent.title = 'Edited Event';
-            calendar.fullCalendar('updateEvent', calEvent);
+            let title = prompt('Title');
+            if (title != null || title != "") {
+                calEvent.title = title;
+
+                calendar.fullCalendar('updateEvent', calEvent);
+            }
 
             // alert('Event: ' + calEvent.title);
             // alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
