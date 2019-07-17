@@ -24,6 +24,40 @@
             <div class="col-sm-12">
                 <div id="calendar"></div>
             </div>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="addCalendarEvent" tabindex="-1" role="dialog"
+                 aria-labelledby="addCalendarEventModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="addCalendarEventModalLabel">Удаление</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input type="text" name="title" id="titleCalendarEvent">
+                            </div>
+                            <div class="form-group">
+                                <input type="time" name="time" id="timeCalendarEvent">
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="cancelAddCalendarEvent" class="btn btn-default"
+                                    data-dismiss="modal">Отменить
+                            </button>
+                            <button type="button" id="confirmAddCalendarEventBtn" coursestreamid="none"
+                                    class="btn btn-danger">Добавить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div><!-- Row -->
     </div>
     {{ include("Admin/copyrightFooter.html") }}
@@ -42,17 +76,38 @@
             right: 'month,agendaWeek,agendaDay,listWeek'
         },
         dayClick: function(date, jsEvent, view) {
-            let title = prompt('Title');
-            if (title != null || title != "") {
-                calendar.fullCalendar('renderEvent', {
-                    title: title,
-                    start: date.format()
-                });
-            }
+            $('#addCalendarEvent').modal('show');
+
+            $('#confirmAddCalendarEventBtn').off('click').on('click', function (e) {
+                $('#addCalendarEvent').modal('hide');
+
+                let title = $('#titleCalendarEvent').val();
+                let time = $('#timeCalendarEvent').val();
+
+                $('#titleCalendarEvent').val('');
+                $('#timeCalendarEvent').val('');
+
+                // console.log(title);
+                let dateTime = new Date(date.format() + 'T' + time);
+
+                // console.log(time);
+                // console.log(dateTime);
+
+                if (title != null && title !== "") {
+                    calendar.fullCalendar('renderEvent', {
+                        title: title,
+                        start: dateTime,
+                        defaultTimedEventDuration: '01:00',
+                        end: new Date(dateTime.setHours(dateTime.getHours() + 4))
+                    });
+                }
+            });
+
 
         },
         eventClick: function(calEvent, jsEvent, view) {
             let title = prompt('Title');
+            console.log(calEvent);
             if (title != null || title != "") {
                 calEvent.title = title;
 

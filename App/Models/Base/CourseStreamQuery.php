@@ -122,7 +122,17 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCourseStreamQuery rightJoinWithCurrentApplicationCourseStream() Adds a RIGHT JOIN clause and with to the query using the CurrentApplicationCourseStream relation
  * @method     ChildCourseStreamQuery innerJoinWithCurrentApplicationCourseStream() Adds a INNER JOIN clause and with to the query using the CurrentApplicationCourseStream relation
  *
- * @method     \Models\BranchQuery|\Models\CurrencyQuery|\Models\CourseQuery|\Models\CourseStreamStatusQuery|\Models\UserQuery|\Models\ApplicationQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     ChildCourseStreamQuery leftJoinCurrentStreamLessonStream($relationAlias = null) Adds a LEFT JOIN clause to the query using the CurrentStreamLessonStream relation
+ * @method     ChildCourseStreamQuery rightJoinCurrentStreamLessonStream($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CurrentStreamLessonStream relation
+ * @method     ChildCourseStreamQuery innerJoinCurrentStreamLessonStream($relationAlias = null) Adds a INNER JOIN clause to the query using the CurrentStreamLessonStream relation
+ *
+ * @method     ChildCourseStreamQuery joinWithCurrentStreamLessonStream($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the CurrentStreamLessonStream relation
+ *
+ * @method     ChildCourseStreamQuery leftJoinWithCurrentStreamLessonStream() Adds a LEFT JOIN clause and with to the query using the CurrentStreamLessonStream relation
+ * @method     ChildCourseStreamQuery rightJoinWithCurrentStreamLessonStream() Adds a RIGHT JOIN clause and with to the query using the CurrentStreamLessonStream relation
+ * @method     ChildCourseStreamQuery innerJoinWithCurrentStreamLessonStream() Adds a INNER JOIN clause and with to the query using the CurrentStreamLessonStream relation
+ *
+ * @method     \Models\BranchQuery|\Models\CurrencyQuery|\Models\CourseQuery|\Models\CourseStreamStatusQuery|\Models\UserQuery|\Models\ApplicationQuery|\Models\StreamLessonQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildCourseStream findOne(ConnectionInterface $con = null) Return the first ChildCourseStream matching the query
  * @method     ChildCourseStream findOneOrCreate(ConnectionInterface $con = null) Return the first ChildCourseStream matching the query, or a new ChildCourseStream object populated from the query conditions when no match is found
@@ -1440,6 +1450,79 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
         return $this
             ->joinCurrentApplicationCourseStream($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'CurrentApplicationCourseStream', '\Models\ApplicationQuery');
+    }
+
+    /**
+     * Filter the query by a related \Models\StreamLesson object
+     *
+     * @param \Models\StreamLesson|ObjectCollection $streamLesson the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCourseStreamQuery The current query, for fluid interface
+     */
+    public function filterByCurrentStreamLessonStream($streamLesson, $comparison = null)
+    {
+        if ($streamLesson instanceof \Models\StreamLesson) {
+            return $this
+                ->addUsingAlias(CourseStreamTableMap::COL_ID, $streamLesson->getCurrentStreamId(), $comparison);
+        } elseif ($streamLesson instanceof ObjectCollection) {
+            return $this
+                ->useCurrentStreamLessonStreamQuery()
+                ->filterByPrimaryKeys($streamLesson->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByCurrentStreamLessonStream() only accepts arguments of type \Models\StreamLesson or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the CurrentStreamLessonStream relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildCourseStreamQuery The current query, for fluid interface
+     */
+    public function joinCurrentStreamLessonStream($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('CurrentStreamLessonStream');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'CurrentStreamLessonStream');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the CurrentStreamLessonStream relation StreamLesson object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Models\StreamLessonQuery A secondary query class using the current class as primary query
+     */
+    public function useCurrentStreamLessonStreamQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinCurrentStreamLessonStream($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'CurrentStreamLessonStream', '\Models\StreamLessonQuery');
     }
 
     /**

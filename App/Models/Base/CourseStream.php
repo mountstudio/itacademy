@@ -17,10 +17,13 @@ use Models\CourseStreamStatus as ChildCourseStreamStatus;
 use Models\CourseStreamStatusQuery as ChildCourseStreamStatusQuery;
 use Models\Currency as ChildCurrency;
 use Models\CurrencyQuery as ChildCurrencyQuery;
+use Models\StreamLesson as ChildStreamLesson;
+use Models\StreamLessonQuery as ChildStreamLessonQuery;
 use Models\User as ChildUser;
 use Models\UserQuery as ChildUserQuery;
 use Models\Map\ApplicationTableMap;
 use Models\Map\CourseStreamTableMap;
+use Models\Map\StreamLessonTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -221,6 +224,12 @@ abstract class CourseStream implements ActiveRecordInterface
     protected $collCurrentApplicationCourseStreamsPartial;
 
     /**
+     * @var        ObjectCollection|ChildStreamLesson[] Collection to store aggregation of ChildStreamLesson objects.
+     */
+    protected $collCurrentStreamLessonStreams;
+    protected $collCurrentStreamLessonStreamsPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -233,6 +242,12 @@ abstract class CourseStream implements ActiveRecordInterface
      * @var ObjectCollection|ChildApplication[]
      */
     protected $currentApplicationCourseStreamsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildStreamLesson[]
+     */
+    protected $currentStreamLessonStreamsScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -1220,6 +1235,8 @@ abstract class CourseStream implements ActiveRecordInterface
             $this->aCurrentCourseStreamInstructor = null;
             $this->collCurrentApplicationCourseStreams = null;
 
+            $this->collCurrentStreamLessonStreams = null;
+
         } // if (deep)
     }
 
@@ -1399,6 +1416,23 @@ abstract class CourseStream implements ActiveRecordInterface
 
             if ($this->collCurrentApplicationCourseStreams !== null) {
                 foreach ($this->collCurrentApplicationCourseStreams as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->currentStreamLessonStreamsScheduledForDeletion !== null) {
+                if (!$this->currentStreamLessonStreamsScheduledForDeletion->isEmpty()) {
+                    \Models\StreamLessonQuery::create()
+                        ->filterByPrimaryKeys($this->currentStreamLessonStreamsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->currentStreamLessonStreamsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collCurrentStreamLessonStreams !== null) {
+                foreach ($this->collCurrentStreamLessonStreams as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1807,6 +1841,21 @@ abstract class CourseStream implements ActiveRecordInterface
 
                 $result[$key] = $this->collCurrentApplicationCourseStreams->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collCurrentStreamLessonStreams) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'streamLessons';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'stream_lessons';
+                        break;
+                    default:
+                        $key = 'CurrentStreamLessonStreams';
+                }
+
+                $result[$key] = $this->collCurrentStreamLessonStreams->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
         }
 
         return $result;
@@ -2165,6 +2214,12 @@ abstract class CourseStream implements ActiveRecordInterface
                 }
             }
 
+            foreach ($this->getCurrentStreamLessonStreams() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addCurrentStreamLessonStream($relObj->copy($deepCopy));
+                }
+            }
+
         } // if ($deepCopy)
 
         if ($makeNew) {
@@ -2465,6 +2520,10 @@ abstract class CourseStream implements ActiveRecordInterface
             $this->initCurrentApplicationCourseStreams();
             return;
         }
+        if ('CurrentStreamLessonStream' == $relationName) {
+            $this->initCurrentStreamLessonStreams();
+            return;
+        }
     }
 
     /**
@@ -2743,6 +2802,231 @@ abstract class CourseStream implements ActiveRecordInterface
     }
 
     /**
+     * Clears out the collCurrentStreamLessonStreams collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addCurrentStreamLessonStreams()
+     */
+    public function clearCurrentStreamLessonStreams()
+    {
+        $this->collCurrentStreamLessonStreams = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collCurrentStreamLessonStreams collection loaded partially.
+     */
+    public function resetPartialCurrentStreamLessonStreams($v = true)
+    {
+        $this->collCurrentStreamLessonStreamsPartial = $v;
+    }
+
+    /**
+     * Initializes the collCurrentStreamLessonStreams collection.
+     *
+     * By default this just sets the collCurrentStreamLessonStreams collection to an empty array (like clearcollCurrentStreamLessonStreams());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initCurrentStreamLessonStreams($overrideExisting = true)
+    {
+        if (null !== $this->collCurrentStreamLessonStreams && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = StreamLessonTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collCurrentStreamLessonStreams = new $collectionClassName;
+        $this->collCurrentStreamLessonStreams->setModel('\Models\StreamLesson');
+    }
+
+    /**
+     * Gets an array of ChildStreamLesson objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildCourseStream is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildStreamLesson[] List of ChildStreamLesson objects
+     * @throws PropelException
+     */
+    public function getCurrentStreamLessonStreams(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collCurrentStreamLessonStreamsPartial && !$this->isNew();
+        if (null === $this->collCurrentStreamLessonStreams || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collCurrentStreamLessonStreams) {
+                // return empty collection
+                $this->initCurrentStreamLessonStreams();
+            } else {
+                $collCurrentStreamLessonStreams = ChildStreamLessonQuery::create(null, $criteria)
+                    ->filterByCurrentStreamStreamLesson($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collCurrentStreamLessonStreamsPartial && count($collCurrentStreamLessonStreams)) {
+                        $this->initCurrentStreamLessonStreams(false);
+
+                        foreach ($collCurrentStreamLessonStreams as $obj) {
+                            if (false == $this->collCurrentStreamLessonStreams->contains($obj)) {
+                                $this->collCurrentStreamLessonStreams->append($obj);
+                            }
+                        }
+
+                        $this->collCurrentStreamLessonStreamsPartial = true;
+                    }
+
+                    return $collCurrentStreamLessonStreams;
+                }
+
+                if ($partial && $this->collCurrentStreamLessonStreams) {
+                    foreach ($this->collCurrentStreamLessonStreams as $obj) {
+                        if ($obj->isNew()) {
+                            $collCurrentStreamLessonStreams[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collCurrentStreamLessonStreams = $collCurrentStreamLessonStreams;
+                $this->collCurrentStreamLessonStreamsPartial = false;
+            }
+        }
+
+        return $this->collCurrentStreamLessonStreams;
+    }
+
+    /**
+     * Sets a collection of ChildStreamLesson objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $currentStreamLessonStreams A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildCourseStream The current object (for fluent API support)
+     */
+    public function setCurrentStreamLessonStreams(Collection $currentStreamLessonStreams, ConnectionInterface $con = null)
+    {
+        /** @var ChildStreamLesson[] $currentStreamLessonStreamsToDelete */
+        $currentStreamLessonStreamsToDelete = $this->getCurrentStreamLessonStreams(new Criteria(), $con)->diff($currentStreamLessonStreams);
+
+
+        $this->currentStreamLessonStreamsScheduledForDeletion = $currentStreamLessonStreamsToDelete;
+
+        foreach ($currentStreamLessonStreamsToDelete as $currentStreamLessonStreamRemoved) {
+            $currentStreamLessonStreamRemoved->setCurrentStreamStreamLesson(null);
+        }
+
+        $this->collCurrentStreamLessonStreams = null;
+        foreach ($currentStreamLessonStreams as $currentStreamLessonStream) {
+            $this->addCurrentStreamLessonStream($currentStreamLessonStream);
+        }
+
+        $this->collCurrentStreamLessonStreams = $currentStreamLessonStreams;
+        $this->collCurrentStreamLessonStreamsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related StreamLesson objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related StreamLesson objects.
+     * @throws PropelException
+     */
+    public function countCurrentStreamLessonStreams(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collCurrentStreamLessonStreamsPartial && !$this->isNew();
+        if (null === $this->collCurrentStreamLessonStreams || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collCurrentStreamLessonStreams) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getCurrentStreamLessonStreams());
+            }
+
+            $query = ChildStreamLessonQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByCurrentStreamStreamLesson($this)
+                ->count($con);
+        }
+
+        return count($this->collCurrentStreamLessonStreams);
+    }
+
+    /**
+     * Method called to associate a ChildStreamLesson object to this object
+     * through the ChildStreamLesson foreign key attribute.
+     *
+     * @param  ChildStreamLesson $l ChildStreamLesson
+     * @return $this|\Models\CourseStream The current object (for fluent API support)
+     */
+    public function addCurrentStreamLessonStream(ChildStreamLesson $l)
+    {
+        if ($this->collCurrentStreamLessonStreams === null) {
+            $this->initCurrentStreamLessonStreams();
+            $this->collCurrentStreamLessonStreamsPartial = true;
+        }
+
+        if (!$this->collCurrentStreamLessonStreams->contains($l)) {
+            $this->doAddCurrentStreamLessonStream($l);
+
+            if ($this->currentStreamLessonStreamsScheduledForDeletion and $this->currentStreamLessonStreamsScheduledForDeletion->contains($l)) {
+                $this->currentStreamLessonStreamsScheduledForDeletion->remove($this->currentStreamLessonStreamsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildStreamLesson $currentStreamLessonStream The ChildStreamLesson object to add.
+     */
+    protected function doAddCurrentStreamLessonStream(ChildStreamLesson $currentStreamLessonStream)
+    {
+        $this->collCurrentStreamLessonStreams[]= $currentStreamLessonStream;
+        $currentStreamLessonStream->setCurrentStreamStreamLesson($this);
+    }
+
+    /**
+     * @param  ChildStreamLesson $currentStreamLessonStream The ChildStreamLesson object to remove.
+     * @return $this|ChildCourseStream The current object (for fluent API support)
+     */
+    public function removeCurrentStreamLessonStream(ChildStreamLesson $currentStreamLessonStream)
+    {
+        if ($this->getCurrentStreamLessonStreams()->contains($currentStreamLessonStream)) {
+            $pos = $this->collCurrentStreamLessonStreams->search($currentStreamLessonStream);
+            $this->collCurrentStreamLessonStreams->remove($pos);
+            if (null === $this->currentStreamLessonStreamsScheduledForDeletion) {
+                $this->currentStreamLessonStreamsScheduledForDeletion = clone $this->collCurrentStreamLessonStreams;
+                $this->currentStreamLessonStreamsScheduledForDeletion->clear();
+            }
+            $this->currentStreamLessonStreamsScheduledForDeletion[]= clone $currentStreamLessonStream;
+            $currentStreamLessonStream->setCurrentStreamStreamLesson(null);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
@@ -2804,9 +3088,15 @@ abstract class CourseStream implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collCurrentStreamLessonStreams) {
+                foreach ($this->collCurrentStreamLessonStreams as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
         $this->collCurrentApplicationCourseStreams = null;
+        $this->collCurrentStreamLessonStreams = null;
         $this->aCurrentCourseStreamBranch = null;
         $this->aCurrentCourseStreamCurrency = null;
         $this->aCurrentCourseCourseStream = null;

@@ -504,6 +504,7 @@ $router->add('admin/courses/add', ['controller' => 'Admin\Course', 'action' => '
 
 $router->add('admin/courses/{id:\d+}/edit', ['controller' => 'Admin\Course', 'action' => 'edit']);
 $router->add('admin/courses/{courseid:\d+}/streams', ['controller' => 'Admin\Course\Stream', 'action' => 'index']);
+$router->add('admin/courses/{courseid:\d+}/streams/{id:\d+}', ['controller' => 'Admin\Course\Stream', 'action' => 'show']);
 $router->add('admin/courses/{courseid:\d+}/streams/{id:\d+}/edit', ['controller' => 'Admin\Course\Stream', 'action' => 'edit']);
 $router->add('admin/courses/{courseid:\d+}/streams/add', ['controller' => 'Admin\Course\Stream', 'action' => 'add']);
 
