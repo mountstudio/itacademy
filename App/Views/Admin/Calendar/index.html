@@ -43,6 +43,9 @@
                             <div class="form-group">
                                 <input type="time" name="time" id="timeCalendarEvent">
                             </div>
+                            <div class="form-group">
+                                <input type="number" name="duration" id="durationCalendarEvent">
+                            </div>
 
                         </div>
                         <div class="modal-footer">
@@ -83,36 +86,38 @@
 
                 let title = $('#titleCalendarEvent').val();
                 let time = $('#timeCalendarEvent').val();
+                let duration = $('#durationCalendarEvent').val();
 
                 $('#titleCalendarEvent').val('');
                 $('#timeCalendarEvent').val('');
+                $('#durationCalendarEvent').val('');
 
                 // console.log(title);
-                let dateTime = new Date(date.format() + 'T' + time);
-
-                // console.log(time);
-                // console.log(dateTime);
+                let dateTime = date.format() + 'T' + time;
+                time = new Date(dateTime);
 
                 if (title != null && title !== "") {
-                    calendar.fullCalendar('renderEvent', {
+                    let event = {
                         title: title,
+                        end: new Date(time.setHours(time.getHours() + parseInt(duration))),
                         start: dateTime,
-                        defaultTimedEventDuration: '01:00',
-                        end: new Date(dateTime.setHours(dateTime.getHours() + 4))
-                    });
+                        forceEventDuration: true
+                    };
+                    console.log(event);
+                    calendar.fullCalendar('renderEvent', event);
                 }
             });
 
 
         },
         eventClick: function(calEvent, jsEvent, view) {
-            let title = prompt('Title');
+            // let title = prompt('Title');
             console.log(calEvent);
-            if (title != null || title != "") {
-                calEvent.title = title;
-
-                calendar.fullCalendar('updateEvent', calEvent);
-            }
+            // if (title != null || title != "") {
+            //     calEvent.title = title;
+            //
+            //     calendar.fullCalendar('updateEvent', calEvent);
+            // }
 
             // alert('Event: ' + calEvent.title);
             // alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
