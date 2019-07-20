@@ -20,6 +20,7 @@ use \Models\GroupQuery;
 
 use \Models\VerificationToken;
 use \Models\VerificationTokenQuery;
+use Propel\Runtime\ActiveQuery\Criteria;
 
 /**
  * Home controller
@@ -36,6 +37,36 @@ class User extends Base
              $this->helper->shouldHavePrivilege('SUPER');
              $paginator = $this->helper->paginator();
              $users = UserQuery::create()->orderById('desc')->paginate($page = $paginator['page'], $maxPerPage = $paginator['max']);
+
+             $this->response->setPaginationDetails($users);
+             $users_data = array();
+             foreach ($users as $user) {
+                 $group = $user->getCurrentGroup();
+                 $users_data[] = array( 'id' => $user->getId(),
+                                        'userName' => $user->getUserName(),
+                                        'email' => $user->getEmail(),
+                                        'name' => $user->getName(),
+                                        'avatar' => $user->getLogo(),
+                                        'group' => array(   'altName'   => $group->getAltName(),
+                                                            'name'      => $group->getName()
+                                                        )
+                                        );
+             }
+             $this->response->setData($users_data);
+             $this->response->setStatus(JsonResponse::SUCCESS);
+         } catch (CustomException $e) {
+             $this->response->setException($e);
+         }
+
+         $this->response->show();
+     }
+     public function studentsAction()
+     {
+         $this->response = new JsonResponse($pagination = true);
+         try {
+             $this->helper->shouldHavePrivilege('SUPER');
+             $paginator = $this->helper->paginator();
+             $users = UserQuery::create()->filterByCurrentGroupId([1,2], Criteria::NOT_IN)->orderById('desc')->paginate($page = $paginator['page'], $maxPerPage = $paginator['max']);
 
              $this->response->setPaginationDetails($users);
              $users_data = array();

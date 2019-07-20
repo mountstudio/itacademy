@@ -58,7 +58,11 @@ $router->add('admin/profile', ['controller' => 'Admin\Profile', 'action' => 'ind
 $router->add('admin/users', ['controller' => 'Admin\User', 'action' => 'index']);
 $router->add('admin/users/all', ['controller' => 'Admin\User', 'action' => 'index']);
 
+$router->add('admin/students', ['controller' => 'Admin\User', 'action' => 'students']);
+$router->add('admin/students/all', ['controller' => 'Admin\User', 'action' => 'students']);
+
 $router->add('admin/ajax/user/paginate', ['controller' => 'Admin\Ajax\User', 'action' => 'list']);
+$router->add('admin/ajax/students/paginate', ['controller' => 'Admin\Ajax\User', 'action' => 'students']);
 
 $router->add('admin/users/add', ['controller' => 'Admin\User', 'action' => 'add']);
 

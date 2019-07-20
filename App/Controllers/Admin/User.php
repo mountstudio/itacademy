@@ -39,6 +39,21 @@ class User extends Base
              View::renderTemplate('Admin/errorPage.html', $this->data);
          }
      }
+     public function studentsAction()
+     {
+         try {
+             $this->helper->shouldHavePrivilege('SUPER');
+             View::renderTemplate('Admin/User/students.html', $this->data);
+         } catch (CustomException $e) {
+             $this->data = array_merge( $this->data,
+                                        array(  'error_code' => $e->getCode(),
+                                                'error_title' => "Ошибка",
+                                                'error_message' => $e->getMessage(),
+                                                )
+                                        );
+             View::renderTemplate('Admin/errorPage.html', $this->data);
+         }
+     }
 
      public function editAction()
      {
