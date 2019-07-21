@@ -120,6 +120,16 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUserQuery rightJoinWithCurrentInstructorCourseStream() Adds a RIGHT JOIN clause and with to the query using the CurrentInstructorCourseStream relation
  * @method     ChildUserQuery innerJoinWithCurrentInstructorCourseStream() Adds a INNER JOIN clause and with to the query using the CurrentInstructorCourseStream relation
  *
+ * @method     ChildUserQuery leftJoinStreamUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the StreamUser relation
+ * @method     ChildUserQuery rightJoinStreamUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the StreamUser relation
+ * @method     ChildUserQuery innerJoinStreamUser($relationAlias = null) Adds a INNER JOIN clause to the query using the StreamUser relation
+ *
+ * @method     ChildUserQuery joinWithStreamUser($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the StreamUser relation
+ *
+ * @method     ChildUserQuery leftJoinWithStreamUser() Adds a LEFT JOIN clause and with to the query using the StreamUser relation
+ * @method     ChildUserQuery rightJoinWithStreamUser() Adds a RIGHT JOIN clause and with to the query using the StreamUser relation
+ * @method     ChildUserQuery innerJoinWithStreamUser() Adds a INNER JOIN clause and with to the query using the StreamUser relation
+ *
  * @method     ChildUserQuery leftJoinToUserNotification($relationAlias = null) Adds a LEFT JOIN clause to the query using the ToUserNotification relation
  * @method     ChildUserQuery rightJoinToUserNotification($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ToUserNotification relation
  * @method     ChildUserQuery innerJoinToUserNotification($relationAlias = null) Adds a INNER JOIN clause to the query using the ToUserNotification relation
@@ -150,7 +160,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUserQuery rightJoinWithCurrentUserFeedback() Adds a RIGHT JOIN clause and with to the query using the CurrentUserFeedback relation
  * @method     ChildUserQuery innerJoinWithCurrentUserFeedback() Adds a INNER JOIN clause and with to the query using the CurrentUserFeedback relation
  *
- * @method     \Models\GroupQuery|\Models\CurrencyQuery|\Models\AdminStyleQuery|\Models\VerificationTokenQuery|\Models\CourseStreamQuery|\Models\NotificationQuery|\Models\FeedbackQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \Models\GroupQuery|\Models\CurrencyQuery|\Models\AdminStyleQuery|\Models\VerificationTokenQuery|\Models\CourseStreamQuery|\Models\StreamUserQuery|\Models\NotificationQuery|\Models\FeedbackQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildUser findOne(ConnectionInterface $con = null) Return the first ChildUser matching the query
  * @method     ChildUser findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUser matching the query, or a new ChildUser object populated from the query conditions when no match is found
@@ -1472,6 +1482,79 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     }
 
     /**
+     * Filter the query by a related \Models\StreamUser object
+     *
+     * @param \Models\StreamUser|ObjectCollection $streamUser the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildUserQuery The current query, for fluid interface
+     */
+    public function filterByStreamUser($streamUser, $comparison = null)
+    {
+        if ($streamUser instanceof \Models\StreamUser) {
+            return $this
+                ->addUsingAlias(UserTableMap::COL_ID, $streamUser->getUserId(), $comparison);
+        } elseif ($streamUser instanceof ObjectCollection) {
+            return $this
+                ->useStreamUserQuery()
+                ->filterByPrimaryKeys($streamUser->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByStreamUser() only accepts arguments of type \Models\StreamUser or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the StreamUser relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildUserQuery The current query, for fluid interface
+     */
+    public function joinStreamUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('StreamUser');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'StreamUser');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the StreamUser relation StreamUser object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Models\StreamUserQuery A secondary query class using the current class as primary query
+     */
+    public function useStreamUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinStreamUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'StreamUser', '\Models\StreamUserQuery');
+    }
+
+    /**
      * Filter the query by a related \Models\Notification object
      *
      * @param \Models\Notification|ObjectCollection $notification the related object to use as filter
@@ -1688,6 +1771,23 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
         return $this
             ->joinCurrentUserFeedback($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'CurrentUserFeedback', '\Models\FeedbackQuery');
+    }
+
+    /**
+     * Filter the query by a related CourseStream object
+     * using the stream_user table as cross reference
+     *
+     * @param CourseStream $courseStream the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildUserQuery The current query, for fluid interface
+     */
+    public function filterByCourseStream($courseStream, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useStreamUserQuery()
+            ->filterByCourseStream($courseStream, $comparison)
+            ->endUse();
     }
 
     /**

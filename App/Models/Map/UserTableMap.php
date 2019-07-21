@@ -283,6 +283,13 @@ class UserTableMap extends TableMap
     1 => ':id',
   ),
 ), 'SET NULL', null, 'CurrentInstructorCourseStreams', false);
+        $this->addRelation('StreamUser', '\\Models\\StreamUser', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':user_id',
+    1 => ':id',
+  ),
+), null, null, 'StreamUsers', false);
         $this->addRelation('ToUserNotification', '\\Models\\Notification', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
@@ -304,6 +311,7 @@ class UserTableMap extends TableMap
     1 => ':id',
   ),
 ), 'CASCADE', null, 'CurrentUserFeedbacks', false);
+        $this->addRelation('CourseStream', '\\Models\\CourseStream', RelationMap::MANY_TO_MANY, array(), null, null, 'CourseStreams');
     } // buildRelations()
 
     /**

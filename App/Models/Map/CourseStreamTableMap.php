@@ -267,13 +267,21 @@ class CourseStreamTableMap extends TableMap
     1 => ':id',
   ),
 ), 'SET NULL', null, 'CurrentApplicationCourseStreams', false);
-        $this->addRelation('CurrentStreamLessonStream', '\\Models\\StreamLesson', RelationMap::ONE_TO_MANY, array (
+        $this->addRelation('CurrentStreamLessonStream', '\\Models\\Lesson', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
     0 => ':stream_id',
     1 => ':id',
   ),
 ), 'CASCADE', null, 'CurrentStreamLessonStreams', false);
+        $this->addRelation('StreamUser', '\\Models\\StreamUser', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':stream_id',
+    1 => ':id',
+  ),
+), null, null, 'StreamUsers', false);
+        $this->addRelation('User', '\\Models\\User', RelationMap::MANY_TO_MANY, array(), null, null, 'Users');
     } // buildRelations()
 
     /**
@@ -297,7 +305,7 @@ class CourseStreamTableMap extends TableMap
         // Invalidate objects in related instance pools,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ApplicationTableMap::clearInstancePool();
-        StreamLessonTableMap::clearInstancePool();
+        LessonTableMap::clearInstancePool();
     }
 
     /**

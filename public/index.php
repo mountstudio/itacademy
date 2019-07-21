@@ -68,6 +68,20 @@ $router->add('admin/users/add', ['controller' => 'Admin\User', 'action' => 'add'
 
 $router->add('admin/users/{id:\d+}/edit', ['controller' => 'Admin\User', 'action' => 'edit']);
 
+$router->add('admin/users/{userid:\d+}/streams', ['controller' => 'Admin\User\Stream', 'action' => 'index']);
+$router->add('admin/users/{userid:\d+}/streams/{id:\d+}', ['controller' => 'Admin\User\Stream', 'action' => 'show']);
+$router->add('admin/users/{userid:\d+}/streams/{id:\d+}/edit', ['controller' => 'Admin\User\Stream', 'action' => 'edit']);
+$router->add('admin/users/{userid:\d+}/streams/add', ['controller' => 'Admin\User\Stream', 'action' => 'add']);
+
+$router->add('admin/ajax/user/stream/byUser', ['controller' => 'Admin\Ajax\User\Stream', 'action' => 'liteStreamList']);
+
+$router->add('admin/ajax/user/stream/paginate', ['controller' => 'Admin\Ajax\User\Stream', 'action' => 'list']);
+$router->add('admin/ajax/user/stream/add', ['controller' => 'Admin\Ajax\User\Stream', 'action' => 'add']);
+
+$router->add('admin/ajax/user/stream/delete', ['controller' => 'Admin\Ajax\User\Stream', 'action' => 'delete']);
+$router->add('admin/ajax/user/stream/edit', ['controller' => 'Admin\Ajax\User\Stream', 'action' => 'edit']);
+
+
 
 $router->add('admin/ajax/user/add', ['controller' => 'Admin\Ajax\User', 'action' => 'add']);
 

@@ -2,8 +2,8 @@
 
 namespace Models\Map;
 
-use Models\StreamLesson;
-use Models\StreamLessonQuery;
+use Models\StreamUser;
+use Models\StreamUserQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'stream_lesson' table.
+ * This class defines the structure of the 'stream_user' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class StreamLessonTableMap extends TableMap
+class StreamUserTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class StreamLessonTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'Models.Map.StreamLessonTableMap';
+    const CLASS_NAME = 'Models.Map.StreamUserTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +44,22 @@ class StreamLessonTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'stream_lesson';
+    const TABLE_NAME = 'stream_user';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Models\\StreamLesson';
+    const OM_CLASS = '\\Models\\StreamUser';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Models.StreamLesson';
+    const CLASS_DEFAULT = 'Models.StreamUser';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 2;
 
     /**
      * The number of lazy-loaded columns
@@ -69,37 +69,17 @@ class StreamLessonTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
-
-    /**
-     * the column name for the id field
-     */
-    const COL_ID = 'stream_lesson.id';
-
-    /**
-     * the column name for the title field
-     */
-    const COL_TITLE = 'stream_lesson.title';
-
-    /**
-     * the column name for the date field
-     */
-    const COL_DATE = 'stream_lesson.date';
+    const NUM_HYDRATE_COLUMNS = 2;
 
     /**
      * the column name for the stream_id field
      */
-    const COL_STREAM_ID = 'stream_lesson.stream_id';
+    const COL_STREAM_ID = 'stream_user.stream_id';
 
     /**
-     * the column name for the created_at field
+     * the column name for the user_id field
      */
-    const COL_CREATED_AT = 'stream_lesson.created_at';
-
-    /**
-     * the column name for the updated_at field
-     */
-    const COL_UPDATED_AT = 'stream_lesson.updated_at';
+    const COL_USER_ID = 'stream_user.user_id';
 
     /**
      * The default string format for model objects of the related table
@@ -113,11 +93,11 @@ class StreamLessonTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Title', 'LessonDate', 'CurrentStreamId', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_CAMELNAME     => array('id', 'title', 'lessonDate', 'currentStreamId', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(StreamLessonTableMap::COL_ID, StreamLessonTableMap::COL_TITLE, StreamLessonTableMap::COL_DATE, StreamLessonTableMap::COL_STREAM_ID, StreamLessonTableMap::COL_CREATED_AT, StreamLessonTableMap::COL_UPDATED_AT, ),
-        self::TYPE_FIELDNAME     => array('id', 'title', 'date', 'stream_id', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('StreamId', 'UserId', ),
+        self::TYPE_CAMELNAME     => array('streamId', 'userId', ),
+        self::TYPE_COLNAME       => array(StreamUserTableMap::COL_STREAM_ID, StreamUserTableMap::COL_USER_ID, ),
+        self::TYPE_FIELDNAME     => array('stream_id', 'user_id', ),
+        self::TYPE_NUM           => array(0, 1, )
     );
 
     /**
@@ -127,11 +107,11 @@ class StreamLessonTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'LessonDate' => 2, 'CurrentStreamId' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'lessonDate' => 2, 'currentStreamId' => 3, 'createdAt' => 4, 'updatedAt' => 5, ),
-        self::TYPE_COLNAME       => array(StreamLessonTableMap::COL_ID => 0, StreamLessonTableMap::COL_TITLE => 1, StreamLessonTableMap::COL_DATE => 2, StreamLessonTableMap::COL_STREAM_ID => 3, StreamLessonTableMap::COL_CREATED_AT => 4, StreamLessonTableMap::COL_UPDATED_AT => 5, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'date' => 2, 'stream_id' => 3, 'created_at' => 4, 'updated_at' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('StreamId' => 0, 'UserId' => 1, ),
+        self::TYPE_CAMELNAME     => array('streamId' => 0, 'userId' => 1, ),
+        self::TYPE_COLNAME       => array(StreamUserTableMap::COL_STREAM_ID => 0, StreamUserTableMap::COL_USER_ID => 1, ),
+        self::TYPE_FIELDNAME     => array('stream_id' => 0, 'user_id' => 1, ),
+        self::TYPE_NUM           => array(0, 1, )
     );
 
     /**
@@ -144,19 +124,16 @@ class StreamLessonTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('stream_lesson');
-        $this->setPhpName('StreamLesson');
-        $this->setIdentifierQuoting(true);
-        $this->setClassName('\\Models\\StreamLesson');
+        $this->setName('stream_user');
+        $this->setPhpName('StreamUser');
+        $this->setIdentifierQuoting(false);
+        $this->setClassName('\\Models\\StreamUser');
         $this->setPackage('Models');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
+        $this->setIsCrossRef(true);
         // columns
-        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('title', 'Title', 'VARCHAR', false, 90, null);
-        $this->addColumn('date', 'LessonDate', 'TIMESTAMP', false, null, null);
-        $this->addForeignKey('stream_id', 'CurrentStreamId', 'INTEGER', 'course_stream', 'id', true, null, null);
-        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addForeignPrimaryKey('stream_id', 'StreamId', 'INTEGER' , 'course_stream', 'id', true, null, null);
+        $this->addForeignPrimaryKey('user_id', 'UserId', 'INTEGER' , 'user', 'id', true, null, null);
     } // initialize()
 
     /**
@@ -164,28 +141,74 @@ class StreamLessonTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('CurrentStreamStreamLesson', '\\Models\\CourseStream', RelationMap::MANY_TO_ONE, array (
+        $this->addRelation('CourseStream', '\\Models\\CourseStream', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
     0 => ':stream_id',
     1 => ':id',
   ),
-), 'CASCADE', null, null, false);
+), null, null, null, false);
+        $this->addRelation('User', '\\Models\\User', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':user_id',
+    1 => ':id',
+  ),
+), null, null, null, false);
     } // buildRelations()
 
     /**
+     * Adds an object to the instance pool.
      *
-     * Gets the list of behaviors registered for this table
+     * Propel keeps cached copies of objects in an instance pool when they are retrieved
+     * from the database. In some cases you may need to explicitly add objects
+     * to the cache in order to ensure that the same objects are always returned by find*()
+     * and findPk*() calls.
      *
-     * @return array Associative array (name => parameters) of behaviors
+     * @param \Models\StreamUser $obj A \Models\StreamUser object.
+     * @param string $key             (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
-    public function getBehaviors()
+    public static function addInstanceToPool($obj, $key = null)
     {
-        return array(
-            'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', 'disable_created_at' => 'false', 'disable_updated_at' => 'false', ),
-            'query_cache' => array('backend' => 'apc', 'lifetime' => '3600', ),
-        );
-    } // getBehaviors()
+        if (Propel::isInstancePoolingEnabled()) {
+            if (null === $key) {
+                $key = serialize([(null === $obj->getStreamId() || is_scalar($obj->getStreamId()) || is_callable([$obj->getStreamId(), '__toString']) ? (string) $obj->getStreamId() : $obj->getStreamId()), (null === $obj->getUserId() || is_scalar($obj->getUserId()) || is_callable([$obj->getUserId(), '__toString']) ? (string) $obj->getUserId() : $obj->getUserId())]);
+            } // if key === null
+            self::$instances[$key] = $obj;
+        }
+    }
+
+    /**
+     * Removes an object from the instance pool.
+     *
+     * Propel keeps cached copies of objects in an instance pool when they are retrieved
+     * from the database.  In some cases -- especially when you override doDelete
+     * methods in your stub classes -- you may need to explicitly remove objects
+     * from the cache in order to prevent returning objects that no longer exist.
+     *
+     * @param mixed $value A \Models\StreamUser object or a primary key value.
+     */
+    public static function removeInstanceFromPool($value)
+    {
+        if (Propel::isInstancePoolingEnabled() && null !== $value) {
+            if (is_object($value) && $value instanceof \Models\StreamUser) {
+                $key = serialize([(null === $value->getStreamId() || is_scalar($value->getStreamId()) || is_callable([$value->getStreamId(), '__toString']) ? (string) $value->getStreamId() : $value->getStreamId()), (null === $value->getUserId() || is_scalar($value->getUserId()) || is_callable([$value->getUserId(), '__toString']) ? (string) $value->getUserId() : $value->getUserId())]);
+
+            } elseif (is_array($value) && count($value) === 2) {
+                // assume we've been passed a primary key";
+                $key = serialize([(null === $value[0] || is_scalar($value[0]) || is_callable([$value[0], '__toString']) ? (string) $value[0] : $value[0]), (null === $value[1] || is_scalar($value[1]) || is_callable([$value[1], '__toString']) ? (string) $value[1] : $value[1])]);
+            } elseif ($value instanceof Criteria) {
+                self::$instances = [];
+
+                return;
+            } else {
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or \Models\StreamUser object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value, true)));
+                throw $e;
+            }
+
+            unset(self::$instances[$key]);
+        }
+    }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -203,11 +226,11 @@ class StreamLessonTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('StreamId', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+        return serialize([(null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('StreamId', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('StreamId', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('StreamId', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('StreamId', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('StreamId', TableMap::TYPE_PHPNAME, $indexType)]), (null === $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)])]);
     }
 
     /**
@@ -224,11 +247,20 @@ class StreamLessonTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return (int) $row[
+            $pks = [];
+
+        $pks[] = (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('StreamId', TableMap::TYPE_PHPNAME, $indexType)
         ];
+        $pks[] = (int) $row[
+            $indexType == TableMap::TYPE_NUM
+                ? 1 + $offset
+                : self::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)
+        ];
+
+        return $pks;
     }
 
     /**
@@ -244,7 +276,7 @@ class StreamLessonTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? StreamLessonTableMap::CLASS_DEFAULT : StreamLessonTableMap::OM_CLASS;
+        return $withPrefix ? StreamUserTableMap::CLASS_DEFAULT : StreamUserTableMap::OM_CLASS;
     }
 
     /**
@@ -258,22 +290,22 @@ class StreamLessonTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (StreamLesson object, last column rank)
+     * @return array           (StreamUser object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = StreamLessonTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = StreamLessonTableMap::getInstanceFromPool($key))) {
+        $key = StreamUserTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = StreamUserTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + StreamLessonTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + StreamUserTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = StreamLessonTableMap::OM_CLASS;
-            /** @var StreamLesson $obj */
+            $cls = StreamUserTableMap::OM_CLASS;
+            /** @var StreamUser $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            StreamLessonTableMap::addInstanceToPool($obj, $key);
+            StreamUserTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -296,18 +328,18 @@ class StreamLessonTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = StreamLessonTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = StreamLessonTableMap::getInstanceFromPool($key))) {
+            $key = StreamUserTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = StreamUserTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var StreamLesson $obj */
+                /** @var StreamUser $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                StreamLessonTableMap::addInstanceToPool($obj, $key);
+                StreamUserTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -328,19 +360,11 @@ class StreamLessonTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(StreamLessonTableMap::COL_ID);
-            $criteria->addSelectColumn(StreamLessonTableMap::COL_TITLE);
-            $criteria->addSelectColumn(StreamLessonTableMap::COL_DATE);
-            $criteria->addSelectColumn(StreamLessonTableMap::COL_STREAM_ID);
-            $criteria->addSelectColumn(StreamLessonTableMap::COL_CREATED_AT);
-            $criteria->addSelectColumn(StreamLessonTableMap::COL_UPDATED_AT);
+            $criteria->addSelectColumn(StreamUserTableMap::COL_STREAM_ID);
+            $criteria->addSelectColumn(StreamUserTableMap::COL_USER_ID);
         } else {
-            $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.title');
-            $criteria->addSelectColumn($alias . '.date');
             $criteria->addSelectColumn($alias . '.stream_id');
-            $criteria->addSelectColumn($alias . '.created_at');
-            $criteria->addSelectColumn($alias . '.updated_at');
+            $criteria->addSelectColumn($alias . '.user_id');
         }
     }
 
@@ -353,7 +377,7 @@ class StreamLessonTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(StreamLessonTableMap::DATABASE_NAME)->getTable(StreamLessonTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(StreamUserTableMap::DATABASE_NAME)->getTable(StreamUserTableMap::TABLE_NAME);
     }
 
     /**
@@ -361,16 +385,16 @@ class StreamLessonTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(StreamLessonTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(StreamLessonTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new StreamLessonTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(StreamUserTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(StreamUserTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new StreamUserTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a StreamLesson or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a StreamUser or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or StreamLesson object or primary key or array of primary keys
+     * @param mixed               $values Criteria or StreamUser object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -381,27 +405,37 @@ class StreamLessonTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StreamLessonTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(StreamUserTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Models\StreamLesson) { // it's a model object
+        } elseif ($values instanceof \Models\StreamUser) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(StreamLessonTableMap::DATABASE_NAME);
-            $criteria->add(StreamLessonTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(StreamUserTableMap::DATABASE_NAME);
+            // primary key is composite; we therefore, expect
+            // the primary key passed to be an array of pkey values
+            if (count($values) == count($values, COUNT_RECURSIVE)) {
+                // array is not multi-dimensional
+                $values = array($values);
+            }
+            foreach ($values as $value) {
+                $criterion = $criteria->getNewCriterion(StreamUserTableMap::COL_STREAM_ID, $value[0]);
+                $criterion->addAnd($criteria->getNewCriterion(StreamUserTableMap::COL_USER_ID, $value[1]));
+                $criteria->addOr($criterion);
+            }
         }
 
-        $query = StreamLessonQuery::create()->mergeWith($criteria);
+        $query = StreamUserQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            StreamLessonTableMap::clearInstancePool();
+            StreamUserTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                StreamLessonTableMap::removeInstanceFromPool($singleval);
+                StreamUserTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -409,20 +443,20 @@ class StreamLessonTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the stream_lesson table.
+     * Deletes all rows from the stream_user table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return StreamLessonQuery::create()->doDeleteAll($con);
+        return StreamUserQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a StreamLesson or Criteria object.
+     * Performs an INSERT on the database, given a StreamUser or Criteria object.
      *
-     * @param mixed               $criteria Criteria or StreamLesson object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or StreamUser object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -431,22 +465,18 @@ class StreamLessonTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StreamLessonTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(StreamUserTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from StreamLesson object
-        }
-
-        if ($criteria->containsKey(StreamLessonTableMap::COL_ID) && $criteria->keyContainsValue(StreamLessonTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.StreamLessonTableMap::COL_ID.')');
+            $criteria = $criteria->buildCriteria(); // build Criteria from StreamUser object
         }
 
 
         // Set the correct dbName
-        $query = StreamLessonQuery::create()->mergeWith($criteria);
+        $query = StreamUserQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -455,7 +485,7 @@ class StreamLessonTableMap extends TableMap
         });
     }
 
-} // StreamLessonTableMap
+} // StreamUserTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-StreamLessonTableMap::buildTableMap();
+StreamUserTableMap::buildTableMap();
