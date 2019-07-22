@@ -127,7 +127,7 @@ class Stream extends \App\Controllers\Admin\Ajax\Base
 
             $course = CourseQuery::create()->findPk(intval($courseId));
             if (is_null($course)){
-                throw new CustomException("Курс не найден", 1);
+                throw new CustomException("Курс не найден по id " . $courseId, 1);
             }
 
             $courseStreams = CourseStreamQuery::create()->filterByCurrentCourseCourseStream($course)->find();

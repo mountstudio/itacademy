@@ -19,11 +19,23 @@
                     </div>
                     <div class="panel-body">
                         <form class="form-horizontal" id="addCourseSkill">
-                            <input type="hidden" name="courseId" id="courseId" value="{{ course.getId() }}">
+                            <input type="hidden" name="userId" id="userId" value="{{ user.getId() }}">
                             <div class="form-group">
-                                <label for="name" class="col-sm-2 control-label">Название</label>
+                                <label for="course" class="col-sm-2 control-label">Курс</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="name" id="name" placeholder="Название потока" required>
+                                    <select name="courseId" id="course" class="form-control" required>
+                                        <option value="{{ null }}">Выберите курс...</option>
+                                        {% for course in courses %}
+                                            <option value="{{ course.getId() }}">{{ course.getName() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="stream" class="col-sm-2 control-label">Поток</label>
+                                <div class="col-sm-10">
+                                    <select name="streamId" id="stream" class="form-control" disabled required>
+                                    </select>
                                 </div>
                             </div>
 
@@ -170,7 +182,36 @@
 <script src="/static/admin/assets/plugins/select2/js/select2.js"></script>
 <link href="/static/admin/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
 <script src="/static/admin/assets/js/pages/notifications.js"></script>
-\
+
+<script>
+    $('#course').change(e => {
+        e.preventDefault();
+        let select = $(e.target);
+        let id = select.val();
+        let streamSelect = $('#stream');
+
+        $.ajax({
+            url: "/admin/ajax/course/stream/byCourse",
+            method: "POST",
+            data: {
+                'courseId': id
+            },
+            success: data => {
+                console.log(data);
+                streamSelect.empty();
+                streamSelect.removeAttr('disabled');
+                for (let item of data.data) {
+                    streamSelect.append('<option value="'+ item.id +'">' + item.name + '</option>');
+                }
+            },
+            error: () => {
+                streamSelect.empty();
+                streamSelect.attr('disabled', true);
+            }
+        });
+    });
+</script>
+
 <script type="text/javascript">
     $(document).ready(function() {
 

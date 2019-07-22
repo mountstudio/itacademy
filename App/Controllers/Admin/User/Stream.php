@@ -14,6 +14,7 @@ use Core\CustomException;
 use Core\View;
 use Models\BranchQuery;
 use Models\ConfigQuery;
+use Models\CourseQuery;
 use Models\CourseStreamStatusQuery;
 use Models\CurrencyQuery;
 use Models\UserQuery;
@@ -70,6 +71,7 @@ class Stream extends Base
             $branches = BranchQuery::create()->find();
             $statuses = CourseStreamStatusQuery::create()->find();
             $currencies = CurrencyQuery::create()->find();
+            $courses = CourseQuery::create()->find();
 
             $instructorGroup = ConfigQuery::create()->findOneByKey('default_instructor_group');
             $instructors = UserQuery::create()->filterByCurrentGroupId(intval($instructorGroup->getValue()))->find();
@@ -80,7 +82,8 @@ class Stream extends Base
                     'branches' => $branches,
                     'statuses' => $statuses,
                     'instructors' => $instructors,
-                    'currencies' => $currencies
+                    'currencies' => $currencies,
+                    'courses' => $courses,
                 )
             );
             View::renderTemplate('Admin/User/Stream/add.html', $this->data);
