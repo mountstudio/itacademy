@@ -40,91 +40,6 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="showOnWebSite" class="col-sm-2 control-label">Показать на сайте</label>
-                                <div class="col-sm-10">
-                                    <div class="ios-switch pull-right switch-md">
-                                        <input type="checkbox" id="showOnWebSite" name="showOnWebSite" class="js-switch pull-right fixed-header-check">
-                                    </div>
-                                    <p class="help-block">Если отключен, то на сайте поток не будет показан</p>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="streamStatus" class="col-sm-2 control-label">Состояние курса</label>
-                                <div class="col-sm-10">
-                                    <select name="streamStatus" id="streamStatus" class="form-control m-b-sm">
-                                        {% for status in statuses %}
-                                        <option value="{{ status.getId() }}" >{{ status.getName() }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="numberOfPlaces" class="col-sm-2 control-label">Количество мест</label>
-                                <div class="col-sm-10">
-                                    <input type="number" class="form-control min-input" name="numberOfPlaces" min="1" id="numberOfPlaces" placeholder="Количество мест" required>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="cost" class="col-sm-2 control-label">Стоимость</label>
-                                <div class="col-sm-10">
-                                    <input type="number" class="form-control inline-input min-input" name="cost" id="cost" placeholder="Стоимость">
-
-                                    <select name="currency" id="currency" class="form-control m-b-sm inline-input">
-                                        <option value="0" selected>-</option>
-                                        {% for currency in currencies %}
-                                        <option value="{{ currency.getId() }}" >{{ currency.getName() }}</option>
-                                        {% endfor %}
-                                    </select>
-
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="branch" class="col-sm-2 control-label">Филиал</label>
-                                <div class="col-sm-10">
-                                    <select name="branch" id="branch" class="form-control m-b-sm">
-                                        <option value="0" selected>-</option>
-                                        {% for branch in branches %}
-                                        <option value="{{ branch.getId() }}" >{{ branch.getName() }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="instructor" class="col-sm-2 control-label">Преподаватель</label>
-                                <div class="col-sm-10">
-                                    <select name="instructor" id="instructor" class="form-control m-b-sm">
-                                        <option value="0" selected>-</option>
-                                        {% for instructor in instructors %}
-                                        <option value="{{ instructor.getId() }}" >{{ instructor.getName() }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="startsAt" class="col-sm-2 control-label">Дата</label>
-                                <div class="col-sm-10">
-                                    <input type="text" autocomplete="off" class="form-control date-picker-input inline-input" name="startsAt" id="startsAt" placeholder="Дата Начала">
-                                    <span> - </span>
-                                    <input type="text" autocomplete="off" class="form-control date-picker-input inline-input" name="endsAt" id="endsAt" placeholder="Дата Окончания">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Описание</label>
-                                <div class="col-sm-10">
-                                    <div class="summernote"></div>
-                                </div>
-                            </div>
-
-
-
-                            <div class="form-group">
                                 <label for="notes" class="col-sm-2 control-label">Примечание</label>
                                 <div class="col-sm-10">
                                     <textarea class="form-control" id="notes" name="notes" placeholder="Примечание"></textarea>
@@ -255,45 +170,14 @@
         });
 
         $('#addCourseSkill').on('submit', function(){
-            var courseId = $('input[name=courseId]').val();
-            var name = $('input[name=name]').val();
-            var description = $('.summernote').summernote('code');
-            var notes = $('textarea[name=notes]').val();
-
-            var cost = $('input[name=cost]').val();
-            var currencyId = $('select[name=currency]').val();
-
-            var startsAt = $('input[name=startsAt]').val();
-            var endsAt = $('input[name=endsAt]').val();
-
-            var showOnWebSite = $('input[name=showOnWebSite]').is(":checked")?'true':'false';
-
-            var statusId = $('select[name=streamStatus] :selected').val();
-            var instructorId = $('select[name=instructor] :selected').val();
-            var branchId = $('select[name=branch] :selected').val();
-
-            var numberOfPlaces = $('input[name=numberOfPlaces]').val();
-
+            var userId = $('#userId').val();
+            var streamId = $('#stream').val();
 
             let formData = new FormData();
-            formData.append('courseId', courseId);
+            formData.append('userId', userId);
+            formData.append('streamId', streamId);
 
-            formData.append('branchId', branchId);
-            formData.append('name', name);
-            formData.append('cost', cost);
-            formData.append('currencyId', currencyId);
-            formData.append('startsAt', startsAt);
-            formData.append('endsAt', endsAt);
-            formData.append('numberOfPlaces', numberOfPlaces);
-            formData.append('showOnWebSite', showOnWebSite);
-            formData.append('statusId', statusId);
-            formData.append('instructorId', instructorId);
-
-            formData.append('description', description);
-            formData.append('notes', notes);
-
-
-            ajaxRequest('/admin/ajax/course/stream/add',
+            ajaxRequest('/admin/ajax/user/stream/add',
                 formData
             );
 

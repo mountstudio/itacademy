@@ -89,4 +89,40 @@ class Stream extends Base
 
         $this->response->show();
     }
+
+
+    public function addAction()
+    {
+        $userId = (isset($_POST['userId']) ? $_POST['userId'] : null);
+        $streamId = (isset($_POST['streamId']) ? $_POST['streamId'] : null);
+
+        try {
+            $this->helper->shouldHavePrivilege('COURSE_STREAM_ADMIN');
+
+            if (is_null($userId) || intval($userId) == 0){
+                throw new CustomException("Id курса не был указан", 1);
+            }
+
+            $courseStreamByName = CourseStreamQuery::create()->findOneByName(trim($name));
+            if (!is_null($courseStreamByName)) {
+                throw new CustomException("Название такого потока курса существует", 1);
+            }
+
+
+            if (is_null($streamId) || intval($streamId) == 0){
+                throw new CustomException("Id филиала не был указан", 1);
+            }
+
+            $stream = new CourseStream();
+
+
+            $this->response->setStatus(JsonResponse::SUCCESS);
+            $this->response->setMessage("Поток курса успешно создан");
+            $this->response->setRedirect('/admin/courses/' . $course->getId() . '/streams');
+        } catch (CustomException $e) {
+            $this->response->setException($e);
+        }
+
+        $this->response->show();
+    }
 }
