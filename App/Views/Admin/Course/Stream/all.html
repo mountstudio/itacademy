@@ -163,11 +163,13 @@
 
         filteredPaginationRequest('/admin/ajax/course/stream/paginate',
             {
-                courseId: '{{ course.getId() }}'
+                courseId: '{{ course.getId() }}',
+                userId: '{{ student.getId() }}'
             },
             '#list',
             function (data) {
                 result = '';
+                console.log(data);
                 data.data.forEach(function (courseStream) {
                     result +=
                         '<tr data-id="' + courseStream.id + '">' +

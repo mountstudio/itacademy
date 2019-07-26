@@ -15,6 +15,7 @@ use Core\View;
 use Models\BranchQuery;
 use Models\ConfigQuery;
 use Models\CourseQuery;
+use Models\CourseStreamQuery;
 use Models\CourseStreamStatusQuery;
 use Models\CurrencyQuery;
 use Models\UserQuery;
@@ -23,6 +24,13 @@ class Stream extends Base
 {
     public function indexAction()
     {
+//        $paginator = $this->helper->paginator();
+//        $user = UserQuery::create()->findPk(1);
+//        $streams = CourseStreamQuery::create()->filterByUser($user)->paginate($page = $paginator['page'], $maxPerPage = $paginator['max']);
+//        foreach ($streams as $stream) {
+//            echo "<pre>" . var_dump($stream) . "</pre>";
+//        }
+//        die;
         try {
             $this->helper->shouldHavePrivilege('COURSE_STREAM_ADMIN');
 
@@ -38,7 +46,7 @@ class Stream extends Base
 
             $this->data = array_merge( $this->data,
                 array(
-                    'user' => $user
+                    'student' => $user
                 )
             );
 

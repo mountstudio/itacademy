@@ -104,6 +104,14 @@ abstract class CourseStream implements ActiveRecordInterface
     protected $description;
 
     /**
+     * The value for the number_of_busy_places field.
+     *
+     * Note: this column has a database default value of: 0
+     * @var        int
+     */
+    protected $number_of_busy_places;
+
+    /**
      * The value for the number_of_places field.
      *
      * @var        int
@@ -288,6 +296,7 @@ abstract class CourseStream implements ActiveRecordInterface
      */
     public function applyDefaultValues()
     {
+        $this->number_of_busy_places = 0;
         $this->show_on_website = false;
     }
 
@@ -549,6 +558,16 @@ abstract class CourseStream implements ActiveRecordInterface
     }
 
     /**
+     * Get the [number_of_busy_places] column value.
+     *
+     * @return int
+     */
+    public function getNumberOfBusyPlaces()
+    {
+        return $this->number_of_busy_places;
+    }
+
+    /**
      * Get the [number_of_places] column value.
      *
      * @return int
@@ -787,6 +806,26 @@ abstract class CourseStream implements ActiveRecordInterface
 
         return $this;
     } // setDescription()
+
+    /**
+     * Set the value of [number_of_busy_places] column.
+     *
+     * @param int $v new value
+     * @return $this|\Models\CourseStream The current object (for fluent API support)
+     */
+    public function setNumberOfBusyPlaces($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->number_of_busy_places !== $v) {
+            $this->number_of_busy_places = $v;
+            $this->modifiedColumns[CourseStreamTableMap::COL_NUMBER_OF_BUSY_PLACES] = true;
+        }
+
+        return $this;
+    } // setNumberOfBusyPlaces()
 
     /**
      * Set the value of [number_of_places] column.
@@ -1086,6 +1125,10 @@ abstract class CourseStream implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->number_of_busy_places !== 0) {
+                return false;
+            }
+
             if ($this->show_on_website !== false) {
                 return false;
             }
@@ -1125,52 +1168,55 @@ abstract class CourseStream implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CourseStreamTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
             $this->description = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CourseStreamTableMap::translateFieldName('NumberOfPlaces', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CourseStreamTableMap::translateFieldName('NumberOfBusyPlaces', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->number_of_busy_places = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CourseStreamTableMap::translateFieldName('NumberOfPlaces', TableMap::TYPE_PHPNAME, $indexType)];
             $this->number_of_places = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CourseStreamTableMap::translateFieldName('Notes', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CourseStreamTableMap::translateFieldName('Notes', TableMap::TYPE_PHPNAME, $indexType)];
             $this->notes = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CourseStreamTableMap::translateFieldName('StartsAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CourseStreamTableMap::translateFieldName('StartsAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00') {
                 $col = null;
             }
             $this->starts_at = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CourseStreamTableMap::translateFieldName('EndsAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : CourseStreamTableMap::translateFieldName('EndsAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00') {
                 $col = null;
             }
             $this->ends_at = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : CourseStreamTableMap::translateFieldName('ShowOnWebSite', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : CourseStreamTableMap::translateFieldName('ShowOnWebSite', TableMap::TYPE_PHPNAME, $indexType)];
             $this->show_on_website = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : CourseStreamTableMap::translateFieldName('Cost', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : CourseStreamTableMap::translateFieldName('Cost', TableMap::TYPE_PHPNAME, $indexType)];
             $this->cost = (null !== $col) ? (float) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : CourseStreamTableMap::translateFieldName('CurrentBranchId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : CourseStreamTableMap::translateFieldName('CurrentBranchId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->branch_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : CourseStreamTableMap::translateFieldName('CurrentCurrencyId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : CourseStreamTableMap::translateFieldName('CurrentCurrencyId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->currency_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : CourseStreamTableMap::translateFieldName('CurrentCourseId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : CourseStreamTableMap::translateFieldName('CurrentCourseId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->course_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : CourseStreamTableMap::translateFieldName('CurrentCourseStreamStatusId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : CourseStreamTableMap::translateFieldName('CurrentCourseStreamStatusId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->course_stream_status_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : CourseStreamTableMap::translateFieldName('CurrentCourseStreamInstructorId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : CourseStreamTableMap::translateFieldName('CurrentCourseStreamInstructorId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->instructor_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : CourseStreamTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : CourseStreamTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : CourseStreamTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : CourseStreamTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -1183,7 +1229,7 @@ abstract class CourseStream implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 16; // 16 = CourseStreamTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 17; // 17 = CourseStreamTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Models\\CourseStream'), 0, $e);
@@ -1554,6 +1600,9 @@ abstract class CourseStream implements ActiveRecordInterface
         if ($this->isColumnModified(CourseStreamTableMap::COL_DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
         }
+        if ($this->isColumnModified(CourseStreamTableMap::COL_NUMBER_OF_BUSY_PLACES)) {
+            $modifiedColumns[':p' . $index++]  = '`number_of_busy_places`';
+        }
         if ($this->isColumnModified(CourseStreamTableMap::COL_NUMBER_OF_PLACES)) {
             $modifiedColumns[':p' . $index++]  = '`number_of_places`';
         }
@@ -1612,6 +1661,9 @@ abstract class CourseStream implements ActiveRecordInterface
                         break;
                     case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case '`number_of_busy_places`':
+                        $stmt->bindValue($identifier, $this->number_of_busy_places, PDO::PARAM_INT);
                         break;
                     case '`number_of_places`':
                         $stmt->bindValue($identifier, $this->number_of_places, PDO::PARAM_INT);
@@ -1724,42 +1776,45 @@ abstract class CourseStream implements ActiveRecordInterface
                 return $this->getDescription();
                 break;
             case 3:
-                return $this->getNumberOfPlaces();
+                return $this->getNumberOfBusyPlaces();
                 break;
             case 4:
-                return $this->getNotes();
+                return $this->getNumberOfPlaces();
                 break;
             case 5:
-                return $this->getStartsAt();
+                return $this->getNotes();
                 break;
             case 6:
-                return $this->getEndsAt();
+                return $this->getStartsAt();
                 break;
             case 7:
-                return $this->getShowOnWebSite();
+                return $this->getEndsAt();
                 break;
             case 8:
-                return $this->getCost();
+                return $this->getShowOnWebSite();
                 break;
             case 9:
-                return $this->getCurrentBranchId();
+                return $this->getCost();
                 break;
             case 10:
-                return $this->getCurrentCurrencyId();
+                return $this->getCurrentBranchId();
                 break;
             case 11:
-                return $this->getCurrentCourseId();
+                return $this->getCurrentCurrencyId();
                 break;
             case 12:
-                return $this->getCurrentCourseStreamStatusId();
+                return $this->getCurrentCourseId();
                 break;
             case 13:
-                return $this->getCurrentCourseStreamInstructorId();
+                return $this->getCurrentCourseStreamStatusId();
                 break;
             case 14:
-                return $this->getCreatedAt();
+                return $this->getCurrentCourseStreamInstructorId();
                 break;
             case 15:
+                return $this->getCreatedAt();
+                break;
+            case 16:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1795,34 +1850,35 @@ abstract class CourseStream implements ActiveRecordInterface
             $keys[0] => $this->getId(),
             $keys[1] => $this->getName(),
             $keys[2] => $this->getDescription(),
-            $keys[3] => $this->getNumberOfPlaces(),
-            $keys[4] => $this->getNotes(),
-            $keys[5] => $this->getStartsAt(),
-            $keys[6] => $this->getEndsAt(),
-            $keys[7] => $this->getShowOnWebSite(),
-            $keys[8] => $this->getCost(),
-            $keys[9] => $this->getCurrentBranchId(),
-            $keys[10] => $this->getCurrentCurrencyId(),
-            $keys[11] => $this->getCurrentCourseId(),
-            $keys[12] => $this->getCurrentCourseStreamStatusId(),
-            $keys[13] => $this->getCurrentCourseStreamInstructorId(),
-            $keys[14] => $this->getCreatedAt(),
-            $keys[15] => $this->getUpdatedAt(),
+            $keys[3] => $this->getNumberOfBusyPlaces(),
+            $keys[4] => $this->getNumberOfPlaces(),
+            $keys[5] => $this->getNotes(),
+            $keys[6] => $this->getStartsAt(),
+            $keys[7] => $this->getEndsAt(),
+            $keys[8] => $this->getShowOnWebSite(),
+            $keys[9] => $this->getCost(),
+            $keys[10] => $this->getCurrentBranchId(),
+            $keys[11] => $this->getCurrentCurrencyId(),
+            $keys[12] => $this->getCurrentCourseId(),
+            $keys[13] => $this->getCurrentCourseStreamStatusId(),
+            $keys[14] => $this->getCurrentCourseStreamInstructorId(),
+            $keys[15] => $this->getCreatedAt(),
+            $keys[16] => $this->getUpdatedAt(),
         );
-        if ($result[$keys[5]] instanceof \DateTimeInterface) {
-            $result[$keys[5]] = $result[$keys[5]]->format('c');
-        }
-
         if ($result[$keys[6]] instanceof \DateTimeInterface) {
             $result[$keys[6]] = $result[$keys[6]]->format('c');
         }
 
-        if ($result[$keys[14]] instanceof \DateTimeInterface) {
-            $result[$keys[14]] = $result[$keys[14]]->format('c');
+        if ($result[$keys[7]] instanceof \DateTimeInterface) {
+            $result[$keys[7]] = $result[$keys[7]]->format('c');
         }
 
         if ($result[$keys[15]] instanceof \DateTimeInterface) {
             $result[$keys[15]] = $result[$keys[15]]->format('c');
+        }
+
+        if ($result[$keys[16]] instanceof \DateTimeInterface) {
+            $result[$keys[16]] = $result[$keys[16]]->format('c');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -1995,42 +2051,45 @@ abstract class CourseStream implements ActiveRecordInterface
                 $this->setDescription($value);
                 break;
             case 3:
-                $this->setNumberOfPlaces($value);
+                $this->setNumberOfBusyPlaces($value);
                 break;
             case 4:
-                $this->setNotes($value);
+                $this->setNumberOfPlaces($value);
                 break;
             case 5:
-                $this->setStartsAt($value);
+                $this->setNotes($value);
                 break;
             case 6:
-                $this->setEndsAt($value);
+                $this->setStartsAt($value);
                 break;
             case 7:
-                $this->setShowOnWebSite($value);
+                $this->setEndsAt($value);
                 break;
             case 8:
-                $this->setCost($value);
+                $this->setShowOnWebSite($value);
                 break;
             case 9:
-                $this->setCurrentBranchId($value);
+                $this->setCost($value);
                 break;
             case 10:
-                $this->setCurrentCurrencyId($value);
+                $this->setCurrentBranchId($value);
                 break;
             case 11:
-                $this->setCurrentCourseId($value);
+                $this->setCurrentCurrencyId($value);
                 break;
             case 12:
-                $this->setCurrentCourseStreamStatusId($value);
+                $this->setCurrentCourseId($value);
                 break;
             case 13:
-                $this->setCurrentCourseStreamInstructorId($value);
+                $this->setCurrentCourseStreamStatusId($value);
                 break;
             case 14:
-                $this->setCreatedAt($value);
+                $this->setCurrentCourseStreamInstructorId($value);
                 break;
             case 15:
+                $this->setCreatedAt($value);
+                break;
+            case 16:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -2069,43 +2128,46 @@ abstract class CourseStream implements ActiveRecordInterface
             $this->setDescription($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setNumberOfPlaces($arr[$keys[3]]);
+            $this->setNumberOfBusyPlaces($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setNotes($arr[$keys[4]]);
+            $this->setNumberOfPlaces($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setStartsAt($arr[$keys[5]]);
+            $this->setNotes($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setEndsAt($arr[$keys[6]]);
+            $this->setStartsAt($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setShowOnWebSite($arr[$keys[7]]);
+            $this->setEndsAt($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setCost($arr[$keys[8]]);
+            $this->setShowOnWebSite($arr[$keys[8]]);
         }
         if (array_key_exists($keys[9], $arr)) {
-            $this->setCurrentBranchId($arr[$keys[9]]);
+            $this->setCost($arr[$keys[9]]);
         }
         if (array_key_exists($keys[10], $arr)) {
-            $this->setCurrentCurrencyId($arr[$keys[10]]);
+            $this->setCurrentBranchId($arr[$keys[10]]);
         }
         if (array_key_exists($keys[11], $arr)) {
-            $this->setCurrentCourseId($arr[$keys[11]]);
+            $this->setCurrentCurrencyId($arr[$keys[11]]);
         }
         if (array_key_exists($keys[12], $arr)) {
-            $this->setCurrentCourseStreamStatusId($arr[$keys[12]]);
+            $this->setCurrentCourseId($arr[$keys[12]]);
         }
         if (array_key_exists($keys[13], $arr)) {
-            $this->setCurrentCourseStreamInstructorId($arr[$keys[13]]);
+            $this->setCurrentCourseStreamStatusId($arr[$keys[13]]);
         }
         if (array_key_exists($keys[14], $arr)) {
-            $this->setCreatedAt($arr[$keys[14]]);
+            $this->setCurrentCourseStreamInstructorId($arr[$keys[14]]);
         }
         if (array_key_exists($keys[15], $arr)) {
-            $this->setUpdatedAt($arr[$keys[15]]);
+            $this->setCreatedAt($arr[$keys[15]]);
+        }
+        if (array_key_exists($keys[16], $arr)) {
+            $this->setUpdatedAt($arr[$keys[16]]);
         }
     }
 
@@ -2156,6 +2218,9 @@ abstract class CourseStream implements ActiveRecordInterface
         }
         if ($this->isColumnModified(CourseStreamTableMap::COL_DESCRIPTION)) {
             $criteria->add(CourseStreamTableMap::COL_DESCRIPTION, $this->description);
+        }
+        if ($this->isColumnModified(CourseStreamTableMap::COL_NUMBER_OF_BUSY_PLACES)) {
+            $criteria->add(CourseStreamTableMap::COL_NUMBER_OF_BUSY_PLACES, $this->number_of_busy_places);
         }
         if ($this->isColumnModified(CourseStreamTableMap::COL_NUMBER_OF_PLACES)) {
             $criteria->add(CourseStreamTableMap::COL_NUMBER_OF_PLACES, $this->number_of_places);
@@ -2284,6 +2349,7 @@ abstract class CourseStream implements ActiveRecordInterface
     {
         $copyObj->setName($this->getName());
         $copyObj->setDescription($this->getDescription());
+        $copyObj->setNumberOfBusyPlaces($this->getNumberOfBusyPlaces());
         $copyObj->setNumberOfPlaces($this->getNumberOfPlaces());
         $copyObj->setNotes($this->getNotes());
         $copyObj->setStartsAt($this->getStartsAt());
@@ -3652,6 +3718,7 @@ abstract class CourseStream implements ActiveRecordInterface
         $this->id = null;
         $this->name = null;
         $this->description = null;
+        $this->number_of_busy_places = null;
         $this->number_of_places = null;
         $this->notes = null;
         $this->starts_at = null;

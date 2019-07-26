@@ -59,7 +59,7 @@ class CourseStreamTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 16;
+    const NUM_COLUMNS = 17;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class CourseStreamTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 16;
+    const NUM_HYDRATE_COLUMNS = 17;
 
     /**
      * the column name for the id field
@@ -85,6 +85,11 @@ class CourseStreamTableMap extends TableMap
      * the column name for the description field
      */
     const COL_DESCRIPTION = 'course_stream.description';
+
+    /**
+     * the column name for the number_of_busy_places field
+     */
+    const COL_NUMBER_OF_BUSY_PLACES = 'course_stream.number_of_busy_places';
 
     /**
      * the column name for the number_of_places field
@@ -163,11 +168,11 @@ class CourseStreamTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Name', 'Description', 'NumberOfPlaces', 'Notes', 'StartsAt', 'EndsAt', 'ShowOnWebSite', 'Cost', 'CurrentBranchId', 'CurrentCurrencyId', 'CurrentCourseId', 'CurrentCourseStreamStatusId', 'CurrentCourseStreamInstructorId', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_CAMELNAME     => array('id', 'name', 'description', 'numberOfPlaces', 'notes', 'startsAt', 'endsAt', 'showOnWebSite', 'cost', 'currentBranchId', 'currentCurrencyId', 'currentCourseId', 'currentCourseStreamStatusId', 'currentCourseStreamInstructorId', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(CourseStreamTableMap::COL_ID, CourseStreamTableMap::COL_NAME, CourseStreamTableMap::COL_DESCRIPTION, CourseStreamTableMap::COL_NUMBER_OF_PLACES, CourseStreamTableMap::COL_NOTES, CourseStreamTableMap::COL_STARTS_AT, CourseStreamTableMap::COL_ENDS_AT, CourseStreamTableMap::COL_SHOW_ON_WEBSITE, CourseStreamTableMap::COL_COST, CourseStreamTableMap::COL_BRANCH_ID, CourseStreamTableMap::COL_CURRENCY_ID, CourseStreamTableMap::COL_COURSE_ID, CourseStreamTableMap::COL_COURSE_STREAM_STATUS_ID, CourseStreamTableMap::COL_INSTRUCTOR_ID, CourseStreamTableMap::COL_CREATED_AT, CourseStreamTableMap::COL_UPDATED_AT, ),
-        self::TYPE_FIELDNAME     => array('id', 'name', 'description', 'number_of_places', 'notes', 'starts_at', 'ends_at', 'show_on_website', 'cost', 'branch_id', 'currency_id', 'course_id', 'course_stream_status_id', 'instructor_id', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
+        self::TYPE_PHPNAME       => array('Id', 'Name', 'Description', 'NumberOfBusyPlaces', 'NumberOfPlaces', 'Notes', 'StartsAt', 'EndsAt', 'ShowOnWebSite', 'Cost', 'CurrentBranchId', 'CurrentCurrencyId', 'CurrentCourseId', 'CurrentCourseStreamStatusId', 'CurrentCourseStreamInstructorId', 'CreatedAt', 'UpdatedAt', ),
+        self::TYPE_CAMELNAME     => array('id', 'name', 'description', 'numberOfBusyPlaces', 'numberOfPlaces', 'notes', 'startsAt', 'endsAt', 'showOnWebSite', 'cost', 'currentBranchId', 'currentCurrencyId', 'currentCourseId', 'currentCourseStreamStatusId', 'currentCourseStreamInstructorId', 'createdAt', 'updatedAt', ),
+        self::TYPE_COLNAME       => array(CourseStreamTableMap::COL_ID, CourseStreamTableMap::COL_NAME, CourseStreamTableMap::COL_DESCRIPTION, CourseStreamTableMap::COL_NUMBER_OF_BUSY_PLACES, CourseStreamTableMap::COL_NUMBER_OF_PLACES, CourseStreamTableMap::COL_NOTES, CourseStreamTableMap::COL_STARTS_AT, CourseStreamTableMap::COL_ENDS_AT, CourseStreamTableMap::COL_SHOW_ON_WEBSITE, CourseStreamTableMap::COL_COST, CourseStreamTableMap::COL_BRANCH_ID, CourseStreamTableMap::COL_CURRENCY_ID, CourseStreamTableMap::COL_COURSE_ID, CourseStreamTableMap::COL_COURSE_STREAM_STATUS_ID, CourseStreamTableMap::COL_INSTRUCTOR_ID, CourseStreamTableMap::COL_CREATED_AT, CourseStreamTableMap::COL_UPDATED_AT, ),
+        self::TYPE_FIELDNAME     => array('id', 'name', 'description', 'number_of_busy_places', 'number_of_places', 'notes', 'starts_at', 'ends_at', 'show_on_website', 'cost', 'branch_id', 'currency_id', 'course_id', 'course_stream_status_id', 'instructor_id', 'created_at', 'updated_at', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
     );
 
     /**
@@ -177,11 +182,11 @@ class CourseStreamTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Description' => 2, 'NumberOfPlaces' => 3, 'Notes' => 4, 'StartsAt' => 5, 'EndsAt' => 6, 'ShowOnWebSite' => 7, 'Cost' => 8, 'CurrentBranchId' => 9, 'CurrentCurrencyId' => 10, 'CurrentCourseId' => 11, 'CurrentCourseStreamStatusId' => 12, 'CurrentCourseStreamInstructorId' => 13, 'CreatedAt' => 14, 'UpdatedAt' => 15, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'name' => 1, 'description' => 2, 'numberOfPlaces' => 3, 'notes' => 4, 'startsAt' => 5, 'endsAt' => 6, 'showOnWebSite' => 7, 'cost' => 8, 'currentBranchId' => 9, 'currentCurrencyId' => 10, 'currentCourseId' => 11, 'currentCourseStreamStatusId' => 12, 'currentCourseStreamInstructorId' => 13, 'createdAt' => 14, 'updatedAt' => 15, ),
-        self::TYPE_COLNAME       => array(CourseStreamTableMap::COL_ID => 0, CourseStreamTableMap::COL_NAME => 1, CourseStreamTableMap::COL_DESCRIPTION => 2, CourseStreamTableMap::COL_NUMBER_OF_PLACES => 3, CourseStreamTableMap::COL_NOTES => 4, CourseStreamTableMap::COL_STARTS_AT => 5, CourseStreamTableMap::COL_ENDS_AT => 6, CourseStreamTableMap::COL_SHOW_ON_WEBSITE => 7, CourseStreamTableMap::COL_COST => 8, CourseStreamTableMap::COL_BRANCH_ID => 9, CourseStreamTableMap::COL_CURRENCY_ID => 10, CourseStreamTableMap::COL_COURSE_ID => 11, CourseStreamTableMap::COL_COURSE_STREAM_STATUS_ID => 12, CourseStreamTableMap::COL_INSTRUCTOR_ID => 13, CourseStreamTableMap::COL_CREATED_AT => 14, CourseStreamTableMap::COL_UPDATED_AT => 15, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'description' => 2, 'number_of_places' => 3, 'notes' => 4, 'starts_at' => 5, 'ends_at' => 6, 'show_on_website' => 7, 'cost' => 8, 'branch_id' => 9, 'currency_id' => 10, 'course_id' => 11, 'course_stream_status_id' => 12, 'instructor_id' => 13, 'created_at' => 14, 'updated_at' => 15, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Description' => 2, 'NumberOfBusyPlaces' => 3, 'NumberOfPlaces' => 4, 'Notes' => 5, 'StartsAt' => 6, 'EndsAt' => 7, 'ShowOnWebSite' => 8, 'Cost' => 9, 'CurrentBranchId' => 10, 'CurrentCurrencyId' => 11, 'CurrentCourseId' => 12, 'CurrentCourseStreamStatusId' => 13, 'CurrentCourseStreamInstructorId' => 14, 'CreatedAt' => 15, 'UpdatedAt' => 16, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'name' => 1, 'description' => 2, 'numberOfBusyPlaces' => 3, 'numberOfPlaces' => 4, 'notes' => 5, 'startsAt' => 6, 'endsAt' => 7, 'showOnWebSite' => 8, 'cost' => 9, 'currentBranchId' => 10, 'currentCurrencyId' => 11, 'currentCourseId' => 12, 'currentCourseStreamStatusId' => 13, 'currentCourseStreamInstructorId' => 14, 'createdAt' => 15, 'updatedAt' => 16, ),
+        self::TYPE_COLNAME       => array(CourseStreamTableMap::COL_ID => 0, CourseStreamTableMap::COL_NAME => 1, CourseStreamTableMap::COL_DESCRIPTION => 2, CourseStreamTableMap::COL_NUMBER_OF_BUSY_PLACES => 3, CourseStreamTableMap::COL_NUMBER_OF_PLACES => 4, CourseStreamTableMap::COL_NOTES => 5, CourseStreamTableMap::COL_STARTS_AT => 6, CourseStreamTableMap::COL_ENDS_AT => 7, CourseStreamTableMap::COL_SHOW_ON_WEBSITE => 8, CourseStreamTableMap::COL_COST => 9, CourseStreamTableMap::COL_BRANCH_ID => 10, CourseStreamTableMap::COL_CURRENCY_ID => 11, CourseStreamTableMap::COL_COURSE_ID => 12, CourseStreamTableMap::COL_COURSE_STREAM_STATUS_ID => 13, CourseStreamTableMap::COL_INSTRUCTOR_ID => 14, CourseStreamTableMap::COL_CREATED_AT => 15, CourseStreamTableMap::COL_UPDATED_AT => 16, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'description' => 2, 'number_of_busy_places' => 3, 'number_of_places' => 4, 'notes' => 5, 'starts_at' => 6, 'ends_at' => 7, 'show_on_website' => 8, 'cost' => 9, 'branch_id' => 10, 'currency_id' => 11, 'course_id' => 12, 'course_stream_status_id' => 13, 'instructor_id' => 14, 'created_at' => 15, 'updated_at' => 16, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
     );
 
     /**
@@ -205,6 +210,7 @@ class CourseStreamTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('name', 'Name', 'VARCHAR', false, 20, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('number_of_busy_places', 'NumberOfBusyPlaces', 'INTEGER', false, null, 0);
         $this->addColumn('number_of_places', 'NumberOfPlaces', 'INTEGER', true, null, null);
         $this->addColumn('notes', 'Notes', 'VARCHAR', false, 300, null);
         $this->addColumn('starts_at', 'StartsAt', 'DATE', true, null, null);
@@ -452,6 +458,7 @@ class CourseStreamTableMap extends TableMap
             $criteria->addSelectColumn(CourseStreamTableMap::COL_ID);
             $criteria->addSelectColumn(CourseStreamTableMap::COL_NAME);
             $criteria->addSelectColumn(CourseStreamTableMap::COL_DESCRIPTION);
+            $criteria->addSelectColumn(CourseStreamTableMap::COL_NUMBER_OF_BUSY_PLACES);
             $criteria->addSelectColumn(CourseStreamTableMap::COL_NUMBER_OF_PLACES);
             $criteria->addSelectColumn(CourseStreamTableMap::COL_NOTES);
             $criteria->addSelectColumn(CourseStreamTableMap::COL_STARTS_AT);
@@ -469,6 +476,7 @@ class CourseStreamTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.name');
             $criteria->addSelectColumn($alias . '.description');
+            $criteria->addSelectColumn($alias . '.number_of_busy_places');
             $criteria->addSelectColumn($alias . '.number_of_places');
             $criteria->addSelectColumn($alias . '.notes');
             $criteria->addSelectColumn($alias . '.starts_at');

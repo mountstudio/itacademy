@@ -23,6 +23,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCourseStreamQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildCourseStreamQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method     ChildCourseStreamQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method     ChildCourseStreamQuery orderByNumberOfBusyPlaces($order = Criteria::ASC) Order by the number_of_busy_places column
  * @method     ChildCourseStreamQuery orderByNumberOfPlaces($order = Criteria::ASC) Order by the number_of_places column
  * @method     ChildCourseStreamQuery orderByNotes($order = Criteria::ASC) Order by the notes column
  * @method     ChildCourseStreamQuery orderByStartsAt($order = Criteria::ASC) Order by the starts_at column
@@ -40,6 +41,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCourseStreamQuery groupById() Group by the id column
  * @method     ChildCourseStreamQuery groupByName() Group by the name column
  * @method     ChildCourseStreamQuery groupByDescription() Group by the description column
+ * @method     ChildCourseStreamQuery groupByNumberOfBusyPlaces() Group by the number_of_busy_places column
  * @method     ChildCourseStreamQuery groupByNumberOfPlaces() Group by the number_of_places column
  * @method     ChildCourseStreamQuery groupByNotes() Group by the notes column
  * @method     ChildCourseStreamQuery groupByStartsAt() Group by the starts_at column
@@ -150,6 +152,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCourseStream findOneById(int $id) Return the first ChildCourseStream filtered by the id column
  * @method     ChildCourseStream findOneByName(string $name) Return the first ChildCourseStream filtered by the name column
  * @method     ChildCourseStream findOneByDescription(string $description) Return the first ChildCourseStream filtered by the description column
+ * @method     ChildCourseStream findOneByNumberOfBusyPlaces(int $number_of_busy_places) Return the first ChildCourseStream filtered by the number_of_busy_places column
  * @method     ChildCourseStream findOneByNumberOfPlaces(int $number_of_places) Return the first ChildCourseStream filtered by the number_of_places column
  * @method     ChildCourseStream findOneByNotes(string $notes) Return the first ChildCourseStream filtered by the notes column
  * @method     ChildCourseStream findOneByStartsAt(string $starts_at) Return the first ChildCourseStream filtered by the starts_at column
@@ -170,6 +173,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCourseStream requireOneById(int $id) Return the first ChildCourseStream filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCourseStream requireOneByName(string $name) Return the first ChildCourseStream filtered by the name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCourseStream requireOneByDescription(string $description) Return the first ChildCourseStream filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildCourseStream requireOneByNumberOfBusyPlaces(int $number_of_busy_places) Return the first ChildCourseStream filtered by the number_of_busy_places column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCourseStream requireOneByNumberOfPlaces(int $number_of_places) Return the first ChildCourseStream filtered by the number_of_places column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCourseStream requireOneByNotes(string $notes) Return the first ChildCourseStream filtered by the notes column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCourseStream requireOneByStartsAt(string $starts_at) Return the first ChildCourseStream filtered by the starts_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -188,6 +192,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCourseStream[]|ObjectCollection findById(int $id) Return ChildCourseStream objects filtered by the id column
  * @method     ChildCourseStream[]|ObjectCollection findByName(string $name) Return ChildCourseStream objects filtered by the name column
  * @method     ChildCourseStream[]|ObjectCollection findByDescription(string $description) Return ChildCourseStream objects filtered by the description column
+ * @method     ChildCourseStream[]|ObjectCollection findByNumberOfBusyPlaces(int $number_of_busy_places) Return ChildCourseStream objects filtered by the number_of_busy_places column
  * @method     ChildCourseStream[]|ObjectCollection findByNumberOfPlaces(int $number_of_places) Return ChildCourseStream objects filtered by the number_of_places column
  * @method     ChildCourseStream[]|ObjectCollection findByNotes(string $notes) Return ChildCourseStream objects filtered by the notes column
  * @method     ChildCourseStream[]|ObjectCollection findByStartsAt(string $starts_at) Return ChildCourseStream objects filtered by the starts_at column
@@ -302,7 +307,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `name`, `description`, `number_of_places`, `notes`, `starts_at`, `ends_at`, `show_on_website`, `cost`, `branch_id`, `currency_id`, `course_id`, `course_stream_status_id`, `instructor_id`, `created_at`, `updated_at` FROM `course_stream` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `name`, `description`, `number_of_busy_places`, `number_of_places`, `notes`, `starts_at`, `ends_at`, `show_on_website`, `cost`, `branch_id`, `currency_id`, `course_id`, `course_stream_status_id`, `instructor_id`, `created_at`, `updated_at` FROM `course_stream` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -481,6 +486,47 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
         }
 
         return $this->addUsingAlias(CourseStreamTableMap::COL_DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the number_of_busy_places column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNumberOfBusyPlaces(1234); // WHERE number_of_busy_places = 1234
+     * $query->filterByNumberOfBusyPlaces(array(12, 34)); // WHERE number_of_busy_places IN (12, 34)
+     * $query->filterByNumberOfBusyPlaces(array('min' => 12)); // WHERE number_of_busy_places > 12
+     * </code>
+     *
+     * @param     mixed $numberOfBusyPlaces The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildCourseStreamQuery The current query, for fluid interface
+     */
+    public function filterByNumberOfBusyPlaces($numberOfBusyPlaces = null, $comparison = null)
+    {
+        if (is_array($numberOfBusyPlaces)) {
+            $useMinMax = false;
+            if (isset($numberOfBusyPlaces['min'])) {
+                $this->addUsingAlias(CourseStreamTableMap::COL_NUMBER_OF_BUSY_PLACES, $numberOfBusyPlaces['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($numberOfBusyPlaces['max'])) {
+                $this->addUsingAlias(CourseStreamTableMap::COL_NUMBER_OF_BUSY_PLACES, $numberOfBusyPlaces['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CourseStreamTableMap::COL_NUMBER_OF_BUSY_PLACES, $numberOfBusyPlaces, $comparison);
     }
 
     /**

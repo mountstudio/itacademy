@@ -22,7 +22,7 @@ class Stream extends Base
     public function listAction()
     {
         $userId = (isset($_POST['userId']) ? $_POST['userId'] : null);
-        $this->response = new JsonResponse($pagination = true);
+        $this->response = new JsonResponse(true);
         try {
             $this->helper->shouldHavePrivilege('COURSE_STREAM_ADMIN');
             $paginator = $this->helper->paginator();
@@ -35,7 +35,7 @@ class Stream extends Base
             $getDefaultOnRecruitment = ConfigQuery::create()->findOneByKey('course_stream_recruitment_status');
 
 //            $user = $this->helper->getCurrentUser();
-            $courseStreams = CourseStreamQuery::create()->filterByUser($user)->orderByCreatedAt(Criteria::DESC)->paginate($page = $paginator['page'], $maxPerPage = $paginator['max']);
+            $courseStreams = CourseStreamQuery::create()->filterByUser($user)->paginate($page = $paginator['page'], $maxPerPage = $paginator['max']);
             $this->response->setPaginationDetails($courseStreams);
             $courseStreamData = array();
             foreach ($courseStreams as $courseStream) {
@@ -71,8 +71,8 @@ class Stream extends Base
                         'logo' => $instructor->getLogo()
                     )),
                     'place' => array(
-                        'free' => 0,
-                        'busy' => 0,
+                        'free' => $courseStream->getNumberOfPlaces() - $courseStream->getNumberOfBusyPlaces(),
+                        'busy' => $courseStream->getNumberOfBusyPlaces(),
                         'all' => $courseStream->getNumberOfPlaces()
                     ),
                     'startsAt' => $courseStream->getStartsAt(),
@@ -81,6 +81,7 @@ class Stream extends Base
                     'createdAt' => $courseStream->getCreatedAt()
                 );
             }
+//            $this->response->setData((array) $courseStreams);
             $this->response->setData($courseStreamData);
             $this->response->setStatus(JsonResponse::SUCCESS);
         } catch (CustomException $e) {
@@ -100,25 +101,30 @@ class Stream extends Base
             $this->helper->shouldHavePrivilege('COURSE_STREAM_ADMIN');
 
             if (is_null($userId) || intval($userId) == 0){
-                throw new CustomException("Id курса не был указан", 1);
+                throw new CustomException("Id пользователя не был указан", 1);
             }
 
-            $courseStreamByName = CourseStreamQuery::create()->findOneByName(trim($name));
-            if (!is_null($courseStreamByName)) {
-                throw new CustomException("Название такого потока курса существует", 1);
+            $user = UserQuery::create()->findPk($userId);
+            if (is_null($user)) {
+                throw new CustomException("Пользователя с таким id не существует", 1);
             }
-
 
             if (is_null($streamId) || intval($streamId) == 0){
-                throw new CustomException("Id филиала не был указан", 1);
+                throw new CustomException("Id потока не был указан", 1);
             }
 
-            $stream = new CourseStream();
+            $stream = CourseStreamQuery::create()->findPk($streamId);
+            if (is_null($stream)) {
+                throw new CustomException("Потока с таким id не существует", 1);
+            }
 
+            $stream->setNumberOfBusyPlaces($stream->getNumberOfBusyPlaces() + 1);
+            $stream->addUser($user);
+            $stream->save();
 
             $this->response->setStatus(JsonResponse::SUCCESS);
             $this->response->setMessage("Поток курса успешно создан");
-            $this->response->setRedirect('/admin/courses/' . $course->getId() . '/streams');
+            $this->response->setRedirect('/admin/users/' . $userId . '/streams');
         } catch (CustomException $e) {
             $this->response->setException($e);
         }

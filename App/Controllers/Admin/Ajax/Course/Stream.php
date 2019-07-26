@@ -99,8 +99,8 @@ class Stream extends \App\Controllers\Admin\Ajax\Base
                         'logo' => $instructor->getLogo()
                     )),
                     'place' => array(
-                        'free' => 0,
-                        'busy' => 0,
+                        'free' => $courseStream->getNumberOfPlaces() - $courseStream->getNumberOfBusyPlaces(),
+                        'busy' => $courseStream->getNumberOfBusyPlaces(),
                         'all' => $courseStream->getNumberOfPlaces()
                     ),
                     'startsAt' => $courseStream->getStartsAt(),

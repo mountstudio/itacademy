@@ -187,6 +187,7 @@
         <column name="name" type="varchar" size="20" phpName="Name"/>
         <column name="description" type="LONGVARCHAR" phpName="Description"/>
 
+        <column name="number_of_busy_places" type="integer" required="false" default="0" phpName="NumberOfBusyPlaces" />
         <column name="number_of_places" type="integer" required="true" phpName="NumberOfPlaces" />
         <column name="notes" type="varchar" required="false" size="300" phpName="Notes"/>
 
