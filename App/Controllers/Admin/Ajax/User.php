@@ -11,6 +11,7 @@ use \Core\Functions;
 use \Core\Mail;
 use App\Config;
 
+use Models\CourseStreamQuery;
 use Models\CurrencyQuery;
 use \Models\UserQuery;
 
@@ -62,11 +63,22 @@ class User extends Base
      }
      public function studentsAction()
      {
+         $streamId = (isset($_POST['streamId']) ? $_POST['streamId'] : null);
          $this->response = new JsonResponse($pagination = true);
          try {
              $this->helper->shouldHavePrivilege('SUPER');
              $paginator = $this->helper->paginator();
-             $users = UserQuery::create()->filterByCurrentGroupId([1,2], Criteria::NOT_IN)->orderById('desc')->paginate($page = $paginator['page'], $maxPerPage = $paginator['max']);
+
+             if ($streamId) {
+                 $stream = CourseStreamQuery::create()->findPk($streamId);
+                 if (is_null($stream)){
+                     throw new CustomException("Поток не найден", 1);
+                 }
+                 $users = UserQuery::create()->filterByCurrentGroupId([1,2], Criteria::NOT_IN)->filterByCourseStream($stream)->orderById('desc')->paginate($page = $paginator['page'], $maxPerPage = $paginator['max']);
+             }
+             else {
+                 $users = UserQuery::create()->filterByCurrentGroupId([1,2], Criteria::NOT_IN)->orderById('desc')->paginate($page = $paginator['page'], $maxPerPage = $paginator['max']);
+             }
 
              $this->response->setPaginationDetails($users);
              $users_data = array();

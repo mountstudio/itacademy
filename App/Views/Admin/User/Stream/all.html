@@ -17,7 +17,7 @@
                     <div class="panel-heading clearfix">
                         <h4 class="panel-title">Потоки студента</h4>
                         <div class="panel-control">
-                            <button type="link" data-href="/admin/users/{{ user.getId() }}/streams/add"
+                            <button type="link" data-href="/admin/users/{{ student.getId() }}/streams/add"
                                     class="btn btn-success btn-addon m-b-sm btn-sm"><i class="fa fa-plus"></i> Добавить
                             </button>
                         </div>
@@ -163,7 +163,7 @@
 
         filteredPaginationRequest('/admin/ajax/user/stream/paginate',
             {
-                userId: '{{ user.getId() }}'
+                userId: '{{ student.getId() }}'
             },
             '#list',
             function (data) {
@@ -183,8 +183,8 @@
                         '<div class="btn-group">' +
                         '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Действие <span class="caret"></span> </button>' +
                         '<ul class="dropdown-menu dropdown-menu-right" role="menu">' +
-                        '<li><a href="/admin/courses/{{ user.getId() }}/streams/' + courseStream.id + '/edit">Изменить</a></li>' +
-                        '<li><a href="/admin/courses/{{ user.getId() }}/streams/' + courseStream.id + '">Посмотреть</a></li>' +
+                        '<li><a href="/admin/courses/' + courseStream.course.id + '/streams/' + courseStream.id + '/edit">Изменить</a></li>' +
+                        '<li><a href="/admin/courses/' + courseStream.course.id + '/streams/' + courseStream.id + '">Посмотреть</a></li>' +
                         '<li><a href="#" data-toggle="modal" data-target="#deleteCourseStreamModal" class="courseStreamDelete" coursestreamid="' + courseStream.id + '">Удалить</a></li>' +
                         '</ul>' +
                         '</div>' +
