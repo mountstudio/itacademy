@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Admin;
+namespace App\Controllers\Admin\Stream;
 
 use \Core\View;
 use \Core\Helper;

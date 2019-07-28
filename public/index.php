@@ -510,8 +510,23 @@ $router->add('admin/ajax/staticPage/edit', ['controller' => 'Admin\Ajax\StaticPa
 
 
 
+//Stream Routes
+$router->add('admin/streams', ['controller' => 'Admin\Stream', 'action' => 'index']);
+$router->add('admin/streams/all', ['controller' => 'Admin\Stream', 'action' => 'index']);
+
+$router->add('admin/ajax/stream/paginate', ['controller' => 'Admin\Ajax\Stream', 'action' => 'list']);
+$router->add('admin/ajax/stream/update', ['controller' => 'Admin\Ajax\Stream', 'action' => 'update']);
+
+$router->add('admin/streams/{id:\d+}/edit', ['controller' => 'Admin\Course', 'action' => 'edit']);
+$router->add('admin/streams/{streamid:\d+}', ['controller' => 'Admin\Stream', 'action' => 'index']);
+$router->add('admin/streams/{streamid:\d+}/{id:\d+}', ['controller' => 'Admin\Stream', 'action' => 'show']);
+$router->add('admin/streams/{streamid:\d+}/{id:\d+}/edit', ['controller' => 'Admin\Stream', 'action' => 'edit']);
+$router->add('admin/streams/{streamid:\d+}/add', ['controller' => 'Admin\Stream', 'action' => 'add']);
+//End Stream
 
 
+
+//Course Routes
 $router->add('admin/courses', ['controller' => 'Admin\Course', 'action' => 'index']);
 $router->add('admin/courses/all', ['controller' => 'Admin\Course', 'action' => 'index']);
 
@@ -534,22 +549,18 @@ $router->add('admin/ajax/course/stream/add', ['controller' => 'Admin\Ajax\Course
 $router->add('admin/ajax/course/stream/delete', ['controller' => 'Admin\Ajax\Course\Stream', 'action' => 'delete']);
 $router->add('admin/ajax/course/stream/edit', ['controller' => 'Admin\Ajax\Course\Stream', 'action' => 'edit']);
 
-
-
-
-
 $router->add('admin/ajax/course/add', ['controller' => 'Admin\Ajax\Course', 'action' => 'add']);
 
 $router->add('admin/ajax/course/delete', ['controller' => 'Admin\Ajax\Course', 'action' => 'delete']);
 $router->add('admin/ajax/course/deleteLogo', ['controller' => 'Admin\Ajax\Course', 'action' => 'deleteLogo']);
 $router->add('admin/ajax/course/deleteCover', ['controller' => 'Admin\Ajax\Course', 'action' => 'deleteCover']);
 $router->add('admin/ajax/course/edit', ['controller' => 'Admin\Ajax\Course', 'action' => 'edit']);
+//End Course
 
 
 
 
-
-
+//Skill Routes
 $router->add('admin/courses/{courseid:\d+}/skills', ['controller' => 'Admin\Course\Skill', 'action' => 'index']);
 $router->add('admin/ajax/course/skill/paginate', ['controller' => 'Admin\Ajax\Course\Skill', 'action' => 'list']);
 $router->add('admin/ajax/course/skill/update', ['controller' => 'Admin\Ajax\Course\Skill', 'action' => 'update']);
@@ -562,13 +573,7 @@ $router->add('admin/ajax/course/skill/add', ['controller' => 'Admin\Ajax\Course\
 $router->add('admin/ajax/course/skill/delete', ['controller' => 'Admin\Ajax\Course\Skill', 'action' => 'delete']);
 $router->add('admin/ajax/course/skill/deleteLogo', ['controller' => 'Admin\Ajax\Course\Skill', 'action' => 'deleteLogo']);
 $router->add('admin/ajax/course/skill/edit', ['controller' => 'Admin\Ajax\Course\Skill', 'action' => 'edit']);
-
-
-
-
-
-
-
+//End Skill
 
 
 

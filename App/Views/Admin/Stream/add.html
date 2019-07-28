@@ -1,0 +1,189 @@
+{% block title %}
+Добавление потока курса
+{% endblock %}
+
+{% extends "Admin/base.html" %}
+
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-inner">
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Добавление студента к потоку курса</h4>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" id="addCourseSkill">
+                            <input type="hidden" name="userId" id="userId" value="{{ student.getId() }}">
+                            <div class="form-group">
+                                <label for="course" class="col-sm-2 control-label">Курс</label>
+                                <div class="col-sm-10">
+                                    <select name="courseId" id="course" class="form-control" required>
+                                        <option value="{{ null }}">Выберите курс...</option>
+                                        {% for course in courses %}
+                                            <option value="{{ course.getId() }}">{{ course.getName() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="stream" class="col-sm-2 control-label">Поток</label>
+                                <div class="col-sm-10">
+                                    <select name="streamId" id="stream" class="form-control" disabled required>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="notes" class="col-sm-2 control-label">Примечание</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" id="notes" name="notes" placeholder="Примечание"></textarea>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Создать</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include("Admin/copyrightFooter.html") }}
+</div>
+{% endblock %}
+
+
+{% block endBodies %}
+<link href="/static/admin/assets/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+<script src="/static/admin/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
+<style>
+    th.normal_font {
+        font-weight: normal;
+        padding-left: 10px;
+    }
+    i.silver {
+        color: #bfbcbc;
+        font-size: 11px;
+    }
+    .select2-results__option--highlighted table tr th i.silver {
+        color: #fff;
+    }
+    .customsize {
+        min-height: 36px;
+    }
+    .select2-search__field {
+        width: 100%!important;
+    }
+    #toast-container > div:hover{
+        opacity: 1;
+        box-shadow: 0px 0px 14px 0px #000;
+        cursor: pointer;
+    }
+</style>
+<script src="/static/admin/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+<script src="/static/admin/assets/plugins/summernote/summernote.min.js"></script>
+<script src="/static/admin/assets/js/pages/form-elements.js"></script>
+
+<link href="/static/admin/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/summernote/summernote.css" rel="stylesheet" type="text/css"/>
+
+<!--<script src="/static/admin/assets/js/pages/form-select2.js"></script>-->
+<script src="/static/admin/assets/plugins/select2/js/select2.js"></script>
+<link href="/static/admin/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
+<script src="/static/admin/assets/js/pages/notifications.js"></script>
+
+<script>
+    $('#course').change(e => {
+        e.preventDefault();
+        let select = $(e.target);
+        let id = select.val();
+        let streamSelect = $('#stream');
+
+        $.ajax({
+            url: "/admin/ajax/course/stream/byCourse",
+            method: "POST",
+            data: {
+                'courseId': id
+            },
+            success: data => {
+                console.log(data);
+                streamSelect.empty();
+                streamSelect.removeAttr('disabled');
+                for (let item of data.data) {
+                    streamSelect.append('<option value="'+ item.id +'">' + item.name + '</option>');
+                }
+            },
+            error: () => {
+                streamSelect.empty();
+                streamSelect.attr('disabled', true);
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        let defaultDate = new Date()
+        $('#startsAt').datetimepicker({
+            format: 'YYYY-MM-DD',
+            date: new Date(),
+        });
+        defaultDate.setMonth((new Date()).getMonth() + 1);
+        $('#endsAt').datetimepicker({
+            useCurrent: false, //Important! See issue #1075
+            format: 'YYYY-MM-DD',
+            date: defaultDate
+        });
+        $("#startsAt").on("dp.change", function (e) {
+            $('#endsAt').data("DateTimePicker").minDate(e.date);
+        });
+        $("#endsAt").on("dp.change", function (e) {
+            $('#startsAt').data("DateTimePicker").maxDate(e.date);
+        });
+
+
+        $('.summernote').summernote({
+            lang: 'ru-RU',
+            height: 200,   //set editable area's height
+            disableDragAndDrop: true,
+            callbacks:{
+                onImageUpload: function(files, editor, $editable)
+                {
+                    //sendFile_(files[0],editor,$editable);
+                },
+                onMediaDelete: function(files, editor, welEditable)
+                {
+                    /*
+                    var imageUrl = $(files[0]).attr('src');
+                    var image = imageUrl.split('/');
+                    console.log(image[4]);
+                    */
+                }
+            }
+        });
+
+        $('#addCourseSkill').on('submit', function(){
+            var userId = $('#userId').val();
+            var streamId = $('#stream').val();
+
+            let formData = new FormData();
+            formData.append('userId', userId);
+            formData.append('streamId', streamId);
+
+            ajaxRequest('/admin/ajax/user/stream/add',
+                formData
+            );
+
+            return false;
+        });
+
+    });
+</script>
+{% endblock %}

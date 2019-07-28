@@ -1,21 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Tilek
- * Date: 21.07.2019
- * Time: 22:34
- */
-
-namespace App\Controllers\Admin\User;
 
 
-use App\Controllers\Admin\Base;
+namespace App\Controllers\Admin;
+
+
 use Core\CustomException;
 use Core\View;
 use Models\BranchQuery;
 use Models\ConfigQuery;
 use Models\CourseQuery;
-use Models\CourseStreamQuery;
 use Models\CourseStreamStatusQuery;
 use Models\CurrencyQuery;
 use Models\UserQuery;
@@ -27,23 +20,7 @@ class Stream extends Base
         try {
             $this->helper->shouldHavePrivilege('COURSE_STREAM_ADMIN');
 
-            $userId = (isset($this->params['userid']) ? $this->params['userid'] : null);
-            if (is_null($userId) || intval($userId) == 0){
-                throw new CustomException("ID пользователя не был указан", 403);
-            }
-
-            $user = UserQuery::create()->findPk(intval($userId));
-            if (is_null($user)){
-                throw new CustomException("Пользователь не найден", 404);
-            }
-
-            $this->data = array_merge( $this->data,
-                array(
-                    'student' => $user
-                )
-            );
-
-            View::renderTemplate('Admin/User/Stream/all.html', $this->data);
+            View::renderTemplate('Admin/Stream/all.html', $this->data);
         } catch (CustomException $e) {
             $this->data = array_merge( $this->data,
                 array(  'error_code' => $e->getCode(),

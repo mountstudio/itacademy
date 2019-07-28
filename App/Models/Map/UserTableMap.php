@@ -283,6 +283,13 @@ class UserTableMap extends TableMap
     1 => ':id',
   ),
 ), 'SET NULL', null, 'CurrentInstructorCourseStreams', false);
+        $this->addRelation('Passport', '\\Models\\Passport', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':user_id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, 'Passports', false);
         $this->addRelation('StreamUser', '\\Models\\StreamUser', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
@@ -335,6 +342,7 @@ class UserTableMap extends TableMap
         // Invalidate objects in related instance pools,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         CourseStreamTableMap::clearInstancePool();
+        PassportTableMap::clearInstancePool();
         NotificationTableMap::clearInstancePool();
         FeedbackTableMap::clearInstancePool();
     }

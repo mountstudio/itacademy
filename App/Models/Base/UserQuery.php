@@ -120,6 +120,16 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUserQuery rightJoinWithCurrentInstructorCourseStream() Adds a RIGHT JOIN clause and with to the query using the CurrentInstructorCourseStream relation
  * @method     ChildUserQuery innerJoinWithCurrentInstructorCourseStream() Adds a INNER JOIN clause and with to the query using the CurrentInstructorCourseStream relation
  *
+ * @method     ChildUserQuery leftJoinPassport($relationAlias = null) Adds a LEFT JOIN clause to the query using the Passport relation
+ * @method     ChildUserQuery rightJoinPassport($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Passport relation
+ * @method     ChildUserQuery innerJoinPassport($relationAlias = null) Adds a INNER JOIN clause to the query using the Passport relation
+ *
+ * @method     ChildUserQuery joinWithPassport($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Passport relation
+ *
+ * @method     ChildUserQuery leftJoinWithPassport() Adds a LEFT JOIN clause and with to the query using the Passport relation
+ * @method     ChildUserQuery rightJoinWithPassport() Adds a RIGHT JOIN clause and with to the query using the Passport relation
+ * @method     ChildUserQuery innerJoinWithPassport() Adds a INNER JOIN clause and with to the query using the Passport relation
+ *
  * @method     ChildUserQuery leftJoinStreamUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the StreamUser relation
  * @method     ChildUserQuery rightJoinStreamUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the StreamUser relation
  * @method     ChildUserQuery innerJoinStreamUser($relationAlias = null) Adds a INNER JOIN clause to the query using the StreamUser relation
@@ -160,7 +170,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUserQuery rightJoinWithCurrentUserFeedback() Adds a RIGHT JOIN clause and with to the query using the CurrentUserFeedback relation
  * @method     ChildUserQuery innerJoinWithCurrentUserFeedback() Adds a INNER JOIN clause and with to the query using the CurrentUserFeedback relation
  *
- * @method     \Models\GroupQuery|\Models\CurrencyQuery|\Models\AdminStyleQuery|\Models\VerificationTokenQuery|\Models\CourseStreamQuery|\Models\StreamUserQuery|\Models\NotificationQuery|\Models\FeedbackQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \Models\GroupQuery|\Models\CurrencyQuery|\Models\AdminStyleQuery|\Models\VerificationTokenQuery|\Models\CourseStreamQuery|\Models\PassportQuery|\Models\StreamUserQuery|\Models\NotificationQuery|\Models\FeedbackQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildUser findOne(ConnectionInterface $con = null) Return the first ChildUser matching the query
  * @method     ChildUser findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUser matching the query, or a new ChildUser object populated from the query conditions when no match is found
@@ -1479,6 +1489,79 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
         return $this
             ->joinCurrentInstructorCourseStream($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'CurrentInstructorCourseStream', '\Models\CourseStreamQuery');
+    }
+
+    /**
+     * Filter the query by a related \Models\Passport object
+     *
+     * @param \Models\Passport|ObjectCollection $passport the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildUserQuery The current query, for fluid interface
+     */
+    public function filterByPassport($passport, $comparison = null)
+    {
+        if ($passport instanceof \Models\Passport) {
+            return $this
+                ->addUsingAlias(UserTableMap::COL_ID, $passport->getUserId(), $comparison);
+        } elseif ($passport instanceof ObjectCollection) {
+            return $this
+                ->usePassportQuery()
+                ->filterByPrimaryKeys($passport->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPassport() only accepts arguments of type \Models\Passport or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Passport relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildUserQuery The current query, for fluid interface
+     */
+    public function joinPassport($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Passport');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Passport');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Passport relation Passport object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Models\PassportQuery A secondary query class using the current class as primary query
+     */
+    public function usePassportQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPassport($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Passport', '\Models\PassportQuery');
     }
 
     /**
