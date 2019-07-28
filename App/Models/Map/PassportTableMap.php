@@ -59,7 +59,7 @@ class PassportTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -69,12 +69,7 @@ class PassportTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
-
-    /**
-     * the column name for the id field
-     */
-    const COL_ID = 'passport.id';
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /**
      * the column name for the serial field
@@ -113,11 +108,11 @@ class PassportTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'serial', 'inn', 'startDate', 'operator', 'UserId', ),
-        self::TYPE_CAMELNAME     => array('id', 'serial', 'inn', 'startDate', 'operator', 'userId', ),
-        self::TYPE_COLNAME       => array(PassportTableMap::COL_ID, PassportTableMap::COL_SERIAL, PassportTableMap::COL_INN, PassportTableMap::COL_START_DATE, PassportTableMap::COL_OPERATOR, PassportTableMap::COL_USER_ID, ),
-        self::TYPE_FIELDNAME     => array('id', 'serial', 'inn', 'start_date', 'operator', 'user_id', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('serial', 'inn', 'startDate', 'operator', 'UserId', ),
+        self::TYPE_CAMELNAME     => array('serial', 'inn', 'startDate', 'operator', 'userId', ),
+        self::TYPE_COLNAME       => array(PassportTableMap::COL_SERIAL, PassportTableMap::COL_INN, PassportTableMap::COL_START_DATE, PassportTableMap::COL_OPERATOR, PassportTableMap::COL_USER_ID, ),
+        self::TYPE_FIELDNAME     => array('serial', 'inn', 'start_date', 'operator', 'user_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -127,11 +122,11 @@ class PassportTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'serial' => 1, 'inn' => 2, 'startDate' => 3, 'operator' => 4, 'UserId' => 5, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'serial' => 1, 'inn' => 2, 'startDate' => 3, 'operator' => 4, 'userId' => 5, ),
-        self::TYPE_COLNAME       => array(PassportTableMap::COL_ID => 0, PassportTableMap::COL_SERIAL => 1, PassportTableMap::COL_INN => 2, PassportTableMap::COL_START_DATE => 3, PassportTableMap::COL_OPERATOR => 4, PassportTableMap::COL_USER_ID => 5, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'serial' => 1, 'inn' => 2, 'start_date' => 3, 'operator' => 4, 'user_id' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('serial' => 0, 'inn' => 1, 'startDate' => 2, 'operator' => 3, 'UserId' => 4, ),
+        self::TYPE_CAMELNAME     => array('serial' => 0, 'inn' => 1, 'startDate' => 2, 'operator' => 3, 'userId' => 4, ),
+        self::TYPE_COLNAME       => array(PassportTableMap::COL_SERIAL => 0, PassportTableMap::COL_INN => 1, PassportTableMap::COL_START_DATE => 2, PassportTableMap::COL_OPERATOR => 3, PassportTableMap::COL_USER_ID => 4, ),
+        self::TYPE_FIELDNAME     => array('serial' => 0, 'inn' => 1, 'start_date' => 2, 'operator' => 3, 'user_id' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -149,15 +144,13 @@ class PassportTableMap extends TableMap
         $this->setIdentifierQuoting(true);
         $this->setClassName('\\Models\\Passport');
         $this->setPackage('Models');
-        $this->setUseIdGenerator(true);
-        $this->setIsCrossRef(true);
+        $this->setUseIdGenerator(false);
         // columns
-        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('serial', 'serial', 'VARCHAR', false, 255, null);
         $this->addColumn('inn', 'inn', 'VARCHAR', false, 255, null);
         $this->addColumn('start_date', 'startDate', 'DATE', false, null, null);
         $this->addColumn('operator', 'operator', 'VARCHAR', false, 255, null);
-        $this->addForeignKey('user_id', 'UserId', 'INTEGER', 'user', 'id', false, null, null);
+        $this->addForeignPrimaryKey('user_id', 'UserId', 'INTEGER' , 'user', 'id', true, null, null);
     } // initialize()
 
     /**
@@ -171,7 +164,7 @@ class PassportTableMap extends TableMap
     0 => ':user_id',
     1 => ':id',
   ),
-), 'CASCADE', null, null, false);
+), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -190,11 +183,11 @@ class PassportTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 4 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 4 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 4 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 4 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 4 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 4 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -213,8 +206,8 @@ class PassportTableMap extends TableMap
     {
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
-                ? 0 + $offset
-                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+                ? 4 + $offset
+                : self::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -315,14 +308,12 @@ class PassportTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PassportTableMap::COL_ID);
             $criteria->addSelectColumn(PassportTableMap::COL_SERIAL);
             $criteria->addSelectColumn(PassportTableMap::COL_INN);
             $criteria->addSelectColumn(PassportTableMap::COL_START_DATE);
             $criteria->addSelectColumn(PassportTableMap::COL_OPERATOR);
             $criteria->addSelectColumn(PassportTableMap::COL_USER_ID);
         } else {
-            $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.serial');
             $criteria->addSelectColumn($alias . '.inn');
             $criteria->addSelectColumn($alias . '.start_date');
@@ -379,7 +370,7 @@ class PassportTableMap extends TableMap
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(PassportTableMap::DATABASE_NAME);
-            $criteria->add(PassportTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria->add(PassportTableMap::COL_USER_ID, (array) $values, Criteria::IN);
         }
 
         $query = PassportQuery::create()->mergeWith($criteria);
@@ -425,10 +416,6 @@ class PassportTableMap extends TableMap
             $criteria = clone $criteria; // rename for clarity
         } else {
             $criteria = $criteria->buildCriteria(); // build Criteria from Passport object
-        }
-
-        if ($criteria->containsKey(PassportTableMap::COL_ID) && $criteria->keyContainsValue(PassportTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PassportTableMap::COL_ID.')');
         }
 
 

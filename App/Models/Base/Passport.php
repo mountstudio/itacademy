@@ -64,13 +64,6 @@ abstract class Passport implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the id field.
-     *
-     * @var        int
-     */
-    protected $id;
-
-    /**
      * The value for the serial field.
      *
      * @var        string
@@ -344,16 +337,6 @@ abstract class Passport implements ActiveRecordInterface
     }
 
     /**
-     * Get the [id] column value.
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
      * Get the [serial] column value.
      *
      * @return string
@@ -412,26 +395,6 @@ abstract class Passport implements ActiveRecordInterface
     {
         return $this->user_id;
     }
-
-    /**
-     * Set the value of [id] column.
-     *
-     * @param int $v new value
-     * @return $this|\Models\Passport The current object (for fluent API support)
-     */
-    public function setId($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->id !== $v) {
-            $this->id = $v;
-            $this->modifiedColumns[PassportTableMap::COL_ID] = true;
-        }
-
-        return $this;
-    } // setId()
 
     /**
      * Set the value of [serial] column.
@@ -573,25 +536,22 @@ abstract class Passport implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : PassportTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PassportTableMap::translateFieldName('serial', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : PassportTableMap::translateFieldName('serial', TableMap::TYPE_PHPNAME, $indexType)];
             $this->serial = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PassportTableMap::translateFieldName('inn', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PassportTableMap::translateFieldName('inn', TableMap::TYPE_PHPNAME, $indexType)];
             $this->inn = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PassportTableMap::translateFieldName('startDate', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PassportTableMap::translateFieldName('startDate', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00') {
                 $col = null;
             }
             $this->start_date = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PassportTableMap::translateFieldName('operator', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PassportTableMap::translateFieldName('operator', TableMap::TYPE_PHPNAME, $indexType)];
             $this->operator = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PassportTableMap::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PassportTableMap::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->user_id = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
@@ -601,7 +561,7 @@ abstract class Passport implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = PassportTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = PassportTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Models\\Passport'), 0, $e);
@@ -812,15 +772,8 @@ abstract class Passport implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[PassportTableMap::COL_ID] = true;
-        if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PassportTableMap::COL_ID . ')');
-        }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PassportTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`id`';
-        }
         if ($this->isColumnModified(PassportTableMap::COL_SERIAL)) {
             $modifiedColumns[':p' . $index++]  = '`serial`';
         }
@@ -847,9 +800,6 @@ abstract class Passport implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`id`':
-                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
-                        break;
                     case '`serial`':
                         $stmt->bindValue($identifier, $this->serial, PDO::PARAM_STR);
                         break;
@@ -872,13 +822,6 @@ abstract class Passport implements ActiveRecordInterface
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), 0, $e);
         }
-
-        try {
-            $pk = $con->lastInsertId();
-        } catch (Exception $e) {
-            throw new PropelException('Unable to get autoincrement id.', 0, $e);
-        }
-        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -928,21 +871,18 @@ abstract class Passport implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getId();
-                break;
-            case 1:
                 return $this->getserial();
                 break;
-            case 2:
+            case 1:
                 return $this->getinn();
                 break;
-            case 3:
+            case 2:
                 return $this->getstartDate();
                 break;
-            case 4:
+            case 3:
                 return $this->getoperator();
                 break;
-            case 5:
+            case 4:
                 return $this->getUserId();
                 break;
             default:
@@ -975,15 +915,14 @@ abstract class Passport implements ActiveRecordInterface
         $alreadyDumpedObjects['Passport'][$this->hashCode()] = true;
         $keys = PassportTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getId(),
-            $keys[1] => $this->getserial(),
-            $keys[2] => $this->getinn(),
-            $keys[3] => $this->getstartDate(),
-            $keys[4] => $this->getoperator(),
-            $keys[5] => $this->getUserId(),
+            $keys[0] => $this->getserial(),
+            $keys[1] => $this->getinn(),
+            $keys[2] => $this->getstartDate(),
+            $keys[3] => $this->getoperator(),
+            $keys[4] => $this->getUserId(),
         );
-        if ($result[$keys[3]] instanceof \DateTimeInterface) {
-            $result[$keys[3]] = $result[$keys[3]]->format('c');
+        if ($result[$keys[2]] instanceof \DateTimeInterface) {
+            $result[$keys[2]] = $result[$keys[2]]->format('c');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -1042,21 +981,18 @@ abstract class Passport implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setId($value);
-                break;
-            case 1:
                 $this->setserial($value);
                 break;
-            case 2:
+            case 1:
                 $this->setinn($value);
                 break;
-            case 3:
+            case 2:
                 $this->setstartDate($value);
                 break;
-            case 4:
+            case 3:
                 $this->setoperator($value);
                 break;
-            case 5:
+            case 4:
                 $this->setUserId($value);
                 break;
         } // switch()
@@ -1086,22 +1022,19 @@ abstract class Passport implements ActiveRecordInterface
         $keys = PassportTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setId($arr[$keys[0]]);
+            $this->setserial($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setserial($arr[$keys[1]]);
+            $this->setinn($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setinn($arr[$keys[2]]);
+            $this->setstartDate($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setstartDate($arr[$keys[3]]);
+            $this->setoperator($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setoperator($arr[$keys[4]]);
-        }
-        if (array_key_exists($keys[5], $arr)) {
-            $this->setUserId($arr[$keys[5]]);
+            $this->setUserId($arr[$keys[4]]);
         }
     }
 
@@ -1144,9 +1077,6 @@ abstract class Passport implements ActiveRecordInterface
     {
         $criteria = new Criteria(PassportTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(PassportTableMap::COL_ID)) {
-            $criteria->add(PassportTableMap::COL_ID, $this->id);
-        }
         if ($this->isColumnModified(PassportTableMap::COL_SERIAL)) {
             $criteria->add(PassportTableMap::COL_SERIAL, $this->serial);
         }
@@ -1179,7 +1109,7 @@ abstract class Passport implements ActiveRecordInterface
     public function buildPkeyCriteria()
     {
         $criteria = ChildPassportQuery::create();
-        $criteria->add(PassportTableMap::COL_ID, $this->id);
+        $criteria->add(PassportTableMap::COL_USER_ID, $this->user_id);
 
         return $criteria;
     }
@@ -1192,10 +1122,17 @@ abstract class Passport implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getId();
+        $validPk = null !== $this->getUserId();
 
-        $validPrimaryKeyFKs = 0;
+        $validPrimaryKeyFKs = 1;
         $primaryKeyFKs = [];
+
+        //relation passport_fk_29554a to table user
+        if ($this->aUser && $hash = spl_object_hash($this->aUser)) {
+            $primaryKeyFKs[] = $hash;
+        } else {
+            $validPrimaryKeyFKs = false;
+        }
 
         if ($validPk) {
             return crc32(json_encode($this->getPrimaryKey(), JSON_UNESCAPED_UNICODE));
@@ -1212,18 +1149,18 @@ abstract class Passport implements ActiveRecordInterface
      */
     public function getPrimaryKey()
     {
-        return $this->getId();
+        return $this->getUserId();
     }
 
     /**
-     * Generic method to set the primary key (id column).
+     * Generic method to set the primary key (user_id column).
      *
      * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setId($key);
+        $this->setUserId($key);
     }
 
     /**
@@ -1232,7 +1169,7 @@ abstract class Passport implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getId();
+        return null === $this->getUserId();
     }
 
     /**
@@ -1255,7 +1192,6 @@ abstract class Passport implements ActiveRecordInterface
         $copyObj->setUserId($this->getUserId());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1298,10 +1234,9 @@ abstract class Passport implements ActiveRecordInterface
 
         $this->aUser = $v;
 
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildUser object, it will not be re-added.
+        // Add binding for other direction of this 1:1 relationship.
         if ($v !== null) {
-            $v->addPassport($this);
+            $v->setPassport($this);
         }
 
 
@@ -1320,13 +1255,8 @@ abstract class Passport implements ActiveRecordInterface
     {
         if ($this->aUser === null && ($this->user_id != 0)) {
             $this->aUser = ChildUserQuery::create()->findPk($this->user_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aUser->addPassports($this);
-             */
+            // Because this foreign key represents a one-to-one relationship, we will create a bi-directional association.
+            $this->aUser->setPassport($this);
         }
 
         return $this->aUser;
@@ -1342,7 +1272,6 @@ abstract class Passport implements ActiveRecordInterface
         if (null !== $this->aUser) {
             $this->aUser->removePassport($this);
         }
-        $this->id = null;
         $this->serial = null;
         $this->inn = null;
         $this->start_date = null;

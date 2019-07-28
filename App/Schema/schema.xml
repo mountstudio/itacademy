@@ -225,16 +225,15 @@
         <behavior name="query_cache" />
     </table>
 
-    <table name="passport" phpName="Passport" identifierQuoting="true" isCrossRef="true">
-        <column name="id" type="integer" required="true" autoIncrement="true" primaryKey="true" />
+    <table name="passport" phpName="Passport" identifierQuoting="true">
         <column name="serial" type="varchar" phpName="serial" />
         <column name="inn" type="varchar" phpName="inn" />
         <column name="start_date" type="date" phpName="startDate" />
         <column name="operator" type="varchar" phpName="operator" />
 
-        <column name="user_id" type="integer" />
-        <foreign-key foreignTable="user" onDelete="CASCADE">
-            <reference local="user_id" foreign="id" />
+        <column name="user_id" type="integer" primaryKey="true" />
+        <foreign-key foreignTable="user">
+            <reference foreign="id" local="user_id" />
         </foreign-key>
     </table>
 

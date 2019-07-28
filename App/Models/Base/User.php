@@ -28,7 +28,6 @@ use Models\VerificationTokenQuery as ChildVerificationTokenQuery;
 use Models\Map\CourseStreamTableMap;
 use Models\Map\FeedbackTableMap;
 use Models\Map\NotificationTableMap;
-use Models\Map\PassportTableMap;
 use Models\Map\StreamUserTableMap;
 use Models\Map\UserTableMap;
 use Models\Map\VerificationTokenTableMap;
@@ -263,10 +262,9 @@ abstract class User implements ActiveRecordInterface
     protected $collCurrentInstructorCourseStreamsPartial;
 
     /**
-     * @var        ObjectCollection|ChildPassport[] Collection to store aggregation of ChildPassport objects.
+     * @var        ChildPassport one-to-one related ChildPassport object
      */
-    protected $collPassports;
-    protected $collPassportsPartial;
+    protected $singlePassport;
 
     /**
      * @var        ObjectCollection|ChildStreamUser[] Collection to store aggregation of ChildStreamUser objects.
@@ -327,12 +325,6 @@ abstract class User implements ActiveRecordInterface
      * @var ObjectCollection|ChildCourseStream[]
      */
     protected $currentInstructorCourseStreamsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildPassport[]
-     */
-    protected $passportsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1500,7 +1492,7 @@ abstract class User implements ActiveRecordInterface
 
             $this->collCurrentInstructorCourseStreams = null;
 
-            $this->collPassports = null;
+            $this->singlePassport = null;
 
             $this->collStreamUsers = null;
 
@@ -1729,20 +1721,9 @@ abstract class User implements ActiveRecordInterface
                 }
             }
 
-            if ($this->passportsScheduledForDeletion !== null) {
-                if (!$this->passportsScheduledForDeletion->isEmpty()) {
-                    \Models\PassportQuery::create()
-                        ->filterByPrimaryKeys($this->passportsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->passportsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPassports !== null) {
-                foreach ($this->collPassports as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
+            if ($this->singlePassport !== null) {
+                if (!$this->singlePassport->isDeleted() && ($this->singlePassport->isNew() || $this->singlePassport->isModified())) {
+                    $affectedRows += $this->singlePassport->save($con);
                 }
             }
 
@@ -2237,20 +2218,20 @@ abstract class User implements ActiveRecordInterface
 
                 $result[$key] = $this->collCurrentInstructorCourseStreams->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collPassports) {
+            if (null !== $this->singlePassport) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'passports';
+                        $key = 'passport';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'passports';
+                        $key = 'passport';
                         break;
                     default:
-                        $key = 'Passports';
+                        $key = 'Passport';
                 }
 
-                $result[$key] = $this->collPassports->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+                $result[$key] = $this->singlePassport->toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, true);
             }
             if (null !== $this->collStreamUsers) {
 
@@ -2720,10 +2701,9 @@ abstract class User implements ActiveRecordInterface
                 }
             }
 
-            foreach ($this->getPassports() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPassport($relObj->copy($deepCopy));
-                }
+            $relObj = $this->getPassport();
+            if ($relObj) {
+                $copyObj->setPassport($relObj->copy($deepCopy));
             }
 
             foreach ($this->getStreamUsers() as $relObj) {
@@ -2950,10 +2930,6 @@ abstract class User implements ActiveRecordInterface
         }
         if ('CurrentInstructorCourseStream' == $relationName) {
             $this->initCurrentInstructorCourseStreams();
-            return;
-        }
-        if ('Passport' == $relationName) {
-            $this->initPassports();
             return;
         }
         if ('StreamUser' == $relationName) {
@@ -3525,225 +3501,36 @@ abstract class User implements ActiveRecordInterface
     }
 
     /**
-     * Clears out the collPassports collection
+     * Gets a single ChildPassport object, which is related to this object by a one-to-one relationship.
      *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addPassports()
-     */
-    public function clearPassports()
-    {
-        $this->collPassports = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collPassports collection loaded partially.
-     */
-    public function resetPartialPassports($v = true)
-    {
-        $this->collPassportsPartial = $v;
-    }
-
-    /**
-     * Initializes the collPassports collection.
-     *
-     * By default this just sets the collPassports collection to an empty array (like clearcollPassports());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPassports($overrideExisting = true)
-    {
-        if (null !== $this->collPassports && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = PassportTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collPassports = new $collectionClassName;
-        $this->collPassports->setModel('\Models\Passport');
-    }
-
-    /**
-     * Gets an array of ChildPassport objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildUser is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildPassport[] List of ChildPassport objects
+     * @param  ConnectionInterface $con optional connection object
+     * @return ChildPassport
      * @throws PropelException
      */
-    public function getPassports(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getPassport(ConnectionInterface $con = null)
     {
-        $partial = $this->collPassportsPartial && !$this->isNew();
-        if (null === $this->collPassports || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPassports) {
-                // return empty collection
-                $this->initPassports();
-            } else {
-                $collPassports = ChildPassportQuery::create(null, $criteria)
-                    ->filterByUser($this)
-                    ->find($con);
 
-                if (null !== $criteria) {
-                    if (false !== $this->collPassportsPartial && count($collPassports)) {
-                        $this->initPassports(false);
-
-                        foreach ($collPassports as $obj) {
-                            if (false == $this->collPassports->contains($obj)) {
-                                $this->collPassports->append($obj);
-                            }
-                        }
-
-                        $this->collPassportsPartial = true;
-                    }
-
-                    return $collPassports;
-                }
-
-                if ($partial && $this->collPassports) {
-                    foreach ($this->collPassports as $obj) {
-                        if ($obj->isNew()) {
-                            $collPassports[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPassports = $collPassports;
-                $this->collPassportsPartial = false;
-            }
+        if ($this->singlePassport === null && !$this->isNew()) {
+            $this->singlePassport = ChildPassportQuery::create()->findPk($this->getPrimaryKey(), $con);
         }
 
-        return $this->collPassports;
+        return $this->singlePassport;
     }
 
     /**
-     * Sets a collection of ChildPassport objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
+     * Sets a single ChildPassport object as related to this object by a one-to-one relationship.
      *
-     * @param      Collection $passports A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function setPassports(Collection $passports, ConnectionInterface $con = null)
-    {
-        /** @var ChildPassport[] $passportsToDelete */
-        $passportsToDelete = $this->getPassports(new Criteria(), $con)->diff($passports);
-
-
-        $this->passportsScheduledForDeletion = $passportsToDelete;
-
-        foreach ($passportsToDelete as $passportRemoved) {
-            $passportRemoved->setUser(null);
-        }
-
-        $this->collPassports = null;
-        foreach ($passports as $passport) {
-            $this->addPassport($passport);
-        }
-
-        $this->collPassports = $passports;
-        $this->collPassportsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Passport objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Passport objects.
-     * @throws PropelException
-     */
-    public function countPassports(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collPassportsPartial && !$this->isNew();
-        if (null === $this->collPassports || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPassports) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getPassports());
-            }
-
-            $query = ChildPassportQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByUser($this)
-                ->count($con);
-        }
-
-        return count($this->collPassports);
-    }
-
-    /**
-     * Method called to associate a ChildPassport object to this object
-     * through the ChildPassport foreign key attribute.
-     *
-     * @param  ChildPassport $l ChildPassport
+     * @param  ChildPassport $v ChildPassport
      * @return $this|\Models\User The current object (for fluent API support)
+     * @throws PropelException
      */
-    public function addPassport(ChildPassport $l)
+    public function setPassport(ChildPassport $v = null)
     {
-        if ($this->collPassports === null) {
-            $this->initPassports();
-            $this->collPassportsPartial = true;
-        }
+        $this->singlePassport = $v;
 
-        if (!$this->collPassports->contains($l)) {
-            $this->doAddPassport($l);
-
-            if ($this->passportsScheduledForDeletion and $this->passportsScheduledForDeletion->contains($l)) {
-                $this->passportsScheduledForDeletion->remove($this->passportsScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildPassport $passport The ChildPassport object to add.
-     */
-    protected function doAddPassport(ChildPassport $passport)
-    {
-        $this->collPassports[]= $passport;
-        $passport->setUser($this);
-    }
-
-    /**
-     * @param  ChildPassport $passport The ChildPassport object to remove.
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function removePassport(ChildPassport $passport)
-    {
-        if ($this->getPassports()->contains($passport)) {
-            $pos = $this->collPassports->search($passport);
-            $this->collPassports->remove($pos);
-            if (null === $this->passportsScheduledForDeletion) {
-                $this->passportsScheduledForDeletion = clone $this->collPassports;
-                $this->passportsScheduledForDeletion->clear();
-            }
-            $this->passportsScheduledForDeletion[]= $passport;
-            $passport->setUser(null);
+        // Make sure that that the passed-in ChildPassport isn't already associated with this object
+        if ($v !== null && $v->getUser(null, false) === null) {
+            $v->setUser($this);
         }
 
         return $this;
@@ -5011,10 +4798,8 @@ abstract class User implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPassports) {
-                foreach ($this->collPassports as $o) {
-                    $o->clearAllReferences($deep);
-                }
+            if ($this->singlePassport) {
+                $this->singlePassport->clearAllReferences($deep);
             }
             if ($this->collStreamUsers) {
                 foreach ($this->collStreamUsers as $o) {
@@ -5045,7 +4830,7 @@ abstract class User implements ActiveRecordInterface
 
         $this->collCurrentUserVerificationTokens = null;
         $this->collCurrentInstructorCourseStreams = null;
-        $this->collPassports = null;
+        $this->singlePassport = null;
         $this->collStreamUsers = null;
         $this->collToUserNotifications = null;
         $this->collFromUserNotifications = null;

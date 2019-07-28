@@ -20,14 +20,12 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  *
- * @method     ChildPassportQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildPassportQuery orderByserial($order = Criteria::ASC) Order by the serial column
  * @method     ChildPassportQuery orderByinn($order = Criteria::ASC) Order by the inn column
  * @method     ChildPassportQuery orderBystartDate($order = Criteria::ASC) Order by the start_date column
  * @method     ChildPassportQuery orderByoperator($order = Criteria::ASC) Order by the operator column
  * @method     ChildPassportQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
  *
- * @method     ChildPassportQuery groupById() Group by the id column
  * @method     ChildPassportQuery groupByserial() Group by the serial column
  * @method     ChildPassportQuery groupByinn() Group by the inn column
  * @method     ChildPassportQuery groupBystartDate() Group by the start_date column
@@ -57,7 +55,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPassport findOne(ConnectionInterface $con = null) Return the first ChildPassport matching the query
  * @method     ChildPassport findOneOrCreate(ConnectionInterface $con = null) Return the first ChildPassport matching the query, or a new ChildPassport object populated from the query conditions when no match is found
  *
- * @method     ChildPassport findOneById(int $id) Return the first ChildPassport filtered by the id column
  * @method     ChildPassport findOneByserial(string $serial) Return the first ChildPassport filtered by the serial column
  * @method     ChildPassport findOneByinn(string $inn) Return the first ChildPassport filtered by the inn column
  * @method     ChildPassport findOneBystartDate(string $start_date) Return the first ChildPassport filtered by the start_date column
@@ -67,7 +64,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPassport requirePk($key, ConnectionInterface $con = null) Return the ChildPassport by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPassport requireOne(ConnectionInterface $con = null) Return the first ChildPassport matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildPassport requireOneById(int $id) Return the first ChildPassport filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPassport requireOneByserial(string $serial) Return the first ChildPassport filtered by the serial column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPassport requireOneByinn(string $inn) Return the first ChildPassport filtered by the inn column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPassport requireOneBystartDate(string $start_date) Return the first ChildPassport filtered by the start_date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -75,7 +71,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPassport requireOneByUserId(int $user_id) Return the first ChildPassport filtered by the user_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPassport[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPassport objects based on current ModelCriteria
- * @method     ChildPassport[]|ObjectCollection findById(int $id) Return ChildPassport objects filtered by the id column
  * @method     ChildPassport[]|ObjectCollection findByserial(string $serial) Return ChildPassport objects filtered by the serial column
  * @method     ChildPassport[]|ObjectCollection findByinn(string $inn) Return ChildPassport objects filtered by the inn column
  * @method     ChildPassport[]|ObjectCollection findBystartDate(string $start_date) Return ChildPassport objects filtered by the start_date column
@@ -179,7 +174,7 @@ abstract class PassportQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `serial`, `inn`, `start_date`, `operator`, `user_id` FROM `passport` WHERE `id` = :p0';
+        $sql = 'SELECT `serial`, `inn`, `start_date`, `operator`, `user_id` FROM `passport` WHERE `user_id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -253,7 +248,7 @@ abstract class PassportQuery extends ModelCriteria
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(PassportTableMap::COL_ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(PassportTableMap::COL_USER_ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -266,48 +261,7 @@ abstract class PassportQuery extends ModelCriteria
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(PassportTableMap::COL_ID, $keys, Criteria::IN);
-    }
-
-    /**
-     * Filter the query on the id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterById(1234); // WHERE id = 1234
-     * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE id > 12
-     * </code>
-     *
-     * @param     mixed $id The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildPassportQuery The current query, for fluid interface
-     */
-    public function filterById($id = null, $comparison = null)
-    {
-        if (is_array($id)) {
-            $useMinMax = false;
-            if (isset($id['min'])) {
-                $this->addUsingAlias(PassportTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($id['max'])) {
-                $this->addUsingAlias(PassportTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PassportTableMap::COL_ID, $id, $comparison);
+        return $this->addUsingAlias(PassportTableMap::COL_USER_ID, $keys, Criteria::IN);
     }
 
     /**
@@ -506,7 +460,7 @@ abstract class PassportQuery extends ModelCriteria
      *
      * @return $this|ChildPassportQuery The current query, for fluid interface
      */
-    public function joinUser($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('User');
@@ -541,7 +495,7 @@ abstract class PassportQuery extends ModelCriteria
      *
      * @return \Models\UserQuery A secondary query class using the current class as primary query
      */
-    public function useUserQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
             ->joinUser($relationAlias, $joinType)
@@ -558,7 +512,7 @@ abstract class PassportQuery extends ModelCriteria
     public function prune($passport = null)
     {
         if ($passport) {
-            $this->addUsingAlias(PassportTableMap::COL_ID, $passport->getId(), Criteria::NOT_EQUAL);
+            $this->addUsingAlias(PassportTableMap::COL_USER_ID, $passport->getUserId(), Criteria::NOT_EQUAL);
         }
 
         return $this;

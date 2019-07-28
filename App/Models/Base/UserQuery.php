@@ -1522,7 +1522,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @return $this|ChildUserQuery The current query, for fluid interface
      */
-    public function joinPassport($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinPassport($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Passport');
@@ -1557,7 +1557,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @return \Models\PassportQuery A secondary query class using the current class as primary query
      */
-    public function usePassportQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function usePassportQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
             ->joinPassport($relationAlias, $joinType)
