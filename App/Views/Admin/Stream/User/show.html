@@ -17,7 +17,7 @@
                     <div class="panel-heading clearfix">
                         <h4 class="panel-title">Потоки курса</h4>
                         <div class="panel-control">
-                            <button type="link" data-href="/admin/streams/{{ stream.getId() }}/student/add"
+                            <button type="link" data-href="/admin/courses/{{ course.getId() }}/streams/add"
                                     class="btn btn-success btn-addon m-b-sm btn-sm"><i class="fa fa-plus"></i> Добавить
                             </button>
                         </div>
@@ -28,12 +28,13 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Фото</th>
-                                    <th>Логин</th>
-                                    <th>Email</th>
                                     <th>Имя</th>
-                                    <th>Группа</th>
-                                    <th class="actions">Действие</th>
+                                    <th>Кол-во мест</th>
+                                    <th>Стоимость</th>
+                                    <th>Преподователь</th>
+                                    <th>Состояние</th>
+                                    <th>Дата начала/окончания</th>
+                                    <th>Действие</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -43,14 +44,14 @@
                         </div>
 
                         <!-- Modal -->
-                        <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog"
-                             aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="deleteCourseStreamModal" tabindex="-1" role="dialog"
+                             aria-labelledby="deleteCourseStreamModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="deleteUserModalLabel">Удаление</h4>
+                                        <h4 class="modal-title" id="deleteCourseStreamModalLabel">Удаление</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
@@ -58,12 +59,13 @@
                                                 После проведенного действия назад невозможно возвратиться!
                                             </p>
                                         </div>
+
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" id="cancelDeleteAccount" class="btn btn-default"
+                                        <button type="button" id="cancelDeleteCourseStream" class="btn btn-default"
                                                 data-dismiss="modal">Отменить
                                         </button>
-                                        <button type="button" id="confirmDeleteAccount" userid="none"
+                                        <button type="button" id="confirmDeleteCourseStream" coursestreamid="none"
                                                 class="btn btn-danger">Удалить
                                         </button>
                                     </div>
@@ -132,60 +134,62 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        $(document).on('click', '.userDelete', function () {
-            var userId = $(this).attr('userid');
-            $('#confirmDeleteAccount').attr('userid', userId);
+        $(document).on('click', '.courseStreamDelete', function () {
+            var courseStreamId = $(this).attr('coursestreamid');
+
+            $('#confirmDeleteCourseStream').attr('coursestreamid', courseStreamId);
+
         });
 
-        $('#confirmDeleteAccount').on('click', function () {
-            var userId = $(this).attr('userid');
-            if (userId == 'none') {
-                toastr["error"]("Неверный ID пользователя", "Ошибка");
-            } else {
-
-                postAjaxRequest('/admin/ajax/user/delete',
-                    {
-                        id: userId
-                    },
-                    function (data) {
-                        $('#cancelDeleteAccount').click();
-                        $("tr[data-id=" + userId + "]").css("background-color", "red").css("color", "white").fadeOut(400, function () {
-                            $(this).remove();
-                        });
-                    },
-                    function (data) {
-                        $('#cancelDeleteAccount').click();
-                    }
-                );
-            }
+        $('#confirmDeleteCourseStream').on('click', function () {
+            var courseStreamId = $(this).attr('coursestreamid');
+            postAjaxRequest('/admin/ajax/course/stream/delete',
+                {
+                    id: courseStreamId
+                },
+                function (data) {
+                    $('#cancelDeleteCourseStream').click();
+                    $("tr[data-id=" + courseStreamId + "]").css("background-color", "red").css("color", "white").fadeOut(400, function () {
+                        $(this).remove();
+                    });
+                },
+                function (data) {
+                    $('#cancelDeleteCourseStream').click();
+                }
+            );
             return false;
         });
-        filteredPaginationRequest('/admin/ajax/students/paginate',
+
+
+        filteredPaginationRequest('/admin/ajax/course/stream/paginate',
             {
-                streamId: '{{ stream.getId() }}'
+                courseId: '{{ course.getId() }}'
             },
             '#list',
             function (data) {
                 result = '';
-                data.data.forEach(function (user) {
-                    result += '<tr data-id="' + user.id + '">' +
-                        '<th scope="row">' + user.id + '</th>' +
-                        '<td><img src="' + user.avatar['thumb'] + '" class="img-circle small-img" alt="Фото" /></td>' +
-                        '<td>' + ((user.userName == null) ? "-" : user.userName) + '</td>' +
-                        '<td>' + ((user.email == null) ? "-" : user.email) + '</td>' +
-                        '<td>' + user.name + '</td>' +
-                        '<td>' + user.group['name'] + '</td>' +
+                data.data.forEach(function (courseStream) {
+                    result +=
+                        '<tr data-id="' + courseStream.id + '">' +
+                        '<td scope="row">' + courseStream.id + '</td>' +
+                        '<td>' + courseStream.name + '</td>' +
+                        '<td>' + courseStream.place.busy + '/' + courseStream.place.all + '</td>' +
+                        '<td>' + round(courseStream.cost.value, 2) + ' ' + courseStream.cost.currency.isoCode + '</td>' +
+                        '<td data-instructor-id="' + ((courseStream.instructor != null) ? courseStream.instructor.id : 'null') + '">' + ((courseStream.instructor != null) ? courseStream.instructor.name : '-') + '</td>' +
+                        '<td data-status-id="' + courseStream.status.id + '">' + courseStream.status.name + '</td>' +
+                        '<td data-starts-at="' + courseStream.startsAt.date + '" data-ends-at="' + courseStream.endsAt.date + '">' + moment(courseStream.startsAt.date).format('ll') + ' / ' + moment(courseStream.endsAt.date).format('ll') + '</td>' +
                         '<td>' +
-                        '<div class="btn-group m-b-sm">' +
+                        '<div class="btn-group">' +
                         '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Действие <span class="caret"></span> </button>' +
                         '<ul class="dropdown-menu dropdown-menu-right" role="menu">' +
-                        '<li><a href="/admin/users/' + user.id + '/edit">Изменить</a></li>' +
-                        '<li><a href="/admin/users/' + user.id + '/streams">Потоки</a></li>' +
-                        '<li><a href="#" data-toggle="modal" data-target="#deleteUserModal" class="userDelete" userid="' + user.id + '">Удалить</a></li>' +
+                        '<li><a href="/admin/courses/{{ course.getId() }}/streams/' + courseStream.id + '/edit">Изменить</a></li>' +
+                        '<li><a href="/admin/courses/{{ course.getId() }}/streams/' + courseStream.id + '/">Изменить</a></li>' +
+                        '<li><a href="#" data-toggle="modal" data-target="#deleteCourseStreamModal" class="courseStreamDelete" coursestreamid="' + courseStream.id + '">Удалить</a></li>' +
                         '</ul>' +
                         '</div>' +
                         '</td>' +
                         '</tr>';
+
                 });
                 return result;
             }

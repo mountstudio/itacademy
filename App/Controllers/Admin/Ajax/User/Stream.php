@@ -118,13 +118,25 @@ class Stream extends Base
                 throw new CustomException("Потока с таким id не существует", 1);
             }
 
-            $stream->setNumberOfBusyPlaces($stream->getNumberOfBusyPlaces() + 1);
-            $stream->addUser($user);
-            $stream->save();
+            if ($stream->getNumberOfBusyPlaces() >= $stream->getNumberOfPlaces()) {
+                $this->response->setStatus(JsonResponse::FAIL);
+                $this->response->setMessage("Нет свободных мест в потоке");
+                $this->response->setRedirect('/admin/users/' . $user->getId() . '/streams');
+            } else {
+                if (!$stream->getUsers()->contains($user)) {
+                    $stream->setNumberOfBusyPlaces($stream->getNumberOfBusyPlaces() + 1);
+                    $stream->addUser($user);
+                    $stream->save();
 
-            $this->response->setStatus(JsonResponse::SUCCESS);
-            $this->response->setMessage("Поток курса успешно создан");
-            $this->response->setRedirect('/admin/users/' . $userId . '/streams');
+                    $this->response->setStatus(JsonResponse::SUCCESS);
+                    $this->response->setMessage("Пользователь успешно записан к потоку");
+                    $this->response->setRedirect('/admin/users/' . $user->getId() . '/streams');
+                } else {
+                    $this->response->setStatus(JsonResponse::ERROR);
+                    $this->response->setMessage("Пользователь уже зарегистрирован на поток");
+                    $this->response->setRedirect('/admin/users/' . $user->getId() . '/streams');
+                }
+            }
         } catch (CustomException $e) {
             $this->response->setException($e);
         }

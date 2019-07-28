@@ -9,8 +9,10 @@ use Core\View;
 use Models\BranchQuery;
 use Models\ConfigQuery;
 use Models\CourseQuery;
+use Models\CourseStreamQuery;
 use Models\CourseStreamStatusQuery;
 use Models\CurrencyQuery;
+use Models\GroupQuery;
 use Models\UserQuery;
 
 class Stream extends Base
@@ -37,34 +39,35 @@ class Stream extends Base
         try {
             $this->helper->shouldHavePrivilege('COURSE_STREAM_ADMIN');
 
-            $userId = (isset($this->params['userid']) ? $this->params['userid'] : null);
-            if (is_null($userId) || intval($userId) == 0){
-                throw new CustomException("ID пользователя не был указан", 403);
+            $streamId = (isset($this->params['streamid']) ? $this->params['streamid'] : null);
+            if (is_null($streamId) || intval($streamId) == 0){
+                throw new CustomException("ID потока не был указан", 403);
             }
 
-            $user = UserQuery::create()->findPk(intval($userId));
-            if (is_null($user)){
-                throw new CustomException("Курс не найден", 404);
+            $stream = CourseStreamQuery::create()->findPk(intval($streamId));
+            if (is_null($stream)){
+                throw new CustomException("Поток не найден", 404);
             }
             $branches = BranchQuery::create()->find();
             $statuses = CourseStreamStatusQuery::create()->find();
             $currencies = CurrencyQuery::create()->find();
             $courses = CourseQuery::create()->find();
+            $groups = GroupQuery::create()->find();
 
             $instructorGroup = ConfigQuery::create()->findOneByKey('default_instructor_group');
             $instructors = UserQuery::create()->filterByCurrentGroupId(intval($instructorGroup->getValue()))->find();
 
             $this->data = array_merge( $this->data,
                 array(
-                    'student' => $user,
                     'branches' => $branches,
                     'statuses' => $statuses,
                     'instructors' => $instructors,
                     'currencies' => $currencies,
                     'courses' => $courses,
+                    'groups' => $groups,
                 )
             );
-            View::renderTemplate('Admin/User/Stream/add.html', $this->data);
+            View::renderTemplate('Admin/Stream/User/add.html', $this->data);
         } catch (CustomException $e) {
             $this->data = array_merge( $this->data,
                 array(  'error_code' => $e->getCode(),

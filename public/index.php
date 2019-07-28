@@ -516,12 +516,13 @@ $router->add('admin/streams/all', ['controller' => 'Admin\Stream', 'action' => '
 
 $router->add('admin/ajax/stream/paginate', ['controller' => 'Admin\Ajax\Stream', 'action' => 'list']);
 $router->add('admin/ajax/stream/update', ['controller' => 'Admin\Ajax\Stream', 'action' => 'update']);
+$router->add('admin/ajax/stream/student/add', ['controller' => 'Admin\Ajax\Stream', 'action' => 'add']);
 
 $router->add('admin/streams/{id:\d+}/edit', ['controller' => 'Admin\Course', 'action' => 'edit']);
 $router->add('admin/streams/{streamid:\d+}', ['controller' => 'Admin\Stream', 'action' => 'index']);
 $router->add('admin/streams/{streamid:\d+}/{id:\d+}', ['controller' => 'Admin\Stream', 'action' => 'show']);
 $router->add('admin/streams/{streamid:\d+}/{id:\d+}/edit', ['controller' => 'Admin\Stream', 'action' => 'edit']);
-$router->add('admin/streams/{streamid:\d+}/add', ['controller' => 'Admin\Stream', 'action' => 'add']);
+$router->add('admin/streams/{streamid:\d+}/student/add', ['controller' => 'Admin\Stream', 'action' => 'add']);
 //End Stream
 
 

@@ -1,0 +1,311 @@
+{% block title %}
+Редактирование навыка курса «{{ stream.getName() }}»
+{% endblock %}
+
+{% extends "Admin/base.html" %}
+
+{% block headers %}
+<!-- nothing to write to headers -->
+{% endblock %}
+
+{% block content %}
+<div class="page-inner">
+    <div class="page-title">
+
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Изменение</h4>
+                        <div class="panel-control">
+                            <button type="link" data-href="/admin/courses/{{ stream.getCurrentCourseId() }}/streams" class="btn btn-default btn-addon m-b-sm btn-sm"><i class="fa fa-chevron-left"></i> Все</button>
+                        </div>
+                    </div>
+
+                    <div class="panel-body">
+                        <form class="form-horizontal" id="editStream">
+                            <input type="hidden" name="streamId" id="streamId" value="{{ stream.getId() }}"/>
+
+                            <div class="form-group">
+                                <label for="name" class="col-sm-2 control-label">Название</label>
+                                <div class="col-sm-10">
+                                    <input type="text" value="{{ stream.getName() }}" class="form-control" name="name" id="name" placeholder="Название потока" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="showOnWebSite" class="col-sm-2 control-label">Показать на сайте</label>
+                                <div class="col-sm-10">
+                                    <div class="ios-switch pull-right switch-md">
+                                        <input type="checkbox" id="showOnWebSite" name="showOnWebSite" {% if stream.getShowOnWebSite() %} checked {% endif %} value="true" class="js-switch pull-right fixed-header-check">
+                                    </div>
+                                    <p class="help-block">Если отключен, то на сайте поток не будет показан</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="streamStatus" class="col-sm-2 control-label">Состояние курса</label>
+                                <div class="col-sm-10">
+                                    <select name="streamStatus" id="streamStatus" class="form-control m-b-sm">
+                                        {% for status in statuses %}
+                                        <option value="{{ status.getId() }}" {% if status.getId() == stream.getCurrentCourseStreamStatusId() %} selected {% endif %}>{{ status.getName() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="numberOfPlaces" class="col-sm-2 control-label">Количество мест</label>
+                                <div class="col-sm-10">
+                                    <input type="number" value="{{ stream.getNumberOfPlaces() }}" class="form-control min-input" name="numberOfPlaces" min="1" id="numberOfPlaces" placeholder="Количество мест" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cost" class="col-sm-2 control-label">Стоимость</label>
+                                <div class="col-sm-10">
+                                    <input type="number" value="{{ stream.getCost() }}" class="form-control inline-input min-input" name="cost" id="cost" placeholder="Стоимость">
+
+                                    <select name="currency" id="currency" class="form-control m-b-sm inline-input">
+                                        <option value="0" selected>-</option>
+                                        {% for currency in currencies %}
+                                        <option value="{{ currency.getId() }}" {% if currency.getId() == stream.getCurrentCurrencyId() %} selected {% endif %}>{{ currency.getName() }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="instructor" class="col-sm-2 control-label">Преподаватель</label>
+                                <div class="col-sm-10">
+                                    <select name="instructor" id="instructor" class="form-control m-b-sm">
+                                        <option value="0" selected>-</option>
+                                        {% for instructor in instructors %}
+                                        <option value="{{ instructor.getId() }}" {% if instructor.getId() == stream.getCurrentCourseStreamInstructorId() %} selected {% endif %}>{{ instructor.getName() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="startsAt" class="col-sm-2 control-label">Дата</label>
+                                <div class="col-sm-10">
+                                    <input type="text" value="{{ stream.getStartsAt()|getDate }}" autocomplete="off" class="form-control date-picker-input inline-input" name="startsAt" id="startsAt" placeholder="Дата Начала">
+                                    <span> - </span>
+                                    <input type="text" value="{{ stream.getEndsAt()|getDate }}" autocomplete="off" class="form-control date-picker-input inline-input" name="endsAt" id="endsAt" placeholder="Дата Окончания">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Описание</label>
+                                <div class="col-sm-10">
+                                    <div class="summernote">{{ stream.getDescription()|raw }}</div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label for="notes" class="col-sm-2 control-label">Примечание</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" id="notes" name="notes" placeholder="Примечание">{{ stream.getNotes() }}</textarea>
+                                </div>
+                            </div>
+
+
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                            <button type="button" class="btn btn-danger" id="deleteStreamModalFocus" data-toggle="modal" data-target="#deleteStreamModal">Удалить</button>
+                        </form>
+
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="deleteStreamModal" tabindex="-1" role="dialog" aria-labelledby="deleteStreamModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="deleteStreamModalLabel">Удаление</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <p>
+                                                После проведенного действия назад невозможно возвратиться!
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                    <form>
+                                        <div class="modal-footer">
+                                            <button type="button" id="cancelDeleteStream" class="btn btn-default" data-dismiss="modal">Отменить</button>
+                                            <button type="button" id="confirmDeleteStream" streamid="none" class="btn btn-danger">Удалить</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include("Admin/copyrightFooter.html") }}
+</div>
+{% endblock %}
+
+
+{% block endBodies %}
+<link href="/static/admin/assets/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+<script src="/static/admin/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
+
+
+<style>
+    th.normal_font {
+        font-weight: normal;
+        padding-left: 10px;
+    }
+    i.silver {
+        color: #bfbcbc;
+        font-size: 11px;
+    }
+    .select2-results__option--highlighted table tr th i.silver {
+        color: #fff;
+    }
+    .customsize {
+        min-height: 36px;
+    }
+    .select2-search__field {
+        width: 100%!important;
+    }
+    #toast-container > div:hover{
+        opacity: 1;
+        box-shadow: 0px 0px 14px 0px #000;
+        cursor: pointer;
+    }
+</style>
+<script src="/static/admin/assets/plugins/summernote/summernote.min.js"></script>
+
+<link href="/static/admin/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+<link href="/static/admin/assets/plugins/summernote/summernote.css" rel="stylesheet" type="text/css"/>
+<!--<script src="/static/admin/assets/js/pages/form-select2.js"></script>-->
+<script src="/static/admin/assets/plugins/select2/js/select2.js"></script>
+<link href="/static/admin/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
+<script src="/static/admin/assets/js/pages/notifications.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        let startsAt = $('#startsAt').val();
+        $('#startsAt').datetimepicker({
+            format: 'YYYY-MM-DD',
+            date: new Date(startsAt)
+        });
+
+
+        let endsAt = $('#endsAt').val();
+        $('#endsAt').datetimepicker({
+            useCurrent: false, //Important! See issue #1075
+            format: 'YYYY-MM-DD',
+            date: new Date(endsAt)
+        });
+        $("#startsAt").on("dp.change", function (e) {
+            $('#endsAt').data("DateTimePicker").minDate(e.date);
+        });
+        $("#endsAt").on("dp.change", function (e) {
+            $('#startsAt').data("DateTimePicker").maxDate(e.date);
+        });
+
+
+        $('.summernote').summernote({
+            lang: 'ru-RU',
+            height: 200,   //set editable area's height
+            disableDragAndDrop: true,
+            callbacks:{
+                onImageUpload: function(files, editor, $editable)
+                {
+                    //sendFile_(files[0],editor,$editable);
+                },
+                onMediaDelete: function(files, editor, welEditable)
+                {
+                    /*
+                    var imageUrl = $(files[0]).attr('src');
+                    var image = imageUrl.split('/');
+                    console.log(image[4]);
+                    */
+                }
+            }
+        });
+
+        $('#editStream').on('submit', function(){
+            var streamId = $('input[name=streamId]').val();
+            var name = $('input[name=name]').val();
+            var description = $('.summernote').summernote('code');
+            var notes = $('textarea[name=notes]').val();
+
+            var cost = $('input[name=cost]').val();
+            var currencyId = $('select[name=currency]').val();
+
+            var startsAt = $('input[name=startsAt]').val();
+            var endsAt = $('input[name=endsAt]').val();
+
+            var showOnWebSite = $('input[name=showOnWebSite]').is(":checked")?'true':'false';
+
+            var statusId = $('select[name=streamStatus] :selected').val();
+            var instructorId = $('select[name=instructor] :selected').val();
+
+            var numberOfPlaces = $('input[name=numberOfPlaces]').val();
+
+
+            let formData = new FormData();
+            formData.append('id', streamId);
+
+            formData.append('name', name);
+            formData.append('cost', cost);
+            formData.append('currencyId', currencyId);
+            formData.append('startsAt', startsAt);
+            formData.append('endsAt', endsAt);
+            formData.append('numberOfPlaces', numberOfPlaces);
+            formData.append('showOnWebSite', showOnWebSite);
+            formData.append('statusId', statusId);
+            formData.append('instructorId', instructorId);
+
+            formData.append('description', description);
+            formData.append('notes', notes);
+
+
+            ajaxRequest('/admin/ajax/course/stream/edit',
+                formData
+            );
+
+            return false;
+        });
+
+
+        $('#confirmDeleteStream').on('click', function(){
+            var streamId = $('#streamId').val();
+
+            postAjaxRequest('/admin/ajax/course/stream/delete',
+                {
+                    id: streamId,
+                    'fromEditAction': true
+                },
+                function(data){
+                    $('#cancelDeleteStream').click();
+                },
+                function(data){
+                    $('#cancelDeleteStream').click();
+                }
+            );
+
+            return false;
+        });
+
+    });
+</script>
+{% endblock %}
