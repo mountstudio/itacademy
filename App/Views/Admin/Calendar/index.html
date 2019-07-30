@@ -38,6 +38,14 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
+                                <label for="status" class="col-sm-2 control-label">Статус</label>
+                                <div class="col-sm-10">
+                                    <div class="ios-switch pull-right switch-md">
+                                        <input type="checkbox" id="status" name="status" class="js-switch pull-right fixed-header-check">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <input type="text" name="title" id="titleCalendarEvent">
                             </div>
                             <div class="form-group">
@@ -80,6 +88,7 @@
         },
         dayClick: function(date, jsEvent, view) {
             $('#addCalendarEvent').modal('show');
+            let day = $(this);
 
             $('#confirmAddCalendarEventBtn').off('click').on('click', function (e) {
                 $('#addCalendarEvent').modal('hide');
@@ -87,16 +96,21 @@
                 let title = $('#titleCalendarEvent').val();
                 let time = $('#timeCalendarEvent').val();
                 let duration = $('#durationCalendarEvent').val();
+                let party = $('#status').is(":checked")?'true':'false';
 
                 $('#titleCalendarEvent').val('');
                 $('#timeCalendarEvent').val('');
                 $('#durationCalendarEvent').val('');
+                $('#status').prop('checked', false);
 
                 // console.log(title);
                 let dateTime = date.format() + 'T' + time;
                 time = new Date(dateTime);
 
-                if (title != null && title !== "") {
+                if (party) {
+                    day.css('background-color', 'red');
+                }
+                else if (title != null && title !== "") {
                     let event = {
                         title: title,
                         end: new Date(time.setHours(time.getHours() + parseInt(duration))),

@@ -411,7 +411,7 @@ $router->add('admin/ajax/section/update', ['controller' => 'Admin\Ajax\Section',
 
 
 
-
+//Calendar lesson events
 $router->add('admin/lessons/all', ['controller' => 'Admin\Lesson', 'action' => 'index']);
 $router->add('admin/lessons/add', ['controller' => 'Admin\Lesson', 'action' => 'add']);
 $router->add('admin/lessons/{id:\d+}/edit', ['controller' => 'Admin\Lesson', 'action' => 'edit']);
@@ -422,7 +422,7 @@ $router->add('admin/ajax/lesson/add', ['controller' => 'Admin\Ajax\Lesson', 'act
 $router->add('admin/ajax/lesson/delete', ['controller' => 'Admin\Ajax\Lesson', 'action' => 'delete']);
 $router->add('admin/ajax/lesson/edit', ['controller' => 'Admin\Ajax\Lesson', 'action' => 'edit']);
 $router->add('admin/ajax/lesson/update', ['controller' => 'Admin\Ajax\Lesson', 'action' => 'update']);
-
+//End Calendar lesson events
 
 
 
