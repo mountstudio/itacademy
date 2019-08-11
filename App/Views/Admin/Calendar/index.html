@@ -96,12 +96,11 @@
                 let title = $('#titleCalendarEvent').val();
                 let time = $('#timeCalendarEvent').val();
                 let duration = $('#durationCalendarEvent').val();
-                let party = $('#status').is(":checked")?'true':'false';
+                let party = $('#status').is(":checked") ? true : false;
 
                 $('#titleCalendarEvent').val('');
                 $('#timeCalendarEvent').val('');
                 $('#durationCalendarEvent').val('');
-                $('#status').prop('checked', false);
 
                 // console.log(title);
                 let dateTime = date.format() + 'T' + time;
