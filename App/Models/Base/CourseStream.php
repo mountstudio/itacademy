@@ -3190,7 +3190,7 @@ abstract class CourseStream implements ActiveRecordInterface
                 $this->currentStreamLessonStreamsScheduledForDeletion = clone $this->collCurrentStreamLessonStreams;
                 $this->currentStreamLessonStreamsScheduledForDeletion->clear();
             }
-            $this->currentStreamLessonStreamsScheduledForDeletion[]= clone $currentStreamLessonStream;
+            $this->currentStreamLessonStreamsScheduledForDeletion[]= $currentStreamLessonStream;
             $currentStreamLessonStream->setCurrentStreamStreamLesson(null);
         }
 

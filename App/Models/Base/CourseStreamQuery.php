@@ -1539,7 +1539,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @return $this|ChildCourseStreamQuery The current query, for fluid interface
      */
-    public function joinCurrentStreamLessonStream($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinCurrentStreamLessonStream($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('CurrentStreamLessonStream');
@@ -1574,7 +1574,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @return \Models\LessonQuery A secondary query class using the current class as primary query
      */
-    public function useCurrentStreamLessonStreamQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useCurrentStreamLessonStreamQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinCurrentStreamLessonStream($relationAlias, $joinType)

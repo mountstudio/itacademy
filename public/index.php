@@ -418,6 +418,7 @@ $router->add('admin/lessons/{id:\d+}/edit', ['controller' => 'Admin\Lesson', 'ac
 
 
 
+$router->add('admin/ajax/lesson/list', ['controller' => 'Admin\Ajax\Lesson', 'action' => 'list']);
 $router->add('admin/ajax/lesson/add', ['controller' => 'Admin\Ajax\Lesson', 'action' => 'add']);
 $router->add('admin/ajax/lesson/delete', ['controller' => 'Admin\Ajax\Lesson', 'action' => 'delete']);
 $router->add('admin/ajax/lesson/edit', ['controller' => 'Admin\Ajax\Lesson', 'action' => 'edit']);

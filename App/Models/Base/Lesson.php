@@ -79,11 +79,39 @@ abstract class Lesson implements ActiveRecordInterface
     protected $title;
 
     /**
-     * The value for the date field.
+     * The value for the datestart field.
      *
      * @var        DateTime
      */
-    protected $date;
+    protected $datestart;
+
+    /**
+     * The value for the dateend field.
+     *
+     * @var        DateTime
+     */
+    protected $dateend;
+
+    /**
+     * The value for the doc field.
+     *
+     * @var        string
+     */
+    protected $doc;
+
+    /**
+     * The value for the video_link field.
+     *
+     * @var        string
+     */
+    protected $video_link;
+
+    /**
+     * The value for the all_day field.
+     *
+     * @var        boolean
+     */
+    protected $all_day;
 
     /**
      * The value for the stream_id field.
@@ -365,7 +393,7 @@ abstract class Lesson implements ActiveRecordInterface
     }
 
     /**
-     * Get the [optionally formatted] temporal [date] column value.
+     * Get the [optionally formatted] temporal [datestart] column value.
      *
      *
      * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
@@ -375,13 +403,73 @@ abstract class Lesson implements ActiveRecordInterface
      *
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getLessonDate($format = NULL)
+    public function getDateStart($format = NULL)
     {
         if ($format === null) {
-            return $this->date;
+            return $this->datestart;
         } else {
-            return $this->date instanceof \DateTimeInterface ? $this->date->format($format) : null;
+            return $this->datestart instanceof \DateTimeInterface ? $this->datestart->format($format) : null;
         }
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [dateend] column value.
+     *
+     *
+     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw DateTime object will be returned.
+     *
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getDateEnd($format = NULL)
+    {
+        if ($format === null) {
+            return $this->dateend;
+        } else {
+            return $this->dateend instanceof \DateTimeInterface ? $this->dateend->format($format) : null;
+        }
+    }
+
+    /**
+     * Get the [doc] column value.
+     *
+     * @return string
+     */
+    public function getDoc()
+    {
+        return $this->doc;
+    }
+
+    /**
+     * Get the [video_link] column value.
+     *
+     * @return string
+     */
+    public function getVideoLink()
+    {
+        return $this->video_link;
+    }
+
+    /**
+     * Get the [all_day] column value.
+     *
+     * @return boolean
+     */
+    public function getAllDay()
+    {
+        return $this->all_day;
+    }
+
+    /**
+     * Get the [all_day] column value.
+     *
+     * @return boolean
+     */
+    public function isAllDay()
+    {
+        return $this->getAllDay();
     }
 
     /**
@@ -475,24 +563,112 @@ abstract class Lesson implements ActiveRecordInterface
     } // setTitle()
 
     /**
-     * Sets the value of [date] column to a normalized version of the date/time value specified.
+     * Sets the value of [datestart] column to a normalized version of the date/time value specified.
      *
      * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
      *               Empty strings are treated as NULL.
      * @return $this|\Models\Lesson The current object (for fluent API support)
      */
-    public function setLessonDate($v)
+    public function setDateStart($v)
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->date !== null || $dt !== null) {
-            if ($this->date === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->date->format("Y-m-d H:i:s.u")) {
-                $this->date = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[LessonTableMap::COL_DATE] = true;
+        if ($this->datestart !== null || $dt !== null) {
+            if ($this->datestart === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->datestart->format("Y-m-d H:i:s.u")) {
+                $this->datestart = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[LessonTableMap::COL_DATESTART] = true;
             }
         } // if either are not null
 
         return $this;
-    } // setLessonDate()
+    } // setDateStart()
+
+    /**
+     * Sets the value of [dateend] column to a normalized version of the date/time value specified.
+     *
+     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
+     *               Empty strings are treated as NULL.
+     * @return $this|\Models\Lesson The current object (for fluent API support)
+     */
+    public function setDateEnd($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->dateend !== null || $dt !== null) {
+            if ($this->dateend === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->dateend->format("Y-m-d H:i:s.u")) {
+                $this->dateend = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[LessonTableMap::COL_DATEEND] = true;
+            }
+        } // if either are not null
+
+        return $this;
+    } // setDateEnd()
+
+    /**
+     * Set the value of [doc] column.
+     *
+     * @param string $v new value
+     * @return $this|\Models\Lesson The current object (for fluent API support)
+     */
+    public function setDoc($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->doc !== $v) {
+            $this->doc = $v;
+            $this->modifiedColumns[LessonTableMap::COL_DOC] = true;
+        }
+
+        return $this;
+    } // setDoc()
+
+    /**
+     * Set the value of [video_link] column.
+     *
+     * @param string $v new value
+     * @return $this|\Models\Lesson The current object (for fluent API support)
+     */
+    public function setVideoLink($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->video_link !== $v) {
+            $this->video_link = $v;
+            $this->modifiedColumns[LessonTableMap::COL_VIDEO_LINK] = true;
+        }
+
+        return $this;
+    } // setVideoLink()
+
+    /**
+     * Sets the value of the [all_day] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param  boolean|integer|string $v The new value
+     * @return $this|\Models\Lesson The current object (for fluent API support)
+     */
+    public function setAllDay($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->all_day !== $v) {
+            $this->all_day = $v;
+            $this->modifiedColumns[LessonTableMap::COL_ALL_DAY] = true;
+        }
+
+        return $this;
+    } // setAllDay()
 
     /**
      * Set the value of [stream_id] column.
@@ -600,22 +776,37 @@ abstract class Lesson implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : LessonTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
             $this->title = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : LessonTableMap::translateFieldName('LessonDate', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : LessonTableMap::translateFieldName('DateStart', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
-            $this->date = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+            $this->datestart = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : LessonTableMap::translateFieldName('CurrentStreamId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : LessonTableMap::translateFieldName('DateEnd', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00 00:00:00') {
+                $col = null;
+            }
+            $this->dateend = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : LessonTableMap::translateFieldName('Doc', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->doc = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : LessonTableMap::translateFieldName('VideoLink', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->video_link = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : LessonTableMap::translateFieldName('AllDay', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->all_day = (null !== $col) ? (boolean) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : LessonTableMap::translateFieldName('CurrentStreamId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->stream_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : LessonTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : LessonTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : LessonTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : LessonTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -628,7 +819,7 @@ abstract class Lesson implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = LessonTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = LessonTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Models\\Lesson'), 0, $e);
@@ -864,8 +1055,20 @@ abstract class Lesson implements ActiveRecordInterface
         if ($this->isColumnModified(LessonTableMap::COL_TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
-        if ($this->isColumnModified(LessonTableMap::COL_DATE)) {
-            $modifiedColumns[':p' . $index++]  = '`date`';
+        if ($this->isColumnModified(LessonTableMap::COL_DATESTART)) {
+            $modifiedColumns[':p' . $index++]  = '`dateStart`';
+        }
+        if ($this->isColumnModified(LessonTableMap::COL_DATEEND)) {
+            $modifiedColumns[':p' . $index++]  = '`dateEnd`';
+        }
+        if ($this->isColumnModified(LessonTableMap::COL_DOC)) {
+            $modifiedColumns[':p' . $index++]  = '`doc`';
+        }
+        if ($this->isColumnModified(LessonTableMap::COL_VIDEO_LINK)) {
+            $modifiedColumns[':p' . $index++]  = '`video_link`';
+        }
+        if ($this->isColumnModified(LessonTableMap::COL_ALL_DAY)) {
+            $modifiedColumns[':p' . $index++]  = '`all_day`';
         }
         if ($this->isColumnModified(LessonTableMap::COL_STREAM_ID)) {
             $modifiedColumns[':p' . $index++]  = '`stream_id`';
@@ -893,8 +1096,20 @@ abstract class Lesson implements ActiveRecordInterface
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
-                    case '`date`':
-                        $stmt->bindValue($identifier, $this->date ? $this->date->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
+                    case '`dateStart`':
+                        $stmt->bindValue($identifier, $this->datestart ? $this->datestart->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
+                        break;
+                    case '`dateEnd`':
+                        $stmt->bindValue($identifier, $this->dateend ? $this->dateend->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
+                        break;
+                    case '`doc`':
+                        $stmt->bindValue($identifier, $this->doc, PDO::PARAM_STR);
+                        break;
+                    case '`video_link`':
+                        $stmt->bindValue($identifier, $this->video_link, PDO::PARAM_STR);
+                        break;
+                    case '`all_day`':
+                        $stmt->bindValue($identifier, (int) $this->all_day, PDO::PARAM_INT);
                         break;
                     case '`stream_id`':
                         $stmt->bindValue($identifier, $this->stream_id, PDO::PARAM_INT);
@@ -974,15 +1189,27 @@ abstract class Lesson implements ActiveRecordInterface
                 return $this->getTitle();
                 break;
             case 2:
-                return $this->getLessonDate();
+                return $this->getDateStart();
                 break;
             case 3:
-                return $this->getCurrentStreamId();
+                return $this->getDateEnd();
                 break;
             case 4:
-                return $this->getCreatedAt();
+                return $this->getDoc();
                 break;
             case 5:
+                return $this->getVideoLink();
+                break;
+            case 6:
+                return $this->getAllDay();
+                break;
+            case 7:
+                return $this->getCurrentStreamId();
+                break;
+            case 8:
+                return $this->getCreatedAt();
+                break;
+            case 9:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1017,21 +1244,29 @@ abstract class Lesson implements ActiveRecordInterface
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getTitle(),
-            $keys[2] => $this->getLessonDate(),
-            $keys[3] => $this->getCurrentStreamId(),
-            $keys[4] => $this->getCreatedAt(),
-            $keys[5] => $this->getUpdatedAt(),
+            $keys[2] => $this->getDateStart(),
+            $keys[3] => $this->getDateEnd(),
+            $keys[4] => $this->getDoc(),
+            $keys[5] => $this->getVideoLink(),
+            $keys[6] => $this->getAllDay(),
+            $keys[7] => $this->getCurrentStreamId(),
+            $keys[8] => $this->getCreatedAt(),
+            $keys[9] => $this->getUpdatedAt(),
         );
         if ($result[$keys[2]] instanceof \DateTimeInterface) {
             $result[$keys[2]] = $result[$keys[2]]->format('c');
         }
 
-        if ($result[$keys[4]] instanceof \DateTimeInterface) {
-            $result[$keys[4]] = $result[$keys[4]]->format('c');
+        if ($result[$keys[3]] instanceof \DateTimeInterface) {
+            $result[$keys[3]] = $result[$keys[3]]->format('c');
         }
 
-        if ($result[$keys[5]] instanceof \DateTimeInterface) {
-            $result[$keys[5]] = $result[$keys[5]]->format('c');
+        if ($result[$keys[8]] instanceof \DateTimeInterface) {
+            $result[$keys[8]] = $result[$keys[8]]->format('c');
+        }
+
+        if ($result[$keys[9]] instanceof \DateTimeInterface) {
+            $result[$keys[9]] = $result[$keys[9]]->format('c');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -1096,15 +1331,27 @@ abstract class Lesson implements ActiveRecordInterface
                 $this->setTitle($value);
                 break;
             case 2:
-                $this->setLessonDate($value);
+                $this->setDateStart($value);
                 break;
             case 3:
-                $this->setCurrentStreamId($value);
+                $this->setDateEnd($value);
                 break;
             case 4:
-                $this->setCreatedAt($value);
+                $this->setDoc($value);
                 break;
             case 5:
+                $this->setVideoLink($value);
+                break;
+            case 6:
+                $this->setAllDay($value);
+                break;
+            case 7:
+                $this->setCurrentStreamId($value);
+                break;
+            case 8:
+                $this->setCreatedAt($value);
+                break;
+            case 9:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1140,16 +1387,28 @@ abstract class Lesson implements ActiveRecordInterface
             $this->setTitle($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setLessonDate($arr[$keys[2]]);
+            $this->setDateStart($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setCurrentStreamId($arr[$keys[3]]);
+            $this->setDateEnd($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setCreatedAt($arr[$keys[4]]);
+            $this->setDoc($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setUpdatedAt($arr[$keys[5]]);
+            $this->setVideoLink($arr[$keys[5]]);
+        }
+        if (array_key_exists($keys[6], $arr)) {
+            $this->setAllDay($arr[$keys[6]]);
+        }
+        if (array_key_exists($keys[7], $arr)) {
+            $this->setCurrentStreamId($arr[$keys[7]]);
+        }
+        if (array_key_exists($keys[8], $arr)) {
+            $this->setCreatedAt($arr[$keys[8]]);
+        }
+        if (array_key_exists($keys[9], $arr)) {
+            $this->setUpdatedAt($arr[$keys[9]]);
         }
     }
 
@@ -1198,8 +1457,20 @@ abstract class Lesson implements ActiveRecordInterface
         if ($this->isColumnModified(LessonTableMap::COL_TITLE)) {
             $criteria->add(LessonTableMap::COL_TITLE, $this->title);
         }
-        if ($this->isColumnModified(LessonTableMap::COL_DATE)) {
-            $criteria->add(LessonTableMap::COL_DATE, $this->date);
+        if ($this->isColumnModified(LessonTableMap::COL_DATESTART)) {
+            $criteria->add(LessonTableMap::COL_DATESTART, $this->datestart);
+        }
+        if ($this->isColumnModified(LessonTableMap::COL_DATEEND)) {
+            $criteria->add(LessonTableMap::COL_DATEEND, $this->dateend);
+        }
+        if ($this->isColumnModified(LessonTableMap::COL_DOC)) {
+            $criteria->add(LessonTableMap::COL_DOC, $this->doc);
+        }
+        if ($this->isColumnModified(LessonTableMap::COL_VIDEO_LINK)) {
+            $criteria->add(LessonTableMap::COL_VIDEO_LINK, $this->video_link);
+        }
+        if ($this->isColumnModified(LessonTableMap::COL_ALL_DAY)) {
+            $criteria->add(LessonTableMap::COL_ALL_DAY, $this->all_day);
         }
         if ($this->isColumnModified(LessonTableMap::COL_STREAM_ID)) {
             $criteria->add(LessonTableMap::COL_STREAM_ID, $this->stream_id);
@@ -1297,7 +1568,11 @@ abstract class Lesson implements ActiveRecordInterface
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setTitle($this->getTitle());
-        $copyObj->setLessonDate($this->getLessonDate());
+        $copyObj->setDateStart($this->getDateStart());
+        $copyObj->setDateEnd($this->getDateEnd());
+        $copyObj->setDoc($this->getDoc());
+        $copyObj->setVideoLink($this->getVideoLink());
+        $copyObj->setAllDay($this->getAllDay());
         $copyObj->setCurrentStreamId($this->getCurrentStreamId());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
@@ -1392,7 +1667,11 @@ abstract class Lesson implements ActiveRecordInterface
         }
         $this->id = null;
         $this->title = null;
-        $this->date = null;
+        $this->datestart = null;
+        $this->dateend = null;
+        $this->doc = null;
+        $this->video_link = null;
+        $this->all_day = null;
         $this->stream_id = null;
         $this->created_at = null;
         $this->updated_at = null;

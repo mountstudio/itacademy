@@ -22,14 +22,22 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildLessonQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildLessonQuery orderByTitle($order = Criteria::ASC) Order by the title column
- * @method     ChildLessonQuery orderByLessonDate($order = Criteria::ASC) Order by the date column
+ * @method     ChildLessonQuery orderByDateStart($order = Criteria::ASC) Order by the dateStart column
+ * @method     ChildLessonQuery orderByDateEnd($order = Criteria::ASC) Order by the dateEnd column
+ * @method     ChildLessonQuery orderByDoc($order = Criteria::ASC) Order by the doc column
+ * @method     ChildLessonQuery orderByVideoLink($order = Criteria::ASC) Order by the video_link column
+ * @method     ChildLessonQuery orderByAllDay($order = Criteria::ASC) Order by the all_day column
  * @method     ChildLessonQuery orderByCurrentStreamId($order = Criteria::ASC) Order by the stream_id column
  * @method     ChildLessonQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     ChildLessonQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method     ChildLessonQuery groupById() Group by the id column
  * @method     ChildLessonQuery groupByTitle() Group by the title column
- * @method     ChildLessonQuery groupByLessonDate() Group by the date column
+ * @method     ChildLessonQuery groupByDateStart() Group by the dateStart column
+ * @method     ChildLessonQuery groupByDateEnd() Group by the dateEnd column
+ * @method     ChildLessonQuery groupByDoc() Group by the doc column
+ * @method     ChildLessonQuery groupByVideoLink() Group by the video_link column
+ * @method     ChildLessonQuery groupByAllDay() Group by the all_day column
  * @method     ChildLessonQuery groupByCurrentStreamId() Group by the stream_id column
  * @method     ChildLessonQuery groupByCreatedAt() Group by the created_at column
  * @method     ChildLessonQuery groupByUpdatedAt() Group by the updated_at column
@@ -59,7 +67,11 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildLesson findOneById(int $id) Return the first ChildLesson filtered by the id column
  * @method     ChildLesson findOneByTitle(string $title) Return the first ChildLesson filtered by the title column
- * @method     ChildLesson findOneByLessonDate(string $date) Return the first ChildLesson filtered by the date column
+ * @method     ChildLesson findOneByDateStart(string $dateStart) Return the first ChildLesson filtered by the dateStart column
+ * @method     ChildLesson findOneByDateEnd(string $dateEnd) Return the first ChildLesson filtered by the dateEnd column
+ * @method     ChildLesson findOneByDoc(string $doc) Return the first ChildLesson filtered by the doc column
+ * @method     ChildLesson findOneByVideoLink(string $video_link) Return the first ChildLesson filtered by the video_link column
+ * @method     ChildLesson findOneByAllDay(boolean $all_day) Return the first ChildLesson filtered by the all_day column
  * @method     ChildLesson findOneByCurrentStreamId(int $stream_id) Return the first ChildLesson filtered by the stream_id column
  * @method     ChildLesson findOneByCreatedAt(string $created_at) Return the first ChildLesson filtered by the created_at column
  * @method     ChildLesson findOneByUpdatedAt(string $updated_at) Return the first ChildLesson filtered by the updated_at column *
@@ -69,7 +81,11 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildLesson requireOneById(int $id) Return the first ChildLesson filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildLesson requireOneByTitle(string $title) Return the first ChildLesson filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildLesson requireOneByLessonDate(string $date) Return the first ChildLesson filtered by the date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildLesson requireOneByDateStart(string $dateStart) Return the first ChildLesson filtered by the dateStart column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildLesson requireOneByDateEnd(string $dateEnd) Return the first ChildLesson filtered by the dateEnd column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildLesson requireOneByDoc(string $doc) Return the first ChildLesson filtered by the doc column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildLesson requireOneByVideoLink(string $video_link) Return the first ChildLesson filtered by the video_link column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildLesson requireOneByAllDay(boolean $all_day) Return the first ChildLesson filtered by the all_day column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildLesson requireOneByCurrentStreamId(int $stream_id) Return the first ChildLesson filtered by the stream_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildLesson requireOneByCreatedAt(string $created_at) Return the first ChildLesson filtered by the created_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildLesson requireOneByUpdatedAt(string $updated_at) Return the first ChildLesson filtered by the updated_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -77,7 +93,11 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildLesson[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildLesson objects based on current ModelCriteria
  * @method     ChildLesson[]|ObjectCollection findById(int $id) Return ChildLesson objects filtered by the id column
  * @method     ChildLesson[]|ObjectCollection findByTitle(string $title) Return ChildLesson objects filtered by the title column
- * @method     ChildLesson[]|ObjectCollection findByLessonDate(string $date) Return ChildLesson objects filtered by the date column
+ * @method     ChildLesson[]|ObjectCollection findByDateStart(string $dateStart) Return ChildLesson objects filtered by the dateStart column
+ * @method     ChildLesson[]|ObjectCollection findByDateEnd(string $dateEnd) Return ChildLesson objects filtered by the dateEnd column
+ * @method     ChildLesson[]|ObjectCollection findByDoc(string $doc) Return ChildLesson objects filtered by the doc column
+ * @method     ChildLesson[]|ObjectCollection findByVideoLink(string $video_link) Return ChildLesson objects filtered by the video_link column
+ * @method     ChildLesson[]|ObjectCollection findByAllDay(boolean $all_day) Return ChildLesson objects filtered by the all_day column
  * @method     ChildLesson[]|ObjectCollection findByCurrentStreamId(int $stream_id) Return ChildLesson objects filtered by the stream_id column
  * @method     ChildLesson[]|ObjectCollection findByCreatedAt(string $created_at) Return ChildLesson objects filtered by the created_at column
  * @method     ChildLesson[]|ObjectCollection findByUpdatedAt(string $updated_at) Return ChildLesson objects filtered by the updated_at column
@@ -182,7 +202,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `title`, `date`, `stream_id`, `created_at`, `updated_at` FROM `stream_lesson` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `dateStart`, `dateEnd`, `doc`, `video_link`, `all_day`, `stream_id`, `created_at`, `updated_at` FROM `stream_lesson` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -339,16 +359,16 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     }
 
     /**
-     * Filter the query on the date column
+     * Filter the query on the dateStart column
      *
      * Example usage:
      * <code>
-     * $query->filterByLessonDate('2011-03-14'); // WHERE date = '2011-03-14'
-     * $query->filterByLessonDate('now'); // WHERE date = '2011-03-14'
-     * $query->filterByLessonDate(array('max' => 'yesterday')); // WHERE date > '2011-03-13'
+     * $query->filterByDateStart('2011-03-14'); // WHERE dateStart = '2011-03-14'
+     * $query->filterByDateStart('now'); // WHERE dateStart = '2011-03-14'
+     * $query->filterByDateStart(array('max' => 'yesterday')); // WHERE dateStart > '2011-03-13'
      * </code>
      *
-     * @param     mixed $lessonDate The value to use as filter.
+     * @param     mixed $dateStart The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
@@ -358,16 +378,16 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @return $this|ChildLessonQuery The current query, for fluid interface
      */
-    public function filterByLessonDate($lessonDate = null, $comparison = null)
+    public function filterByDateStart($dateStart = null, $comparison = null)
     {
-        if (is_array($lessonDate)) {
+        if (is_array($dateStart)) {
             $useMinMax = false;
-            if (isset($lessonDate['min'])) {
-                $this->addUsingAlias(LessonTableMap::COL_DATE, $lessonDate['min'], Criteria::GREATER_EQUAL);
+            if (isset($dateStart['min'])) {
+                $this->addUsingAlias(LessonTableMap::COL_DATESTART, $dateStart['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($lessonDate['max'])) {
-                $this->addUsingAlias(LessonTableMap::COL_DATE, $lessonDate['max'], Criteria::LESS_EQUAL);
+            if (isset($dateStart['max'])) {
+                $this->addUsingAlias(LessonTableMap::COL_DATESTART, $dateStart['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -378,7 +398,127 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(LessonTableMap::COL_DATE, $lessonDate, $comparison);
+        return $this->addUsingAlias(LessonTableMap::COL_DATESTART, $dateStart, $comparison);
+    }
+
+    /**
+     * Filter the query on the dateEnd column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDateEnd('2011-03-14'); // WHERE dateEnd = '2011-03-14'
+     * $query->filterByDateEnd('now'); // WHERE dateEnd = '2011-03-14'
+     * $query->filterByDateEnd(array('max' => 'yesterday')); // WHERE dateEnd > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $dateEnd The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildLessonQuery The current query, for fluid interface
+     */
+    public function filterByDateEnd($dateEnd = null, $comparison = null)
+    {
+        if (is_array($dateEnd)) {
+            $useMinMax = false;
+            if (isset($dateEnd['min'])) {
+                $this->addUsingAlias(LessonTableMap::COL_DATEEND, $dateEnd['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($dateEnd['max'])) {
+                $this->addUsingAlias(LessonTableMap::COL_DATEEND, $dateEnd['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(LessonTableMap::COL_DATEEND, $dateEnd, $comparison);
+    }
+
+    /**
+     * Filter the query on the doc column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDoc('fooValue');   // WHERE doc = 'fooValue'
+     * $query->filterByDoc('%fooValue%', Criteria::LIKE); // WHERE doc LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $doc The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildLessonQuery The current query, for fluid interface
+     */
+    public function filterByDoc($doc = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($doc)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(LessonTableMap::COL_DOC, $doc, $comparison);
+    }
+
+    /**
+     * Filter the query on the video_link column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVideoLink('fooValue');   // WHERE video_link = 'fooValue'
+     * $query->filterByVideoLink('%fooValue%', Criteria::LIKE); // WHERE video_link LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $videoLink The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildLessonQuery The current query, for fluid interface
+     */
+    public function filterByVideoLink($videoLink = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($videoLink)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(LessonTableMap::COL_VIDEO_LINK, $videoLink, $comparison);
+    }
+
+    /**
+     * Filter the query on the all_day column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByAllDay(true); // WHERE all_day = true
+     * $query->filterByAllDay('yes'); // WHERE all_day = true
+     * </code>
+     *
+     * @param     boolean|string $allDay The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildLessonQuery The current query, for fluid interface
+     */
+    public function filterByAllDay($allDay = null, $comparison = null)
+    {
+        if (is_string($allDay)) {
+            $allDay = in_array(strtolower($allDay), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(LessonTableMap::COL_ALL_DAY, $allDay, $comparison);
     }
 
     /**
@@ -545,7 +685,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @return $this|ChildLessonQuery The current query, for fluid interface
      */
-    public function joinCurrentStreamStreamLesson($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinCurrentStreamStreamLesson($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('CurrentStreamStreamLesson');
@@ -580,7 +720,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @return \Models\CourseStreamQuery A secondary query class using the current class as primary query
      */
-    public function useCurrentStreamStreamLessonQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useCurrentStreamStreamLessonQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinCurrentStreamStreamLesson($relationAlias, $joinType)

@@ -59,7 +59,7 @@ class LessonTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 10;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class LessonTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /**
      * the column name for the id field
@@ -82,9 +82,29 @@ class LessonTableMap extends TableMap
     const COL_TITLE = 'stream_lesson.title';
 
     /**
-     * the column name for the date field
+     * the column name for the dateStart field
      */
-    const COL_DATE = 'stream_lesson.date';
+    const COL_DATESTART = 'stream_lesson.dateStart';
+
+    /**
+     * the column name for the dateEnd field
+     */
+    const COL_DATEEND = 'stream_lesson.dateEnd';
+
+    /**
+     * the column name for the doc field
+     */
+    const COL_DOC = 'stream_lesson.doc';
+
+    /**
+     * the column name for the video_link field
+     */
+    const COL_VIDEO_LINK = 'stream_lesson.video_link';
+
+    /**
+     * the column name for the all_day field
+     */
+    const COL_ALL_DAY = 'stream_lesson.all_day';
 
     /**
      * the column name for the stream_id field
@@ -113,11 +133,11 @@ class LessonTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Title', 'LessonDate', 'CurrentStreamId', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_CAMELNAME     => array('id', 'title', 'lessonDate', 'currentStreamId', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(LessonTableMap::COL_ID, LessonTableMap::COL_TITLE, LessonTableMap::COL_DATE, LessonTableMap::COL_STREAM_ID, LessonTableMap::COL_CREATED_AT, LessonTableMap::COL_UPDATED_AT, ),
-        self::TYPE_FIELDNAME     => array('id', 'title', 'date', 'stream_id', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id', 'Title', 'DateStart', 'DateEnd', 'Doc', 'VideoLink', 'AllDay', 'CurrentStreamId', 'CreatedAt', 'UpdatedAt', ),
+        self::TYPE_CAMELNAME     => array('id', 'title', 'dateStart', 'dateEnd', 'doc', 'videoLink', 'allDay', 'currentStreamId', 'createdAt', 'updatedAt', ),
+        self::TYPE_COLNAME       => array(LessonTableMap::COL_ID, LessonTableMap::COL_TITLE, LessonTableMap::COL_DATESTART, LessonTableMap::COL_DATEEND, LessonTableMap::COL_DOC, LessonTableMap::COL_VIDEO_LINK, LessonTableMap::COL_ALL_DAY, LessonTableMap::COL_STREAM_ID, LessonTableMap::COL_CREATED_AT, LessonTableMap::COL_UPDATED_AT, ),
+        self::TYPE_FIELDNAME     => array('id', 'title', 'dateStart', 'dateEnd', 'doc', 'video_link', 'all_day', 'stream_id', 'created_at', 'updated_at', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -127,11 +147,11 @@ class LessonTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'LessonDate' => 2, 'CurrentStreamId' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'lessonDate' => 2, 'currentStreamId' => 3, 'createdAt' => 4, 'updatedAt' => 5, ),
-        self::TYPE_COLNAME       => array(LessonTableMap::COL_ID => 0, LessonTableMap::COL_TITLE => 1, LessonTableMap::COL_DATE => 2, LessonTableMap::COL_STREAM_ID => 3, LessonTableMap::COL_CREATED_AT => 4, LessonTableMap::COL_UPDATED_AT => 5, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'date' => 2, 'stream_id' => 3, 'created_at' => 4, 'updated_at' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'DateStart' => 2, 'DateEnd' => 3, 'Doc' => 4, 'VideoLink' => 5, 'AllDay' => 6, 'CurrentStreamId' => 7, 'CreatedAt' => 8, 'UpdatedAt' => 9, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'dateStart' => 2, 'dateEnd' => 3, 'doc' => 4, 'videoLink' => 5, 'allDay' => 6, 'currentStreamId' => 7, 'createdAt' => 8, 'updatedAt' => 9, ),
+        self::TYPE_COLNAME       => array(LessonTableMap::COL_ID => 0, LessonTableMap::COL_TITLE => 1, LessonTableMap::COL_DATESTART => 2, LessonTableMap::COL_DATEEND => 3, LessonTableMap::COL_DOC => 4, LessonTableMap::COL_VIDEO_LINK => 5, LessonTableMap::COL_ALL_DAY => 6, LessonTableMap::COL_STREAM_ID => 7, LessonTableMap::COL_CREATED_AT => 8, LessonTableMap::COL_UPDATED_AT => 9, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'dateStart' => 2, 'dateEnd' => 3, 'doc' => 4, 'video_link' => 5, 'all_day' => 6, 'stream_id' => 7, 'created_at' => 8, 'updated_at' => 9, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -153,8 +173,12 @@ class LessonTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 90, null);
-        $this->addColumn('date', 'LessonDate', 'TIMESTAMP', false, null, null);
-        $this->addForeignKey('stream_id', 'CurrentStreamId', 'INTEGER', 'course_stream', 'id', true, null, null);
+        $this->addColumn('dateStart', 'DateStart', 'TIMESTAMP', false, null, null);
+        $this->addColumn('dateEnd', 'DateEnd', 'TIMESTAMP', false, null, null);
+        $this->addColumn('doc', 'Doc', 'VARCHAR', false, 255, null);
+        $this->addColumn('video_link', 'VideoLink', 'VARCHAR', false, 255, null);
+        $this->addColumn('all_day', 'AllDay', 'BOOLEAN', false, 1, null);
+        $this->addForeignKey('stream_id', 'CurrentStreamId', 'INTEGER', 'course_stream', 'id', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
     } // initialize()
@@ -330,14 +354,22 @@ class LessonTableMap extends TableMap
         if (null === $alias) {
             $criteria->addSelectColumn(LessonTableMap::COL_ID);
             $criteria->addSelectColumn(LessonTableMap::COL_TITLE);
-            $criteria->addSelectColumn(LessonTableMap::COL_DATE);
+            $criteria->addSelectColumn(LessonTableMap::COL_DATESTART);
+            $criteria->addSelectColumn(LessonTableMap::COL_DATEEND);
+            $criteria->addSelectColumn(LessonTableMap::COL_DOC);
+            $criteria->addSelectColumn(LessonTableMap::COL_VIDEO_LINK);
+            $criteria->addSelectColumn(LessonTableMap::COL_ALL_DAY);
             $criteria->addSelectColumn(LessonTableMap::COL_STREAM_ID);
             $criteria->addSelectColumn(LessonTableMap::COL_CREATED_AT);
             $criteria->addSelectColumn(LessonTableMap::COL_UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
-            $criteria->addSelectColumn($alias . '.date');
+            $criteria->addSelectColumn($alias . '.dateStart');
+            $criteria->addSelectColumn($alias . '.dateEnd');
+            $criteria->addSelectColumn($alias . '.doc');
+            $criteria->addSelectColumn($alias . '.video_link');
+            $criteria->addSelectColumn($alias . '.all_day');
             $criteria->addSelectColumn($alias . '.stream_id');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
