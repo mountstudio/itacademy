@@ -59,15 +59,32 @@
                 let time = $('#timeCalendarEvent').val();
                 let duration = $('#durationCalendarEvent').val();
                 let party = $('#status').is(":checked") ? true : false;
+                let doc = $('input[name="doc"]').get(0).files[0];
 
                 $('#titleCalendarEvent').val('');
                 $('#timeCalendarEvent').val('');
                 $('#durationCalendarEvent').val('');
+                // $('input[name="doc"]').get(0).val('');
 
                 // console.log(title);
                 let dateTime = date.format() + 'T' + time;
                 time = new Date(dateTime);
 
+                let formData = new FormData();
+                formData.append('title', title);
+                formData.append('startDate', time);
+                formData.append('endDate', duration);
+                formData.append('allDay', party);
+
+                if (doc != undefined){
+                    formData.append('doc', doc);
+                }
+                ajaxRequest('/admin/ajax/lesson/add',
+                    formData,
+                    function(data){
+                        console.log(data);
+                    }
+                );
                 if (party) {
                     let event = {
                         allDay: true,
@@ -79,8 +96,8 @@
                         color: '#ffff00',
                         backgroundColor: '#ff0000'
                     };
-                    console.log(calendar.fullCalendar('renderEvent', event));
-                    console.log(event);
+                    calendar.fullCalendar('renderEvent', event);
+                    // console.log(event);
                     // day.css('background-color', 'red');
                 }
                 else if (title != null && title !== "") {
@@ -90,7 +107,6 @@
                         start: dateTime,
                         forceEventDuration: true
                     };
-                    console.log(event);
                     calendar.fullCalendar('renderEvent', event);
                 }
             });
@@ -121,9 +137,9 @@
                 url: '/admin/ajax/lesson/list',
                 success: function(doc) {
                     var events = [];
-                    console.log(doc);
+                    // console.log(doc);
                     for (item of doc.data) {
-                        console.log(item);
+                        // console.log(item);
                         events.push({
                             title: item.title,
                             start: item.dateStart ? item.dateStart.date : null,
@@ -131,7 +147,7 @@
                             forceEventDuration: true
                         });
                     }
-                    console.log(events);
+                    // console.log(events);
                     // $(doc).each((index, item) => {
                     //
                     // });

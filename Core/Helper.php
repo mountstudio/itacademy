@@ -54,8 +54,8 @@ class Helper
 
 
     public function __construct() {
-        $this->rootDir = realpath(__DIR__ . '/..');
-        $this->uploadDir = realpath(__DIR__ . '/../uploads');
+        $this->rootDir = realpath(__DIR__ . '/../public/');
+        $this->uploadDir = realpath(__DIR__ . '/../public/uploads');
 
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
