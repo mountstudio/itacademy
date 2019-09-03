@@ -172,7 +172,7 @@ class LessonTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('title', 'Title', 'VARCHAR', false, 90, null);
+        $this->addColumn('title', 'Title', 'VARCHAR', true, 90, null);
         $this->addColumn('dateStart', 'DateStart', 'TIMESTAMP', false, null, null);
         $this->addColumn('dateEnd', 'DateEnd', 'TIMESTAMP', false, null, null);
         $this->addColumn('doc', 'Doc', 'VARCHAR', false, 255, null);

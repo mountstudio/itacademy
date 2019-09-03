@@ -239,7 +239,7 @@
 
     <table name="stream_lesson" phpName="Lesson" identifierQuoting="true">
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="title" type="varchar" size="90" phpName="Title" />
+        <column name="title" type="varchar" size="90" phpName="Title" required="true" />
         <column name="dateStart" type="timestamp" phpName="DateStart" />
         <column name="dateEnd" type="timestamp" phpName="DateEnd" />
         <column name="doc" type="varchar" phpName="Doc" />

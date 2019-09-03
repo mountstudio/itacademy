@@ -27,6 +27,7 @@
 
 
             {{ include("Admin/Calendar/modals/addEvent.html") }}
+            {{ include("Admin/Calendar/modals/editEvent.html") }}
 
 
         </div><!-- Row -->
@@ -67,7 +68,12 @@
                 // $('input[name="doc"]').get(0).val('');
 
                 // console.log(title);
-                let dateTime = date.format() + 'T' + time;
+                let dateTime;
+                if (time) {
+                    dateTime = date.format() + 'T' + time;
+                } else {
+                    dateTime = date.format();
+                }
                 time = new Date(dateTime);
 
                 let formData = new FormData();
@@ -89,7 +95,6 @@
                     let event = {
                         allDay: true,
                         title: title,
-                        end: new Date(time.setHours(time.getHours() + parseInt(duration))),
                         start: dateTime,
                         forceEventDuration: true,
                         rendering: 'background',
@@ -114,8 +119,43 @@
 
         },
         eventClick: function(calEvent, jsEvent, view) {
-            let title = prompt('Title');
-            console.log(calEvent);
+            $('#editCalendarEvent').modal('show');
+
+            $('#confirmEditCalendarEventBtn').off('click').on('click', e => {
+                $('#editCalendarEvent').modal('hide');
+                let title = $('#titleEditCalendarEvent').val();
+                let time = $('#timeEditCalendarEvent').val();
+                let duration = $('#durationEditCalendarEvent').val();
+                let party = $('#statusEditCalendarEvent').is(":checked") ? true : false;
+                let doc = $('input[name="doc"]').get(0).files[0];
+
+                $('#titleCalendarEvent').val('');
+                $('#timeCalendarEvent').val('');
+                $('#durationCalendarEvent').val('');
+                // $('input[name="doc"]').get(0).val('');
+
+                // console.log(title);
+                let dateTime = date.format() + 'T' + time;
+                time = new Date(dateTime);
+
+                let formData = new FormData();
+                formData.append('title', title);
+                formData.append('startDate', time);
+                formData.append('endDate', duration);
+                formData.append('allDay', party);
+
+                if (doc != undefined){
+                    formData.append('doc', doc);
+                }
+                ajaxRequest('/admin/ajax/lesson/add',
+                    formData,
+                    function(data){
+                        console.log(data);
+                    }
+                );
+            });
+            // let title = prompt('Title');
+            // console.log(calEvent);
             // if (title != null || title != "") {
             //     calEvent.title = title;
             //
@@ -140,12 +180,31 @@
                     // console.log(doc);
                     for (item of doc.data) {
                         // console.log(item);
-                        events.push({
-                            title: item.title,
-                            start: item.dateStart ? item.dateStart.date : null,
-                            end: item.dateEnd ? item.dateEnd.date : null,
-                            forceEventDuration: true
-                        });
+                        if (item.allDay) {
+                            events.push({
+                                allDay: true,
+                                title: item.title,
+                                start: item.dateStart ? item.dateStart.date : null,
+                                forceEventDuration: true,
+                                rendering: 'background',
+                                color: '#ffff00',
+                                backgroundColor: '#ff0000'
+                            });
+                            events.push({
+                                title: item.title,
+                                start: item.dateStart ? item.dateStart.date : null,
+                                forceEventDuration: true,
+                                color: '#ff0000',
+                            });
+                        } else {
+                            events.push({
+                                title: item.title,
+                                start: item.dateStart ? item.dateStart.date : null,
+                                end: item.dateEnd ? item.dateEnd.date : null,
+                                forceEventDuration: true,
+                                color: '#000ff0'
+                            });
+                        }
                     }
                     // console.log(events);
                     // $(doc).each((index, item) => {

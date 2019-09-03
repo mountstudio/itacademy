@@ -47,23 +47,27 @@ class Lesson extends Base
         $endDate = (isset($_POST['endDate']) ? $_POST['endDate'] : null);
         $allDay = (isset($_POST['allDay']) ? $_POST['allDay'] : null);
 
-        $dateArray = date_parse($startDate);
-        $startDate = new DateTime(vsprintf('%s/%s/%s %s:%s', [
-            $dateArray['month'],
-            $dateArray['day'],
-            $dateArray['year'],
-            $dateArray['hour'],
-            $dateArray['minute'],
-        ]));
-        $date = new DateTime(vsprintf('%s/%s/%s %s:%s', [
-            $dateArray['month'],
-            $dateArray['day'],
-            $dateArray['year'],
-            $dateArray['hour'],
-            $dateArray['minute'],
-        ]));
+        if ($startDate) {
+            $dateArray = date_parse($startDate);
+            $startDate = new DateTime(vsprintf('%s/%s/%s %s:%s', [
+                $dateArray['month'],
+                $dateArray['day'],
+                $dateArray['year'],
+                $dateArray['hour'],
+                $dateArray['minute'],
+            ]));
+            $date = new DateTime(vsprintf('%s/%s/%s %s:%s', [
+                $dateArray['month'],
+                $dateArray['day'],
+                $dateArray['year'],
+                $dateArray['hour'],
+                $dateArray['minute'],
+            ]));
+            if ($endDate) {
+                $endDate = $date->add(new \DateInterval("PT".$endDate."H"));
+            }
+        }
 
-        $endDate = $date->add(new \DateInterval("PT".$endDate."H"));
         $lesson = new \Models\Lesson();
         $lesson->setTitle($title);
         $lesson->setDateStart($startDate);
