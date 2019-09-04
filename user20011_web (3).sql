@@ -1,34 +1,35 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.10.11
--- http://www.phpmyadmin.net
+-- version 4.7.7
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: May 29, 2019 at 10:52 PM
--- Server version: 5.6.43
--- PHP Version: 5.3.3
+-- Хост: 127.0.0.1:3306
+-- Время создания: Сен 04 2019 г., 04:05
+-- Версия сервера: 5.7.20-log
+-- Версия PHP: 7.2.0
 
-SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `user20011_web`
+-- База данных: `itacademy`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin_style`
+-- Структура таблицы `admin_style`
 --
 
-CREATE TABLE IF NOT EXISTS `admin_style` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `admin_style` (
+  `id` int(11) NOT NULL,
   `b_layout` tinyint(1) NOT NULL DEFAULT '0',
   `c_menu` tinyint(1) NOT NULL DEFAULT '0',
   `f_header` tinyint(1) NOT NULL DEFAULT '1',
@@ -36,12 +37,11 @@ CREATE TABLE IF NOT EXISTS `admin_style` (
   `h_bar` tinyint(1) NOT NULL DEFAULT '0',
   `h_menu` tinyint(1) NOT NULL DEFAULT '0',
   `t_sidebar` tinyint(1) NOT NULL DEFAULT '0',
-  `custom_style` varchar(15) NOT NULL DEFAULT 'green',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+  `custom_style` varchar(15) NOT NULL DEFAULT 'green'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `admin_style`
+-- Дамп данных таблицы `admin_style`
 --
 
 INSERT INTO `admin_style` (`id`, `b_layout`, `c_menu`, `f_header`, `f_sidebar`, `h_bar`, `h_menu`, `t_sidebar`, `custom_style`) VALUES
@@ -58,16 +58,18 @@ INSERT INTO `admin_style` (`id`, `b_layout`, `c_menu`, `f_header`, `f_sidebar`, 
 (11, 0, 0, 1, 0, 0, 0, 0, 'green'),
 (12, 0, 0, 1, 0, 0, 0, 1, 'green'),
 (13, 0, 0, 1, 0, 0, 0, 0, 'green'),
-(14, 0, 0, 1, 0, 0, 0, 0, 'green');
+(14, 0, 0, 1, 0, 0, 0, 0, 'green'),
+(15, 0, 0, 1, 0, 0, 0, 0, 'green'),
+(16, 0, 0, 1, 0, 0, 0, 0, 'green');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `application`
+-- Структура таблицы `application`
 --
 
-CREATE TABLE IF NOT EXISTS `application` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `application` (
+  `id` int(11) NOT NULL,
   `name` varchar(60) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `application_status_id` int(11) NOT NULL,
@@ -76,15 +78,11 @@ CREATE TABLE IF NOT EXISTS `application` (
   `description` varchar(300) DEFAULT NULL,
   `notes` varchar(300) DEFAULT NULL COMMENT 'for customers',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `application_fi_0ebdd7` (`application_status_id`),
-  KEY `application_fi_ebed28` (`course_id`),
-  KEY `application_fi_f39771` (`course_stream_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=330 ;
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `application`
+-- Дамп данных таблицы `application`
 --
 
 INSERT INTO `application` (`id`, `name`, `phone`, `application_status_id`, `course_id`, `course_stream_id`, `description`, `notes`, `created_at`, `updated_at`) VALUES
@@ -383,7 +381,7 @@ INSERT INTO `application` (`id`, `name`, `phone`, `application_status_id`, `cour
 (293, 'Айдана', '+996709840042', 6, NULL, NULL, NULL, NULL, '2019-05-25 19:15:15', '2019-05-25 19:15:15'),
 (294, 'Айдана', '+996709840042', 6, NULL, NULL, NULL, NULL, '2019-05-25 19:15:21', '2019-05-25 19:15:21'),
 (295, 'Айдана', '+996709840042', 6, NULL, NULL, NULL, NULL, '2019-05-25 19:15:25', '2019-05-25 19:15:25'),
-(296, 'Айпери', '996773977837', 6, NULL, NULL, 'После просмотра сайта остались следующие вопросы:\n1.Проводится ли обучение в южном филиале в Оше? \n2.Есть ли возможность обучения в вечернее время или в период летних каникул (кроме лагеря для подростков)? \n3.Какой язык программирования стоит выбрать "чайникам", которые не планируют делать карьеру п', NULL, '2019-05-25 19:18:55', '2019-05-25 19:18:55'),
+(296, 'Айпери', '996773977837', 6, NULL, NULL, 'После просмотра сайта остались следующие вопросы:\n1.Проводится ли обучение в южном филиале в Оше? \n2.Есть ли возможность обучения в вечернее время или в период летних каникул (кроме лагеря для подростков)? \n3.Какой язык программирования стоит выбрать \"чайникам\", которые не планируют делать карьеру п', NULL, '2019-05-25 19:18:55', '2019-05-25 19:18:55'),
 (297, 'Айдана', '+996709840042', 6, NULL, NULL, NULL, NULL, '2019-05-25 19:23:10', '2019-05-25 19:23:10'),
 (298, 'Kanyshai', '+996701885887', 6, NULL, NULL, NULL, NULL, '2019-05-25 20:57:17', '2019-05-25 20:57:17'),
 (299, 'Жика', '+996708195490', 6, NULL, NULL, NULL, NULL, '2019-05-26 00:02:25', '2019-05-26 00:02:25'),
@@ -403,7 +401,7 @@ INSERT INTO `application` (`id`, `name`, `phone`, `application_status_id`, `cour
 (313, 'Рано', '+996703208443', 6, NULL, NULL, NULL, NULL, '2019-05-27 07:53:10', '2019-05-27 07:53:10'),
 (314, 'Цезарь', '+996 776 005 776', 6, NULL, NULL, NULL, NULL, '2019-05-27 11:02:38', '2019-05-27 11:02:38'),
 (315, 'Цезарь', '+996 776 005 776', 6, 15, NULL, NULL, NULL, '2019-05-27 11:06:35', '2019-05-27 11:06:35'),
-(316, 'Dil''fuza', '+996500129000', 6, NULL, NULL, NULL, NULL, '2019-05-27 12:27:32', '2019-05-27 12:27:32'),
+(316, 'Dil\'fuza', '+996500129000', 6, NULL, NULL, NULL, NULL, '2019-05-27 12:27:32', '2019-05-27 12:27:32'),
 (317, 'Бурул', '+996703733312', 6, NULL, NULL, NULL, NULL, '2019-05-27 12:46:01', '2019-05-27 12:46:01'),
 (318, 'Жылдыз', '+996554541920', 6, 13, 10, NULL, NULL, '2019-05-27 17:14:04', '2019-05-27 17:14:04'),
 (319, 'Адина', '+996557294557', 6, NULL, NULL, NULL, NULL, '2019-05-28 00:36:38', '2019-05-28 00:36:38'),
@@ -416,26 +414,28 @@ INSERT INTO `application` (`id`, `name`, `phone`, `application_status_id`, `cour
 (326, 'Динара', '+996559116696', 6, NULL, NULL, NULL, NULL, '2019-05-29 16:42:02', '2019-05-29 16:42:02'),
 (327, 'Арсен Беков', '+996755311489', 6, 12, NULL, NULL, NULL, '2019-05-29 17:02:14', '2019-05-29 17:02:14'),
 (328, 'Жанышбек', '0702613350', 6, NULL, NULL, NULL, NULL, '2019-05-29 20:50:31', '2019-05-29 20:50:31'),
-(329, 'Эркинай', '+996(708)182020', 6, NULL, NULL, 'Здравствуйте! Учусь на джава и на андроид разработке 5мясецев, можно ли будет присоединиться уже к группе которая начала учиться в феврале? И оплату можно произвести каждый месяц?', NULL, '2019-05-29 21:40:02', '2019-05-29 21:40:02');
+(329, 'Эркинай', '+996(708)182020', 6, NULL, NULL, 'Здравствуйте! Учусь на джава и на андроид разработке 5мясецев, можно ли будет присоединиться уже к группе которая начала учиться в феврале? И оплату можно произвести каждый месяц?', NULL, '2019-05-29 21:40:02', '2019-05-29 21:40:02'),
+(330, 'Тилек Кубанов', '+996701001052', 6, 10, 7, NULL, NULL, '2019-08-08 21:24:13', '2019-08-08 21:24:13'),
+(331, 'Тилек Кубанов', '+996701001052', 6, 10, 7, NULL, NULL, '2019-08-08 21:24:19', '2019-08-08 21:24:19'),
+(332, 'Тилек Кубанов', '+996701001052', 6, 10, 7, NULL, NULL, '2019-08-08 21:24:20', '2019-08-08 21:24:20');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `application_status`
+-- Структура таблицы `application_status`
 --
 
-CREATE TABLE IF NOT EXISTS `application_status` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `application_status` (
+  `id` int(11) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
   `description` varchar(300) DEFAULT NULL,
   `background_color` varchar(30) DEFAULT NULL,
   `font_color` varchar(30) DEFAULT NULL,
-  `sortable_rank` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+  `sortable_rank` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `application_status`
+-- Дамп данных таблицы `application_status`
 --
 
 INSERT INTO `application_status` (`id`, `name`, `description`, `background_color`, `font_color`, `sortable_rank`) VALUES
@@ -445,11 +445,11 @@ INSERT INTO `application_status` (`id`, `name`, `description`, `background_color
 -- --------------------------------------------------------
 
 --
--- Table structure for table `branch`
+-- Структура таблицы `branch`
 --
 
-CREATE TABLE IF NOT EXISTS `branch` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `branch` (
+  `id` int(11) NOT NULL,
   `show_on_website` tinyint(1) NOT NULL DEFAULT '1',
   `name` varchar(255) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
@@ -458,12 +458,11 @@ CREATE TABLE IF NOT EXISTS `branch` (
   `email` varchar(128) DEFAULT NULL,
   `instagram_link` varchar(255) DEFAULT NULL,
   `facebook_link` varchar(255) DEFAULT NULL,
-  `sortable_rank` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+  `sortable_rank` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `branch`
+-- Дамп данных таблицы `branch`
 --
 
 INSERT INTO `branch` (`id`, `show_on_website`, `name`, `address`, `geographic_coordinates`, `tel`, `email`, `instagram_link`, `facebook_link`, `sortable_rank`) VALUES
@@ -474,20 +473,19 @@ INSERT INTO `branch` (`id`, `show_on_website`, `name`, `address`, `geographic_co
 -- --------------------------------------------------------
 
 --
--- Table structure for table `config`
+-- Структура таблицы `config`
 --
 
-CREATE TABLE IF NOT EXISTS `config` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `config` (
+  `id` int(11) NOT NULL,
   `key` varchar(60) DEFAULT NULL,
   `value` int(11) DEFAULT NULL,
   `data` varchar(255) DEFAULT NULL,
-  `seo` mediumblob,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+  `seo` mediumblob
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `config`
+-- Дамп данных таблицы `config`
 --
 
 INSERT INTO `config` (`id`, `key`, `value`, `data`, `seo`) VALUES
@@ -507,11 +505,11 @@ INSERT INTO `config` (`id`, `key`, `value`, `data`, `seo`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `course`
+-- Структура таблицы `course`
 --
 
-CREATE TABLE IF NOT EXISTS `course` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `course` (
+  `id` int(11) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
   `description` text,
   `alt_url` varchar(255) NOT NULL,
@@ -525,12 +523,11 @@ CREATE TABLE IF NOT EXISTS `course` (
   `meta_description` text,
   `meta_keywords` text,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `course`
+-- Дамп данных таблицы `course`
 --
 
 INSERT INTO `course` (`id`, `name`, `description`, `alt_url`, `logo_name`, `cover_name`, `title`, `context`, `notes`, `use_notes`, `uses`, `meta_description`, `meta_keywords`, `created_at`, `updated_at`) VALUES
@@ -545,24 +542,22 @@ INSERT INTO `course` (`id`, `name`, `description`, `alt_url`, `logo_name`, `cove
 -- --------------------------------------------------------
 
 --
--- Table structure for table `course_skill`
+-- Структура таблицы `course_skill`
 --
 
-CREATE TABLE IF NOT EXISTS `course_skill` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `course_skill` (
+  `id` int(11) NOT NULL,
   `name` varchar(50) DEFAULT NULL,
   `description` text,
   `logo_name` varchar(255) DEFAULT NULL,
   `course_id` int(11) NOT NULL,
   `sortable_rank` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `course_skill_fi_ebed28` (`course_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `course_skill`
+-- Дамп данных таблицы `course_skill`
 --
 
 INSERT INTO `course_skill` (`id`, `name`, `description`, `logo_name`, `course_id`, `sortable_rank`, `created_at`, `updated_at`) VALUES
@@ -594,13 +589,14 @@ INSERT INTO `course_skill` (`id`, `name`, `description`, `logo_name`, `course_id
 -- --------------------------------------------------------
 
 --
--- Table structure for table `course_stream`
+-- Структура таблицы `course_stream`
 --
 
-CREATE TABLE IF NOT EXISTS `course_stream` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `course_stream` (
+  `id` int(11) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
   `description` text,
+  `number_of_busy_places` int(11) DEFAULT '0',
   `number_of_places` int(11) NOT NULL,
   `notes` varchar(300) DEFAULT NULL,
   `starts_at` date NOT NULL,
@@ -613,45 +609,38 @@ CREATE TABLE IF NOT EXISTS `course_stream` (
   `course_stream_status_id` int(11) NOT NULL,
   `instructor_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `course_stream_fi_16a5a4` (`currency_id`),
-  KEY `course_stream_fi_e53930` (`instructor_id`),
-  KEY `course_stream_fi_ebed28` (`course_id`),
-  KEY `course_stream_fi_f865a5` (`course_stream_status_id`),
-  KEY `course_stream_fi_6cc548` (`branch_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `course_stream`
+-- Дамп данных таблицы `course_stream`
 --
 
-INSERT INTO `course_stream` (`id`, `name`, `description`, `number_of_places`, `notes`, `starts_at`, `ends_at`, `show_on_website`, `cost`, `branch_id`, `currency_id`, `course_id`, `course_stream_status_id`, `instructor_id`, `created_at`, `updated_at`) VALUES
-(7, 'Java-Android-1', '<p><br></p>', 15, '', '2019-02-01', '2019-10-01', 1, 1000, 1, 1, 10, 5, 14, '2019-02-16 07:34:53', '2019-03-18 15:52:08'),
-(8, 'PHP-1', '<p><br></p>', 15, '', '2018-09-01', '2019-06-01', 1, 1000, 1, 1, 11, 5, NULL, '2019-02-16 07:37:16', '2019-02-16 07:37:16'),
-(9, 'Java-1', '<p><br></p>', 15, '', '2018-09-01', '2019-06-01', 1, 1000, 1, 1, 12, 5, 4, '2019-02-16 07:41:04', '2019-02-16 07:41:04'),
-(10, 'Front-End-1', '<p><br></p>', 15, '', '2019-04-20', '2019-11-21', 1, 800, 1, 1, 13, 3, NULL, '2019-02-16 07:42:21', '2019-03-18 15:53:04'),
-(11, 'C#-1', '<p><br></p>', 15, '', '2019-02-01', '2019-10-01', 1, 1000, 1, 1, 14, 5, 5, '2019-02-16 07:43:27', '2019-02-16 07:43:27'),
-(12, 'Python-1', '<p><br></p>', 15, '', '2018-09-01', '2019-06-01', 1, 1000, 1, 1, 15, 5, 3, '2019-02-16 07:44:17', '2019-02-16 07:44:17');
+INSERT INTO `course_stream` (`id`, `name`, `description`, `number_of_busy_places`, `number_of_places`, `notes`, `starts_at`, `ends_at`, `show_on_website`, `cost`, `branch_id`, `currency_id`, `course_id`, `course_stream_status_id`, `instructor_id`, `created_at`, `updated_at`) VALUES
+(7, 'Java-Android-1', '<p><br></p>', 2, 15, '', '2019-02-01', '2019-10-01', 1, 1000, 1, 1, 10, 5, 14, '2019-02-16 07:34:53', '2019-07-29 01:36:45'),
+(8, 'PHP-1', '<p><br></p>', 5, 15, '', '2018-09-01', '2019-06-01', 1, 1000, 1, 1, 11, 5, NULL, '2019-02-16 07:37:16', '2019-07-29 02:11:59'),
+(9, 'Java-1', '<p><br></p>', 0, 15, '', '2018-09-01', '2019-06-01', 1, 1000, 1, 1, 12, 5, 4, '2019-02-16 07:41:04', '2019-02-16 07:41:04'),
+(10, 'Front-End-1', '<p><br></p>', 0, 15, '', '2019-04-20', '2019-11-21', 1, 800, 1, 1, 13, 3, NULL, '2019-02-16 07:42:21', '2019-03-18 15:53:04'),
+(11, 'C#-1', '<p><br></p>', 0, 15, '', '2019-02-01', '2019-10-01', 1, 1000, 1, 1, 14, 5, 5, '2019-02-16 07:43:27', '2019-02-16 07:43:27'),
+(12, 'Python-1', '<p><br></p>', 0, 15, '', '2018-09-01', '2019-06-01', 1, 1000, 1, 1, 15, 5, 3, '2019-02-16 07:44:17', '2019-02-16 07:44:17');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `course_stream_status`
+-- Структура таблицы `course_stream_status`
 --
 
-CREATE TABLE IF NOT EXISTS `course_stream_status` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `course_stream_status` (
+  `id` int(11) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
   `description` varchar(300) DEFAULT NULL,
   `background_color` varchar(30) DEFAULT NULL,
   `font_color` varchar(30) DEFAULT NULL,
-  `sortable_rank` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+  `sortable_rank` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `course_stream_status`
+-- Дамп данных таблицы `course_stream_status`
 --
 
 INSERT INTO `course_stream_status` (`id`, `name`, `description`, `background_color`, `font_color`, `sortable_rank`) VALUES
@@ -661,22 +650,21 @@ INSERT INTO `course_stream_status` (`id`, `name`, `description`, `background_col
 -- --------------------------------------------------------
 
 --
--- Table structure for table `currency`
+-- Структура таблицы `currency`
 --
 
-CREATE TABLE IF NOT EXISTS `currency` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `currency` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `iso_code` varchar(255) NOT NULL,
   `symbol` varchar(255) NOT NULL,
   `is_symbol_before` tinyint(1) NOT NULL DEFAULT '0',
   `notes` varchar(255) DEFAULT NULL,
-  `sortable_rank` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+  `sortable_rank` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `currency`
+-- Дамп данных таблицы `currency`
 --
 
 INSERT INTO `currency` (`id`, `name`, `iso_code`, `symbol`, `is_symbol_before`, `notes`, `sortable_rank`) VALUES
@@ -687,23 +675,20 @@ INSERT INTO `currency` (`id`, `name`, `iso_code`, `symbol`, `is_symbol_before`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `currency_rate`
+-- Структура таблицы `currency_rate`
 --
 
-CREATE TABLE IF NOT EXISTS `currency_rate` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `currency_rate` (
+  `id` int(11) NOT NULL,
   `rate` float NOT NULL DEFAULT '1',
   `default_currency_id` int(11) NOT NULL,
   `to_currency_id` int(11) NOT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `currency_rate_fi_8596aa` (`default_currency_id`),
-  KEY `currency_rate_fi_78514f` (`to_currency_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `currency_rate`
+-- Дамп данных таблицы `currency_rate`
 --
 
 INSERT INTO `currency_rate` (`id`, `rate`, `default_currency_id`, `to_currency_id`, `created_at`, `updated_at`) VALUES
@@ -723,21 +708,20 @@ INSERT INTO `currency_rate` (`id`, `rate`, `default_currency_id`, `to_currency_i
 -- --------------------------------------------------------
 
 --
--- Table structure for table `faq`
+-- Структура таблицы `faq`
 --
 
-CREATE TABLE IF NOT EXISTS `faq` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `faq` (
+  `id` int(11) NOT NULL,
   `question` varchar(255) DEFAULT NULL,
   `answer` text,
   `sortable_rank` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `faq`
+-- Дамп данных таблицы `faq`
 --
 
 INSERT INTO `faq` (`id`, `question`, `answer`, `sortable_rank`, `created_at`, `updated_at`) VALUES
@@ -753,11 +737,11 @@ INSERT INTO `faq` (`id`, `question`, `answer`, `sortable_rank`, `created_at`, `u
 -- --------------------------------------------------------
 
 --
--- Table structure for table `feedback`
+-- Структура таблицы `feedback`
 --
 
-CREATE TABLE IF NOT EXISTS `feedback` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `feedback` (
+  `id` int(11) NOT NULL,
   `work_place` varchar(255) DEFAULT NULL,
   `salary` float DEFAULT NULL,
   `currency_id` int(11) DEFAULT NULL,
@@ -766,14 +750,11 @@ CREATE TABLE IF NOT EXISTS `feedback` (
   `content` text,
   `notes` varchar(500) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `feedback_fi_16a5a4` (`currency_id`),
-  KEY `feedback_fi_29554a` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `feedback`
+-- Дамп данных таблицы `feedback`
 --
 
 INSERT INTO `feedback` (`id`, `work_place`, `salary`, `currency_id`, `user_id`, `is_available`, `content`, `notes`, `created_at`, `updated_at`) VALUES
@@ -789,44 +770,41 @@ INSERT INTO `feedback` (`id`, `work_place`, `salary`, `currency_id`, `user_id`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `group`
+-- Структура таблицы `group`
 --
 
-CREATE TABLE IF NOT EXISTS `group` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `group` (
+  `id` int(11) NOT NULL,
   `alt` varchar(15) NOT NULL,
   `name` varchar(32) NOT NULL,
   `allow_choose_group` tinyint(1) NOT NULL DEFAULT '0',
-  `sortable_rank` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+  `sortable_rank` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `group`
+-- Дамп данных таблицы `group`
 --
 
 INSERT INTO `group` (`id`, `alt`, `name`, `allow_choose_group`, `sortable_rank`) VALUES
-(1, 'ADMIN', 'Admin', 0, NULL),
+(1, 'ADMIN', 'Админ', 0, NULL),
 (2, 'INSTRUCTOR', 'Преподаватели', 0, 1),
 (3, 'ALUMNI', 'Выпускники', 0, 2),
-(4, 'USERS', 'Пользователи', 1, 3);
+(4, 'USERS', 'Пользователь', 1, 3);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `group_privilege`
+-- Структура таблицы `group_privilege`
 --
 
-CREATE TABLE IF NOT EXISTS `group_privilege` (
+CREATE TABLE `group_privilege` (
   `group_id` int(11) NOT NULL,
   `privilege_id` int(11) NOT NULL,
-  `sortable_rank` int(11) DEFAULT NULL,
-  PRIMARY KEY (`group_id`,`privilege_id`),
-  KEY `group_privilege_fi_da39c7` (`privilege_id`)
+  `sortable_rank` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `group_privilege`
+-- Дамп данных таблицы `group_privilege`
 --
 
 INSERT INTO `group_privilege` (`group_id`, `privilege_id`, `sortable_rank`) VALUES
@@ -854,11 +832,11 @@ INSERT INTO `group_privilege` (`group_id`, `privilege_id`, `sortable_rank`) VALU
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notification`
+-- Структура таблицы `notification`
 --
 
-CREATE TABLE IF NOT EXISTS `notification` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `notification` (
+  `id` int(11) NOT NULL,
   `type` int(11) DEFAULT NULL,
   `to_user_id` int(11) NOT NULL,
   `from_user_id` int(11) DEFAULT NULL,
@@ -866,27 +844,45 @@ CREATE TABLE IF NOT EXISTS `notification` (
   `is_over` tinyint(1) NOT NULL DEFAULT '0',
   `quantity` int(11) NOT NULL DEFAULT '1',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `notification_fi_3703f2` (`to_user_id`),
-  KEY `notification_fi_122792` (`from_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `privilege`
+-- Структура таблицы `passport`
 --
 
-CREATE TABLE IF NOT EXISTS `privilege` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `passport` (
+  `serial` varchar(255) DEFAULT NULL,
+  `inn` varchar(255) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `operator` varchar(255) DEFAULT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `passport`
+--
+
+INSERT INTO `passport` (`serial`, `inn`, `start_date`, `operator`, `user_id`) VALUES
+(NULL, NULL, '2015-05-21', NULL, 18),
+('21321321321', '231321321', '2017-08-16', 'MKK 50-55', 19);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `privilege`
+--
+
+CREATE TABLE `privilege` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `alt` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
+  `alt` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `privilege`
+-- Дамп данных таблицы `privilege`
 --
 
 INSERT INTO `privilege` (`id`, `name`, `alt`) VALUES
@@ -909,11 +905,11 @@ INSERT INTO `privilege` (`id`, `name`, `alt`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `project`
+-- Структура таблицы `project`
 --
 
-CREATE TABLE IF NOT EXISTS `project` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `project` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `alt_url` varchar(255) NOT NULL,
   `description` text,
@@ -923,31 +919,30 @@ CREATE TABLE IF NOT EXISTS `project` (
   `meta_description` text,
   `meta_keywords` text,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `project`
+-- Дамп данных таблицы `project`
 --
 
 INSERT INTO `project` (`id`, `name`, `alt_url`, `description`, `logo_name`, `cover_name`, `context`, `meta_description`, `meta_keywords`, `created_at`, `updated_at`) VALUES
 (2, 'CheksizProgramming', 'cheksizprogramming', '<p>Проект “Продвижение обучения в области ИТ для людей с особыми потребностями” реализуется Кыргызской ассоциацией разработчиков программного обеспечения и услуг (КАРПОУ) и IT Академией при поддержке Европейского Союза.<br></p>', 'uOasb3LfZdgSXzG.png', 'GnlFTUHd0K7Z0sJ.png', '<p>Проект “Продвижение обучения в области ИТ для людей с особыми потребностями” реализуется Кыргызской ассоциацией разработчиков программного обеспечения и услуг (КАРПОУ) и IT Академией при поддержке Европейского Союза.</p>', NULL, NULL, '2019-01-11 07:11:40', '2019-02-21 15:48:19'),
-(3, 'ProgrammerAyimdar', 'programmerayimdar', '<h2>Смотрите видео об обучении девушек на курсах IT</h2>\r\n<center><iframe src="//www.youtube.com/embed/5sfzVE7s4pM?rel=0&amp;fs=1&amp;wmode=transparent" allowfullscreen="" title="JoomlaWorks AllVideos Player" width="100%" height="530" frameborder="0"></iframe></center>\r\n\r\n\r\n<p><a href="https://www.facebook.com/hashtag/programmerayimdar?source=note&amp;epa=HASHTAG">#ProgrammerAyimdar</a> – это проект по обучению 40-ка девушек и молодых женщин со всего Кыргызстана веб-разработке по направлению FRONT-END, развитию лидерства и социального предпринимательства на грантовой основе.</p>\r\n\r\n<p><a href="https://www.facebook.com/hashtag/programmerayimdar?source=note&amp;epa=HASHTAG">#ProgrammerAyimdar</a> – это шанс получить профессию будущего, обрести высокооплачиваемую работу, жить в Кыргызстане, а работать со всем миром!</p>\r\n\r\n<p>Проект реализует Кыргызская ассоциация разработчиков программного обеспечения и услуг IT-Academy при финансовой поддержке Демократической Комиссии Посольства США в Кыргызской Республике.</p>\r\n\r\n\r\n<h2>НАША ЦЕЛЬ</h2>\r\n\r\n<p>Расширение экономических возможностей девушек и женщин через обучение практическим навыкам в сфере информационных технологий, повышение грамотности, развитие лидерства и женского предпринимательства. Мы хотим вместе с вами развивать IT-отрасль Кыргызстана, помогать местным компаниям выйти на глобальный рынок, укреплять экономику страны!</p>\r\n\r\n<h2>КТО МОЖЕТ УЧАВСТВОВАТЬ В ПРОЕКТЕ?</h2>\r\n<ul>\r\n<li>Девушки и молодые женщины в возрасте от 15 до 37 лет;</li>\r\n<li>Жители всех регионов Кыргызской Республики.</li> \r\n</ul>\r\n\r\n\r\n<h2>КАКОВЫ ТРЕБОВАНИЯ К КАНДИДАТАМ?</h2><ul><li>Готовность посвятить обучению по пять часов ежедневно в течение пяти дней в неделю на протяжении 9 месяцев;</li>\r\n<li>Знание кыргызского и русского языков (знание английского является преимуществом);</li>\r\n<li>Знание компьютера на уровне уверенного пользователя:\r\n<ul>\r\n<li>MicrosoftOffice, Интернет;</li>\r\n<li>HTML и CSS, знание программирования (не обязательно).</li>\r\n</ul>\r\n</li>\r\n</ul>\r\n\r\n<h2>НА ЧТО МЫ БУДЕМ ДЕЛАТЬ АКЦЕНТ ПРИ ОТБОРЕ?</h2>\r\n\r\n<ul>\r\n<li>Основным критерием отбора станет высокая мотивация к обучению;</li>\r\n<li>Готовность кандидатов ответственно посещать уроки и тренинги в рамках курса.</li>\r\n</ul>\r\n\r\n\r\n<p><strong>Организаторы ожидают собственный вклад в обучение со стороны участников:</strong></p>\r\n<ul>\r\n<li>Наличие ноутбука;</li>\r\n<li>Возможности покрыть расходы на переезд и проживание в г.Бишкек на период обучения (<span style="font-weight:bold;">сентябрь 2018 г.-май 2019 г.</span>).</li>\r\n</ul>\r\n<br>\r\n<center><a href="/" class="btn btn-secondary btn-lg open-application-course-modal" style="font-size: 16px;\r\nbackground: #353939;">Набор завершен</a></center><br>\r\n\r\n<br>\r\n<center><a href="/" class="btn btn-secondary btn-lg open-application-course-modal" style="background: #0ea195;\r\nfont-size: 18px;"><i class="fa fa-user-circle mr-2"></i>Записаться на текущие курсы</a></center><br>\r\n<center><iframe src="https://www.youtube.com/embed/31r6IvDs3ts" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" width="100%" height="530" frameborder="0"></iframe></center>\r\n<h2>ЭТАПЫ ОТБОРА</h2>\r\n\r\n\r\n\r\n\r\n\r\n<p>1 ЭТАП: запрос дополнительных документов и прохождение тестирования на логическое и аналитическое мышление.</p>\r\n\r\n<p>2 ЭТАП: успешно прошедшие предыдущие этапы отбора будут приглашены на интервью с отборочной комиссией.</p>\r\n\r\n<p><strong>ДЛИТЕЛЬНОСТЬ КУРСА:</strong> сентябрь 2018 - май 2019 года. 5 дней в неделю в течение 9 месяцев.</p>\r\n\r\n<p><strong>МЕСТО ПРОВЕДЕНИЯ КУРСА:</strong> – г.Бишкек.</p>\r\n\r\n<center><iframe src="https://www.youtube.com/embed/pg-t7gacdxg" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" width="100%" height="530" frameborder="0"></iframe></center>\r\n\r\n<h2>ЗНАНИЯ, КОТОРЫЕ ПОЛУЧАТ УЧАСТНИЦЫ:</h2>\r\n\r\n<p>Веб-разработка по направлению FRONT-END</p>\r\n<ul>\r\n<li><strong>HTML5;</strong></li>\r\n<li><strong>CSS3;</strong></li>\r\n<li><strong>SASS/LESS;</strong></li>\r\n<li><strong>JavaScript;</strong></li>\r\n<li><strong>Bootstrap</strong></li>\r\n<li><strong>JQuery</strong></li>\r\n<li><strong>JS фрeймворкиодиниз (Angular2/ReactJS/Node.js) ;</strong></li>\r\n<li><strong>MVC/MVVM design patterns;</strong></li>\r\n<li><strong>Git.</strong></li>\r\n</ul>\r\n\r\n\r\n<p><strong>Тренинги и дополнительные курсы</strong> (обязательны для посещения):</p>\r\n<ul>\r\n<li><strong>курсы ораторского искусства;</strong></li>\r\n<li><strong>курсы английского языка;</strong></li>\r\n<li><strong>тренинг и мастер-классы по лидерству;</strong></li>\r\n<li><strong>курс введение в социальное предпринимательство;</strong></li>\r\n<li><strong>курс по основам SMM;</strong></li>\r\n<li><strong>развитие навыков командной работы;</strong></li>\r\n<li><strong>развитие коммуникационных навыков.</strong></li>\r\n</ul>\r\n\r\n<h2>КОНТАКТЫ:</h2>\r\n\r\n<p>itacademy98@gmail.com</p>\r\n\r\n<p>+996 (705) 954 549</p>\r\n<br>\r\n<center><a href="/" class="btn btn-secondary btn-lg open-application-course-modal" style="background: #0ea195;\r\nfont-size: 18px;"><i class="fa fa-user-circle mr-2"></i>Записаться на текущие курсы</a></center><br>', 'adM8yXgcTBK8m3J.png', NULL, '<p>Цель проекта — расширение экономических возможностей девушек и женщин путем обучения практическим навыкам в сфере информационных технологий (ИТ). Это повысит грамотность, навыки лидерства и женского предпринимательства через IT-академию<br></p>', NULL, NULL, '2019-02-15 12:31:48', '2019-05-13 14:02:48'),
+(3, 'ProgrammerAyimdar', 'programmerayimdar', '<h2>Смотрите видео об обучении девушек на курсах IT</h2>\r\n<center><iframe src=\"//www.youtube.com/embed/5sfzVE7s4pM?rel=0&amp;fs=1&amp;wmode=transparent\" allowfullscreen=\"\" title=\"JoomlaWorks AllVideos Player\" width=\"100%\" height=\"530\" frameborder=\"0\"></iframe></center>\r\n\r\n\r\n<p><a href=\"https://www.facebook.com/hashtag/programmerayimdar?source=note&amp;epa=HASHTAG\">#ProgrammerAyimdar</a> – это проект по обучению 40-ка девушек и молодых женщин со всего Кыргызстана веб-разработке по направлению FRONT-END, развитию лидерства и социального предпринимательства на грантовой основе.</p>\r\n\r\n<p><a href=\"https://www.facebook.com/hashtag/programmerayimdar?source=note&amp;epa=HASHTAG\">#ProgrammerAyimdar</a> – это шанс получить профессию будущего, обрести высокооплачиваемую работу, жить в Кыргызстане, а работать со всем миром!</p>\r\n\r\n<p>Проект реализует Кыргызская ассоциация разработчиков программного обеспечения и услуг IT-Academy при финансовой поддержке Демократической Комиссии Посольства США в Кыргызской Республике.</p>\r\n\r\n\r\n<h2>НАША ЦЕЛЬ</h2>\r\n\r\n<p>Расширение экономических возможностей девушек и женщин через обучение практическим навыкам в сфере информационных технологий, повышение грамотности, развитие лидерства и женского предпринимательства. Мы хотим вместе с вами развивать IT-отрасль Кыргызстана, помогать местным компаниям выйти на глобальный рынок, укреплять экономику страны!</p>\r\n\r\n<h2>КТО МОЖЕТ УЧАВСТВОВАТЬ В ПРОЕКТЕ?</h2>\r\n<ul>\r\n<li>Девушки и молодые женщины в возрасте от 15 до 37 лет;</li>\r\n<li>Жители всех регионов Кыргызской Республики.</li> \r\n</ul>\r\n\r\n\r\n<h2>КАКОВЫ ТРЕБОВАНИЯ К КАНДИДАТАМ?</h2><ul><li>Готовность посвятить обучению по пять часов ежедневно в течение пяти дней в неделю на протяжении 9 месяцев;</li>\r\n<li>Знание кыргызского и русского языков (знание английского является преимуществом);</li>\r\n<li>Знание компьютера на уровне уверенного пользователя:\r\n<ul>\r\n<li>MicrosoftOffice, Интернет;</li>\r\n<li>HTML и CSS, знание программирования (не обязательно).</li>\r\n</ul>\r\n</li>\r\n</ul>\r\n\r\n<h2>НА ЧТО МЫ БУДЕМ ДЕЛАТЬ АКЦЕНТ ПРИ ОТБОРЕ?</h2>\r\n\r\n<ul>\r\n<li>Основным критерием отбора станет высокая мотивация к обучению;</li>\r\n<li>Готовность кандидатов ответственно посещать уроки и тренинги в рамках курса.</li>\r\n</ul>\r\n\r\n\r\n<p><strong>Организаторы ожидают собственный вклад в обучение со стороны участников:</strong></p>\r\n<ul>\r\n<li>Наличие ноутбука;</li>\r\n<li>Возможности покрыть расходы на переезд и проживание в г.Бишкек на период обучения (<span style=\"font-weight:bold;\">сентябрь 2018 г.-май 2019 г.</span>).</li>\r\n</ul>\r\n<br>\r\n<center><a href=\"/\" class=\"btn btn-secondary btn-lg open-application-course-modal\" style=\"font-size: 16px;\r\nbackground: #353939;\">Набор завершен</a></center><br>\r\n\r\n<br>\r\n<center><a href=\"/\" class=\"btn btn-secondary btn-lg open-application-course-modal\" style=\"background: #0ea195;\r\nfont-size: 18px;\"><i class=\"fa fa-user-circle mr-2\"></i>Записаться на текущие курсы</a></center><br>\r\n<center><iframe src=\"https://www.youtube.com/embed/31r6IvDs3ts\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen=\"\" width=\"100%\" height=\"530\" frameborder=\"0\"></iframe></center>\r\n<h2>ЭТАПЫ ОТБОРА</h2>\r\n\r\n\r\n\r\n\r\n\r\n<p>1 ЭТАП: запрос дополнительных документов и прохождение тестирования на логическое и аналитическое мышление.</p>\r\n\r\n<p>2 ЭТАП: успешно прошедшие предыдущие этапы отбора будут приглашены на интервью с отборочной комиссией.</p>\r\n\r\n<p><strong>ДЛИТЕЛЬНОСТЬ КУРСА:</strong> сентябрь 2018 - май 2019 года. 5 дней в неделю в течение 9 месяцев.</p>\r\n\r\n<p><strong>МЕСТО ПРОВЕДЕНИЯ КУРСА:</strong> – г.Бишкек.</p>\r\n\r\n<center><iframe src=\"https://www.youtube.com/embed/pg-t7gacdxg\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen=\"\" width=\"100%\" height=\"530\" frameborder=\"0\"></iframe></center>\r\n\r\n<h2>ЗНАНИЯ, КОТОРЫЕ ПОЛУЧАТ УЧАСТНИЦЫ:</h2>\r\n\r\n<p>Веб-разработка по направлению FRONT-END</p>\r\n<ul>\r\n<li><strong>HTML5;</strong></li>\r\n<li><strong>CSS3;</strong></li>\r\n<li><strong>SASS/LESS;</strong></li>\r\n<li><strong>JavaScript;</strong></li>\r\n<li><strong>Bootstrap</strong></li>\r\n<li><strong>JQuery</strong></li>\r\n<li><strong>JS фрeймворкиодиниз (Angular2/ReactJS/Node.js) ;</strong></li>\r\n<li><strong>MVC/MVVM design patterns;</strong></li>\r\n<li><strong>Git.</strong></li>\r\n</ul>\r\n\r\n\r\n<p><strong>Тренинги и дополнительные курсы</strong> (обязательны для посещения):</p>\r\n<ul>\r\n<li><strong>курсы ораторского искусства;</strong></li>\r\n<li><strong>курсы английского языка;</strong></li>\r\n<li><strong>тренинг и мастер-классы по лидерству;</strong></li>\r\n<li><strong>курс введение в социальное предпринимательство;</strong></li>\r\n<li><strong>курс по основам SMM;</strong></li>\r\n<li><strong>развитие навыков командной работы;</strong></li>\r\n<li><strong>развитие коммуникационных навыков.</strong></li>\r\n</ul>\r\n\r\n<h2>КОНТАКТЫ:</h2>\r\n\r\n<p>itacademy98@gmail.com</p>\r\n\r\n<p>+996 (705) 954 549</p>\r\n<br>\r\n<center><a href=\"/\" class=\"btn btn-secondary btn-lg open-application-course-modal\" style=\"background: #0ea195;\r\nfont-size: 18px;\"><i class=\"fa fa-user-circle mr-2\"></i>Записаться на текущие курсы</a></center><br>', 'adM8yXgcTBK8m3J.png', NULL, '<p>Цель проекта — расширение экономических возможностей девушек и женщин путем обучения практическим навыкам в сфере информационных технологий (ИТ). Это повысит грамотность, навыки лидерства и женского предпринимательства через IT-академию<br></p>', NULL, NULL, '2019-02-15 12:31:48', '2019-05-13 14:02:48'),
 (4, 'IT лагерь', 'it-lager', '<p>Приезжайте в IT лагерь, чтобы зарядиться терабайтами информации и получить понимание, куда направить свою IT-энергию!</p><p><b> IT лагерь</b> — это лагерь новой эпохи, именно здесь подросток полностью раскроет свой потенциал и научится развивать свои навыки.</p><p><br></p><p> </p><h4>IT АКАДЕМИЯ объявляет о наборе в летний лагерь.</h4><h4><br></h4><h4> </h4><p>Летний IT лагерь 2018 – это трехнедельная программа, направленная на совершенствование знаний и навыков в области математики и изучение основ программирования. </p><p>Программа для подростков дает возможность участникам ознакомиться с последними веб-технологиями, основами веб-дизайна и веб-разработки, создать продукт на компьютере своими руками, а также понять различия между направлениями в программировании. </p><p>Участники также смогут получить бесплатную консультацию о том, как выбирать направление в IT сфере в соответствии с личными интересами и информацию о провайдерах образовательных услуг в IT. </p><p>Питание и охрана гарантированы.</p><p> Летний академический лагерь будет проходить в кампусе образовательного комплекса “Илим” по адресу: </p><p>г.Бишкек, ул. Токтоналиева 6-Б</p><p><br></p><p> </p><h4>Как записаться в IT лагерь?</h4><p>Свяжитесь с нами по следующим контактам: itacademy98@gmail.com и по номерам: 0709368285, 0772000572, 0772000562, 0550328868.<br></p>', 'sbesTMwGlGFtjSz.png', 'B0TAoIVdjHo99lX.png', '<p>Приезжайте в IT лагерь, чтобы зарядиться терабайтами информации и получить понимание, куда направить свою IT-энергию! IT лагерь — это лагерь новой эпохи, именно здесь подросток полностью раскроет свой потенциал и научится развивать свои навыки.&nbsp;<br></p>', NULL, NULL, '2019-02-15 12:35:38', '2019-02-21 15:46:34');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `propel_migration`
+-- Структура таблицы `propel_migration`
 --
 
-CREATE TABLE IF NOT EXISTS `propel_migration` (
+CREATE TABLE `propel_migration` (
   `version` int(11) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `propel_migration`
+-- Дамп данных таблицы `propel_migration`
 --
 
 INSERT INTO `propel_migration` (`version`) VALUES
@@ -1052,16 +1047,25 @@ INSERT INTO `propel_migration` (`version`) VALUES
 (1550726747),
 (1550730213),
 (1550730469),
-(1550897364);
+(1550897364),
+(1563316428),
+(1563724052),
+(1564142541),
+(1564313489),
+(1564339513),
+(1564339599),
+(1566156935),
+(1566162112),
+(1567550008);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `static_page`
+-- Структура таблицы `static_page`
 --
 
-CREATE TABLE IF NOT EXISTS `static_page` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `static_page` (
+  `id` int(11) NOT NULL,
   `title` varchar(90) DEFAULT NULL,
   `logo_name` varchar(255) DEFAULT NULL,
   `cover_name` varchar(32) DEFAULT NULL,
@@ -1073,32 +1077,30 @@ CREATE TABLE IF NOT EXISTS `static_page` (
   `meta_description` text,
   `meta_keywords` text,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `static_page`
+-- Дамп данных таблицы `static_page`
 --
 
 INSERT INTO `static_page` (`id`, `title`, `logo_name`, `cover_name`, `alt_url`, `is_available`, `content`, `context`, `notes`, `meta_description`, `meta_keywords`, `created_at`, `updated_at`) VALUES
-(7, 'Что такое программирование', '87cz14MBhm7Q9gC.png', 'eJqULxwV4DYSL1c.png', 'chto-takoe-programmirovanie', 1, '<h1>Что такое программирование</h1>\n<p class="flex-fix"><br></p><p>Компьютеры сегодня есть практически в каждом доме. Но это вовсе не означает, что их владельцы умеют использовать технику на сто процентов возможностей. Нередко даже молодые люди, проводящие за компьютером или ноутбуком много времени, неспособны порой выполнить простейшие операции. Например, увеличить размер или изменить цвет шрифта в Word, создать простейшую презентацию, сохранить файл в каком-либо формате и так далее. Этому можно научиться на компьютерных курсах. Данная ступенька станет первой на пути к программированию. </p>\n\n<h2>Программирование</h2>\n\n\n<p>Когда люди слышат это слово, то некоторых из них оно пугает. На самом деле в нём нет ничего страшного. Наоборот, сегодня многие школьники желают связать с ним свою профессиональную жизнь. Это написание программ на одном из множества специальных языков. Сама же программа является последовательностью команд. </p>\n\n\n<p>Процесс на первый взгляд может показаться сложным. Но если есть мотивация, то сложности становятся кратковременными. Прописывая коды, новички допускают поначалу много ошибок. Однако со временем становится понятно, что ошибки во многих случаях не меняются, и их количество уменьшается. Для написания сложной программы лучше поделить её на несколько простых подзадач, на решение которых не нужно тратить много времени.\n</p>\n<p>Важный момент — понимание необходимости выполнения заданий. Зачем заниматься сортировкой массива? Почему делают обрезку текста, оставляя лишь начальные абзацы? Ответы на такие и другие вопросы даются на многочисленных курсах программирования. </p>\n<p>IT-технологии не стоят на месте, а постоянно развиваются. Возникают новые направления, создаются новые задачи, решить которые по силам только опытным программистам. Так что программирование всегда будет востребованным делом. </p>\n\n<h2>Программисты</h2>\n\n<p>Как известно, спрос рождает предложение. В связи с постоянным развитием программирования растёт и количество занятых в нём специалистов. Программист разрабатывает алгоритмы всех программ. В его работе не обойтись без математических вычислений, соответственно, он должен хорошо знать математику. Нынешнее программирование относят к категории трудоёмких процессов. Так как деятельность обладает широким спектром, её разделяют на три главных направления:</p>\n \n<ul>\n    <li> прикладное программирование. В нём заняты специалисты, основная задача которых — разрабатывать и внедрять ПО для нормальной работы различных организаций. Чаще всего у них узкий профиль действия. К ним можно отнести специалистов по 1С. Они занимаются тем, что обновляют, настраивают и при необходимости дорабатывают программы под конкретные требования работников компании, её специфические особенности</li>\n<li> системное программирование. Занятые в нём специалисты выполняют разработку операционных систем, распределяющих БД, интерфейсов.</li>Среди программистов направление считается наиболее сложным и редким. Такие специалисты всегда нужны, у них одна из самых высоких зарплат;\n<li> web-программирование. Здесь работают с такими большими сетями, как Интернет. Программисты создают сайты, интерфейсы. Сейчас это направление очень популярное, так как Интернет постоянно развивается. Всё то, с чем приходится пользователю иметь дело за компьютером, создано программистами. Благодаря ним люди получают возможность выходить в Интернет и там заниматься своими делами</li>\n</ul>\n\n<p>Один из основных стимулов быть программистом — постоянная востребованность специалистов данной отрасли и высокая заработная плата. Профессионалы могут зарабатывать по несколько тысяч долларов. </p>\n\n\n\n\n', '<p>В связи с постоянным развитием программирования растёт и количество занятых в нём специалистов. Программист разрабатывает алгоритмы всех программ. В его работе не обойтись без математических вычислений, соответственно, он должен хорошо знать математику. Нынешнее программирование относят к категории трудоёмких процессов. </p>', NULL, 'Наши курсы - самый короткий путь в IT. Курсы программирования в Бишкеке. Компьютерное обучение с нуля по следующим направлениям: Java, PHP, Front-End, C#.', 'Курсы, Бишкек, программирование, с нуля, обучение', '2019-02-21 14:15:13', '2019-02-24 12:59:29'),
+(7, 'Что такое программирование', '87cz14MBhm7Q9gC.png', 'eJqULxwV4DYSL1c.png', 'chto-takoe-programmirovanie', 1, '<h1>Что такое программирование</h1>\n<p class=\"flex-fix\"><br></p><p>Компьютеры сегодня есть практически в каждом доме. Но это вовсе не означает, что их владельцы умеют использовать технику на сто процентов возможностей. Нередко даже молодые люди, проводящие за компьютером или ноутбуком много времени, неспособны порой выполнить простейшие операции. Например, увеличить размер или изменить цвет шрифта в Word, создать простейшую презентацию, сохранить файл в каком-либо формате и так далее. Этому можно научиться на компьютерных курсах. Данная ступенька станет первой на пути к программированию. </p>\n\n<h2>Программирование</h2>\n\n\n<p>Когда люди слышат это слово, то некоторых из них оно пугает. На самом деле в нём нет ничего страшного. Наоборот, сегодня многие школьники желают связать с ним свою профессиональную жизнь. Это написание программ на одном из множества специальных языков. Сама же программа является последовательностью команд. </p>\n\n\n<p>Процесс на первый взгляд может показаться сложным. Но если есть мотивация, то сложности становятся кратковременными. Прописывая коды, новички допускают поначалу много ошибок. Однако со временем становится понятно, что ошибки во многих случаях не меняются, и их количество уменьшается. Для написания сложной программы лучше поделить её на несколько простых подзадач, на решение которых не нужно тратить много времени.\n</p>\n<p>Важный момент — понимание необходимости выполнения заданий. Зачем заниматься сортировкой массива? Почему делают обрезку текста, оставляя лишь начальные абзацы? Ответы на такие и другие вопросы даются на многочисленных курсах программирования. </p>\n<p>IT-технологии не стоят на месте, а постоянно развиваются. Возникают новые направления, создаются новые задачи, решить которые по силам только опытным программистам. Так что программирование всегда будет востребованным делом. </p>\n\n<h2>Программисты</h2>\n\n<p>Как известно, спрос рождает предложение. В связи с постоянным развитием программирования растёт и количество занятых в нём специалистов. Программист разрабатывает алгоритмы всех программ. В его работе не обойтись без математических вычислений, соответственно, он должен хорошо знать математику. Нынешнее программирование относят к категории трудоёмких процессов. Так как деятельность обладает широким спектром, её разделяют на три главных направления:</p>\n \n<ul>\n    <li> прикладное программирование. В нём заняты специалисты, основная задача которых — разрабатывать и внедрять ПО для нормальной работы различных организаций. Чаще всего у них узкий профиль действия. К ним можно отнести специалистов по 1С. Они занимаются тем, что обновляют, настраивают и при необходимости дорабатывают программы под конкретные требования работников компании, её специфические особенности</li>\n<li> системное программирование. Занятые в нём специалисты выполняют разработку операционных систем, распределяющих БД, интерфейсов.</li>Среди программистов направление считается наиболее сложным и редким. Такие специалисты всегда нужны, у них одна из самых высоких зарплат;\n<li> web-программирование. Здесь работают с такими большими сетями, как Интернет. Программисты создают сайты, интерфейсы. Сейчас это направление очень популярное, так как Интернет постоянно развивается. Всё то, с чем приходится пользователю иметь дело за компьютером, создано программистами. Благодаря ним люди получают возможность выходить в Интернет и там заниматься своими делами</li>\n</ul>\n\n<p>Один из основных стимулов быть программистом — постоянная востребованность специалистов данной отрасли и высокая заработная плата. Профессионалы могут зарабатывать по несколько тысяч долларов. </p>\n\n\n\n\n', '<p>В связи с постоянным развитием программирования растёт и количество занятых в нём специалистов. Программист разрабатывает алгоритмы всех программ. В его работе не обойтись без математических вычислений, соответственно, он должен хорошо знать математику. Нынешнее программирование относят к категории трудоёмких процессов. </p>', NULL, 'Наши курсы - самый короткий путь в IT. Курсы программирования в Бишкеке. Компьютерное обучение с нуля по следующим направлениям: Java, PHP, Front-End, C#.', 'Курсы, Бишкек, программирование, с нуля, обучение', '2019-02-21 14:15:13', '2019-02-24 12:59:29'),
 (8, 'Профессия программист', 'cxnIof1QL4FaDbw.png', NULL, 'professiya-programmist', 1, '<h1>Профессия программист</h1>\n<p>Сегодня программирование имеет множество граней. Без него практически невозможно обойтись во многих сферах жизнедеятельности – биологии, медицине, физике, экономике, бизнесе, строительстве, промышленности и так далее. В промышленном производстве, например, программирование позволяет заменить в работе людские руки за счёт внедрения машин и роботизированной деятельности. Управление таким трудом осуществляется с помощью ПО. То есть увеличивается скорость, операции все точны, и всё это положительно сказывается на эффективности производства. Богатство направлений программирования возможно за счёт использования огромного количества языков. Каждый из них имеет собственные достоинства и недостатки.</p>\n<h5>Нынешние программисты чаще всего пытаются реализовать себя в одном из трёх направлений:</h5>\n<p>Программирование сегодня – полезное дело. Оно не ограничивается присутствием в науке, производстве. Труд это умственный, непростой. Однако сегодня именно он определяет, какое место в обществе занимает человек. Новые высоты можно покорить, если заниматься саморазвитием. Один из наиболее приятных и эффективных его способов – программирование.</p>\n\n    \n<h2>Преимущества профессии</h2>\n<h3>Их много. Вот основные (если человек занят делом непосредственно в офисе какой-либо структуры):</h3>\n<ul>\n    <li>зарплата. Она гораздо выше, чем у представителей большинства других профессий. Выплачивается практически всеми работодателями стабильно</li>\n<li>востребованность. Программисты нужны всегда, на них постоянно наблюдается кадровый голод. Специалисты с более высокой квалификацией пользуются приличным спросом. А повысить её можно с помощью различных курсов программирования, например, в «IT Академии» в Бишкеке</li>\n<li>бесплатные стажировки. Нередко работодатели сами вносят оплату за участие своих тружеников в тренингах, курсах, конференциях и так далее</li>\n<li>нет необходимости в наличии высшего образования. Главное для компании – чтобы кандидат правильно выполнил тестовое задание. Именно по его результатам, а не по наличию диплома программиста, будут выбираться подходящие люди</li>\n<li>отличные условия для работы. Программисту часто нужно сосредоточиться, его ничто не должно отвлекать. В компаниях это понимают и стремятся создать максимально комфортную для него обстановку</li>\n<li>наличие творческой работы. Программисты получают большие деньги за то, что могут выполнить нестандартное задание, используя собственную смекалку. Чем выше квалификация специалиста, тем задачи, над которыми он трудится, интереснее</li>\n<li>возможность совмещения работы и учёбы. Часто практикуется найм студентов четвёртых и пятых курсов. Они работают по плавающему графику. Если мотивация у человека очень высокая, то он может решать серьёзные задачи даже в режиме неполной занятости</li>\n<li>рост зарплаты и продвижение по карьерной лестнице зависят исключительно от того, какая у программиста квалификация</li>\n</ul>\n<h2>Программист-фрилансер</h2>\n<p>Возможность удалённой работы – ещё один плюс. Есть компании, которые не испытывают нервозности при найме на работу людей, предпочитающих трудиться не в офисе, а на удалённом от него расстоянии. Чаще всего – дома. Главное, чтобы они правильно и своевременно выполняли задания.    </p>\n\n\n', '\n<p>Программирование сегодня – полезное дело. Оно не ограничивается присутствием в науке, производстве. Труд это умственный, непростой. Однако сегодня именно он определяет, какое место в обществе занимает человек.</p>', NULL, 'Наши курсы - самый короткий путь в IT. Компьютерные курсы в Бишкеке для любого возраста. Вы сможете подобрать себе самые лучшие курсы по следующим направлениям: Php, Java, Front-End, C#, Python, Java/mobile', 'Профессия, программист, Бишкек, курсы', '2019-02-21 14:17:47', '2019-02-24 12:59:04'),
 (9, '10 полезных советов', 'V0NOLOIWTIYSTVl.png', 'dWIIay7mSDp7wTp.png', '10-poleznyh-sovetov', 1, '\n<h1>10 полезных советов по программированию для начинающих в Бишкеке</h1>\n\n<p>Многие слышали об IT курсах, куда наверняка ходили или ходят ваши друзья и знакомые. Но так ли это легко, и что нужно знать чтобы добиться успеха?</p>\n\n\n<ul>\n    \n<li><storng></storng>Мотивация. Как известно, она — залог успеха. Определитесь нужно ли вам это и если нужно, то зачем? Поставьте чёткую цель обучения и желательно запишите её в заметки телефона или повесьте на видное место.</li>\n<li><storng></storng>Язык программирования. Вряд ли вы сможете моментально определиться с выбором нужного языка, ведь новичку каждый из них будет казаться чем-то инопланетным. Не спешите и ознакомьтесь с каждым, поспрашивайте более опытных коллег и выбор будет сделан сам собой.</li>\n<li><storng></storng>Курсы. Курсы программирования могут быть представлены онлайн, а могут проходить как полноценные занятия. Таких курсов сейчас очень много и они есть практически в любом городе. Например, курсы программирования в Бишкеке сейчас пользуются большим спросом.</li>\n<li><storng></storng>Собранность. Это совет подойдёт для любой работы. Очень важно не распыляться на мелкие задачи, а решать их по мере поступления, от самых важных до наименее. Изучать несколько языков программирования также нежелательно, потому что таким образом можно так и не выучить ни одного.</li>\n<li><storng></storng>Структурирование. Получайте информацию порциями и следуйте тем шагам, которые прописаны в плане занятий, переходя на следующий этап только после изучения предыдущего.</li>\n<li><storng></storng>Саморазвитие. Не забывайте закреплять полученную информацию и экспериментировать с методами изучения. Смотрите видео-уроки и читайте дополнительную литературу.</li>\n<li><storng></storng>Учите других. Мы запоминаем информацию гораздо лучше, когда делимся ею, поэтому вы можете посвящать в свои уроки друзей и рассказывать им интересные моменты, тем самым закрепляя свои знания.</li>\n<li><storng></storng>Единомышленники. Окружите себя людьми, которые уже чего-то достигли и тянитесь к ним. Постоянные разговоры о работе помогут вам быстрее разобраться в ней.</li>\n<li><storng></storng>Наставник. Такой человек необходим всем, ведь в самом начале у вас будет много вопросов, которые не должны оставаться без ответов. Наставником может быть сам преподаватель.</li>\n<li><storng></storng>Разнообразие. Прибегайте к помощи необычных методов изучения. На курсах программирования в Бишкеке практикуется игровой метод, который превращает обучение в более весёлое и лёгкое занятие. Кто сказал, что игры только для детей?</li>\n</ul>', '<p>В этой статье мы расскажем о 10 советах, которые необходимо знать начинающим для достижения успеха в работе.</p>', NULL, 'Компьютерные курсы в Бишкеке для любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий  для начинающих специалистов. Наши курсы - самый короткий путь в IT.', 'курсы, обучение, компьютерные, технологии, начинающие, Бишкек', '2019-02-22 18:30:04', '2019-02-24 12:59:17'),
 (10, 'Кто такой Front-end разработчик', 'MvdoqMUDreOgnYB.png', 'TmzYRRSTtkZHHRe.png', 'kto-takoy-front-end-razrabotchik', 1, '<h1>Кто такой Front-end разработчик</h1>\n\n\n<p>Развитие современных технологий способствовало появлению совершенно новых профессий, о которых мы не могли слышать несколько лет назад. Их представители прекрасно себя чувствуют на рынке труда, приобретая многочисленные заказы, быстро получают постоянную работу и зарабатывают зарплаты значительно выше среднего по стране. Отличным примером такой профессии является front-end разработчик.</p>\n\n<p>Все люди, занимающиеся профессиональным созданием сайтов, называются веб-мастерами. Из-за долгого и сложного процесса дизайна веб-сайта подразделение было разделено на фронт-энд и бэк-энд разработчиков.</p>\n\n<p>Область веб-разработки в Бишкеке на сегодняшний день является одной из наиболее востребованных. Поговорим о том, кто такой front-end разработчик.</p>\n\n<p>Front-end разработчик занимается созданием интерфейсов</p>\n\n<p>Front-end developer - это название специальности для программиста, который имеет дело с визуальной частью. Front-end программирование основано на языках разработки, интерпретируемых не сервером (это делает back-end разработчик), а браузером. Наиболее популярные технологии, используемые front-end разработчиком: HTML, CSS, JavaScript.</p>\n\n<h2>Front-End разработчиков можно разделить на 2 основные группы:</h2>\n\n<li> Первый касается кодирования графического дизайна для WWW макетов. Наиболее часто используемые технологии - это HTML и CSS.</li>\n<li> Второй касается главным образом программной связи между пользовательским интерфейсом и сервером. Наиболее часто используемые технологии - это JavaScript (например, AngularJS, VueJS, ReactJS).</li>\n\n<h3>Какие типы веб-разработчиков существуют?</h3>\n<h4>Обычно выделяют три вида:</h4>\n\n<ul>\n    <li>фронт-енд</li>\n<li>бэк-энд</li>\n<li>многопрофильные</li>\n</ul>\n<p>От front-end разработчика требуется очень хорошее знание JavaScript, благодаря которому реализуются все необходимые задачи интерфейса и работы над внешним интерфейсом приложения, в том числе при связи с API (обычно REST), выдаваемым серверной частью для извлечения данных из него. Кроме того, могут быть различные операции с этими данными, которые уже выполняются на стороне браузера. Интерфейс приложения также служит для получения информации от пользователя. Затем они обрабатываются и отправляются обратно на сервер с использованием того же API.</p>\n\n\n', '\n\n\n<p>Развитие современных технологий способствовало появлению совершенно новых профессий, о которых мы не могли слышать несколько лет назад.</p>', NULL, 'Компьютерные курсы в Бишкеке для любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'курсы, фронтент, front end, обучение, Бишкек', '2019-02-25 11:41:30', '2019-02-25 11:53:43'),
 (11, 'Программирование на Java для школьников', 'xey3f8XJuLgk6lN.png', 'WyQdeEYFQ9fmfpU.png', 'programmirovanie-na-java-dlya-shkolnikov', 1, '<h1>Программирование на Java для школьников</h1>\n\n\n<p>Одну из лидирующих позиций в IT сфере давно занял язык программирования Java в Бишкеке. Он появился на рынке более двадцати лет назад. Сегодня на неё создаётся программное обеспечение для 10 миллионов кампаний. Его особенность в том, что он может работать на любой платформе. Совершенно очевидно, что и дальше популярность этого языка будет только расти.</p>\n\n\n<p>Отличным способом привлечь внимание ребенка к такой сложной теме станут компьютерные игры. Каждый любознательный школьник захочет узнать, из чего состоит его любимая игра. Заинтересовав ребенка в изучении языков программирования в Бишкеке, вы гарантируете ему трудоустройство и стабильность. В этом смысле язык программирования Java будет особенно интересен родителям, так как специалисты, освоившие этот язык получают на 30-40% больше чем, специалисты им не владеющие. Это связанно с тем, что этот язык входит в четвёрку самых востребованных языков программирования в мире.</p>\n\n\n<p>Кроме этого, зная язык Java можно создать любую программу или приложение на компьютер или телефон на системы Windows, Linux или Android.\nИзучить язык Java в детстве и подростковом возрасте гораздо легче, а знания будут крепче и станут отличной базой для последующего применения и освоения чего-то нового. Каждый возраст имеет свою специфику в обучении. Исходя из этого, мы разработали два курса, адаптированные для учащихся 9-11 лет и обучающихся 12-14 лет.</p>\n\n\n<p>Каждый курс изложен простым, доступным языком и направлен на развитие творческих и аналитических способностей у детей. В легкой форме их познакомят с основами алгоритмизации и принципами работы языка. Навык применения полученных знаний на практике также немало важен. В процессе обучения дети научатся сами писать алгоритмы программ и вводить их в работу.</p>\n\n\n<p>Языки программирования играют большую роль в нашей жизни, поэтому особенно важно, что бы дети получали знания без отрыва от реальности. Это достигается через интегрирование языка программирования в такие сферы как экономика, логистика, инженерия и так далее. Это способствует расширению кругозора ребенка и осознание реальности изучаемой теоретической информации. Большой охват сфер деятельности позволяет также выявить скрытые способности у ребенка.</p>\n\n<p>Изучить этот язык очень просто. Достаточно выбрать подходящий курс и связаться с нами.</p>', '<p>Одну из лидирующих позиций в IT сфере давно занял язык программирования Java. Он появился на рынке более двадцати лет назад. </p>', NULL, 'Компьютерные курсы в Бишкеке для любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT', 'java курсы, программирование джава, Бишкек, курсы для школьников, обучение', '2019-02-25 12:07:28', '2019-02-25 12:24:13'),
 (12, 'Программирование на языке Python', '1g6dv3Mt3xe7Vgl.png', 'MELSXwIRMMp4C9F.png', 'programmirovanie-na-yazyke-python', 1, '<h1>Программирование на языке Python</h1>\n\n\n\n\n<p>Python - это язык сценариев, которые интерпретируются - это означает, что мы пишем сценарий, а затем выполняем его с помощью интерпретатора. Python прост в освоении, но все же очень мощный. Работает на многих операционных системах, включая встроенные. Помимо Python (написанного на C), Jython написан на Java и работает везде, где есть Java и Iron Python, написанные на .NET, и работает везде, где доступна среда Microsoft .NET. </p>\n\n<p>Python имеет богатую стандартную библиотеку, которая позволяет выполнять большинство действий. </p>\n\n<p>Эта статья представляет собой краткое описание преимуществ Python и не имеет задачи описания основных элементов этого языка.</p>\n\n<h2>Прежде всего: почему вы должны изучать Python?</h2>\n<ul>\n    <li>Потому что это отличный язык для начала, где вы изучаете основы программирования. В конце концов, когда-то он должен заменить (хочется надеется) Pascal в средних школах.</li>\n<li>Потому что это очень популярный язык - 5-я позиция в списке самых популярных языков программирования.</li>\n<li>Потому что Python действительно прост. И в то же время полезен в работе программиста.</li>\n<li>Визуализация кода Python</li>\n<li>Существует инструмент, который позволяет удобно визуализировать код Python - PythonTutor: Visualize. Кроме того, визуализация работает не только на этом языке.</li>\n</ul>\n\n<p>В IDE для этой цели используются отладчики. Особенно, когда мы видим, что что-то не работает, и мы хотим видеть, в чем проблема. Но это тема для отдельной статьи.</p>\n\n<p>Python прост!\nЛегкий в изучении, он имеет простой, почти интуитивный синтаксис (проще говоря, это способ написания команд, понятный компьютеру с использованием данного языка программирования).</p>\n\n<p>Синтаксис напоминает элементы из «реальной жизни». Таким образом, ключевые слова понятны для каждого новичка, но в то же время очень близки к тем, которые встречаются в других языках программирования (поэтому последующее освоение нового языка будет проще).</p>\n\n<p>Когда мы записываем список дел, мы часто используем для перечисления двоеточие и отступы - точно так же, как мы даем команды Python в блоках кода. Кстати, это заставляет нас освоить хорошие навыки создания отступов в коде, благодаря чему код Python красив, понятен и прозрачен.</p>\n\n<p>После установки Python и можете немедленно приступить к написанию своего кода.</p>\n\n<p>Спрос на специалистов по Python в Бишкеке растет с каждым годом. В текущем году разработчики Python входят в число наиболее популярных.</p>', '<p>Python - это язык сценариев, которые интерпретируются - это означает, что мы пишем сценарий, а затем выполняем его с помощью интерпретатора. Python прост в освоении, но все же очень мощный.</p>', NULL, 'Компьютерные курсы в Бишкеке для любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'курсы питон, Python, Бишкек, обучение', '2019-02-25 12:29:02', '2019-02-25 12:29:02'),
-(13, 'Пять плюсов профессии программист', 'Q0lTVhyE3eKQ1lV.png', 'snck2D3fGrnydQi.png', 'pyat-plyusov-professii-programmist', 1, '<h1>Пять плюсов профессии программист</h1>\n<p>Прежде, чем говорить о профессии программист, нужно разобраться в её преимуществах. В данной статье описаны еще не все преимущества программиста</p>\n\n<h4>Высокий доход</h4>\n\n<p>В IT-отрасли и правда хороший уровень заработной платы. При этом программисты работают повсеместно. К примеру, в США программисты получают $60-100 тысяч в год (и это без бонусов), но заработная плата зависит от квалификации.</p>\n\n<p>Также, для работников IT-компаний предлагаются заманчивые условия для строительства жилья, кредитования, что для молодых специалистов является хорошей возможностью обеспечить свою жизнь.</p>\n\n<h4>Свободный график</h4>\n\n<p>Эту работу не касается строгий рабочий режим. Всё нацелено на создание гармоничной, приятной и дружеской рабочей атмосферы в офисе, лояльности к работникам. Время работы не зафиксировано. Оно варьируется с 09.00 до 14.00. Самое главное – выполнять все установленные цели в указанный срок.</p>\n\n<p>Примером может стать московский офис Google. В нём каждый сотрудник вправе пользоваться 20% рабочего времени на свои персональные проекты. Здесь же, во время работы, сотрудники питаются за счёт компании.</p>\n\n<h4>Отдельная интеллектуальная каста</h4>\n\n<p>По мнению одного IT-специалиста, его профессия - это образ жизни. В их работе имеется множество непонятного для обычного человека сленга, тем для разговоров и интересов. Профессия IT-специалиста – это высокий социальный статус.\n</p>\n<p>Для этой профессии призываются высокоинтеллектуальные люди, с хорошим образованием.\nПерспектива работать в крупной иностранной компании</p>\n\n<p>Люди, которые связаны с IT-направлением постоянно обучаются чему-то новому, стажируются и обмениваются опытом. Это позволяет им проникнуться в западные корпоративные стандарты уже с начала карьеры. На способных работников охотятся успешные компании, с целью взятия их на работу. В данной индустрии всегда нужны кадры, поэтому её смело можно назвать востребованной.\nПри наличии свободного владения иностранным языком и программированием, специалист может уверенно отправляться в поиски работы в иностранные компании. Там их доход увеличится и появятся новые возможности.</p>\n\n<h4>Профессия будущего</h4>\n\n<p>Сегодня появляются новые разработки, которые применяют автопилот, люди без интернета не могут представить свою жизнь, а телефон становится помощником, который может дать ответы на все вопросы. Роботы соревнуются с китайскими рабочими на фабриках. Всё это является результатом деятельности IT-специалистов в Бишкеке, их профессия нуждается в высококвалифицированных специалистах, которые регулируют работу гаджетов и роботов.\n</p>\n', '<p>Прежде, чем говорить о профессии программист, нужно разобраться в её преимуществах.</p>', NULL, 'Компьютерные курсы в Бишкеке для любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'it курсы, программирование, Бишкек, преимущества', '2019-02-25 12:53:41', '2019-02-25 14:06:23');
-INSERT INTO `static_page` (`id`, `title`, `logo_name`, `cover_name`, `alt_url`, `is_available`, `content`, `context`, `notes`, `meta_description`, `meta_keywords`, `created_at`, `updated_at`) VALUES
+(13, 'Пять плюсов профессии программист', 'Q0lTVhyE3eKQ1lV.png', 'snck2D3fGrnydQi.png', 'pyat-plyusov-professii-programmist', 1, '<h1>Пять плюсов профессии программист</h1>\n<p>Прежде, чем говорить о профессии программист, нужно разобраться в её преимуществах. В данной статье описаны еще не все преимущества программиста</p>\n\n<h4>Высокий доход</h4>\n\n<p>В IT-отрасли и правда хороший уровень заработной платы. При этом программисты работают повсеместно. К примеру, в США программисты получают $60-100 тысяч в год (и это без бонусов), но заработная плата зависит от квалификации.</p>\n\n<p>Также, для работников IT-компаний предлагаются заманчивые условия для строительства жилья, кредитования, что для молодых специалистов является хорошей возможностью обеспечить свою жизнь.</p>\n\n<h4>Свободный график</h4>\n\n<p>Эту работу не касается строгий рабочий режим. Всё нацелено на создание гармоничной, приятной и дружеской рабочей атмосферы в офисе, лояльности к работникам. Время работы не зафиксировано. Оно варьируется с 09.00 до 14.00. Самое главное – выполнять все установленные цели в указанный срок.</p>\n\n<p>Примером может стать московский офис Google. В нём каждый сотрудник вправе пользоваться 20% рабочего времени на свои персональные проекты. Здесь же, во время работы, сотрудники питаются за счёт компании.</p>\n\n<h4>Отдельная интеллектуальная каста</h4>\n\n<p>По мнению одного IT-специалиста, его профессия - это образ жизни. В их работе имеется множество непонятного для обычного человека сленга, тем для разговоров и интересов. Профессия IT-специалиста – это высокий социальный статус.\n</p>\n<p>Для этой профессии призываются высокоинтеллектуальные люди, с хорошим образованием.\nПерспектива работать в крупной иностранной компании</p>\n\n<p>Люди, которые связаны с IT-направлением постоянно обучаются чему-то новому, стажируются и обмениваются опытом. Это позволяет им проникнуться в западные корпоративные стандарты уже с начала карьеры. На способных работников охотятся успешные компании, с целью взятия их на работу. В данной индустрии всегда нужны кадры, поэтому её смело можно назвать востребованной.\nПри наличии свободного владения иностранным языком и программированием, специалист может уверенно отправляться в поиски работы в иностранные компании. Там их доход увеличится и появятся новые возможности.</p>\n\n<h4>Профессия будущего</h4>\n\n<p>Сегодня появляются новые разработки, которые применяют автопилот, люди без интернета не могут представить свою жизнь, а телефон становится помощником, который может дать ответы на все вопросы. Роботы соревнуются с китайскими рабочими на фабриках. Всё это является результатом деятельности IT-специалистов в Бишкеке, их профессия нуждается в высококвалифицированных специалистах, которые регулируют работу гаджетов и роботов.\n</p>\n', '<p>Прежде, чем говорить о профессии программист, нужно разобраться в её преимуществах.</p>', NULL, 'Компьютерные курсы в Бишкеке для любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'it курсы, программирование, Бишкек, преимущества', '2019-02-25 12:53:41', '2019-02-25 14:06:23'),
 (14, 'Программирование vs. Веб-разработка. В чем разница?', 'wDsM50zQSVM1CCr.png', 'WeudEgqgcxE3JUS.png', 'programmirovanie-vs-veb-razrabotka-v-chem-raznica', 1, '<h1>Программирование vs. Веб-разработка. В чем разница?</h1>\n<p>Порой для людей, далёких от программирования, эта сфера может выглядеть невероятно сложной и трудной для понимания. К примеру, если у Вас нет нужного опыта, Вы вряд ли осведомлены о том, какой же язык программирования стоит выбрать начинающим.</p>\n\n<p>Вопреки тому, что такие термины, как «разработчик программного обеспечения», «веб-разработчик» и «программист» сейчас у всех на слуху в Бишкеке, не все знакомы с ключевыми различиями в рабочих обязанностях данных специалистов. Предлагаем разобраться в отличиях программирования и веб-разработки.</p>\n\n<h2>Различные цели</h2>\n<p>Хоть и программист, и веб-разработчик занимаются написанием кода, в целях они не сходятся. Одним из главных отличий является тот факт, что программистами создаются совершенно новые приложения или совершенствуется уже готовое программное обеспечение, в то время как веб-разработчики создают веб-сайты и предоставляют им обслуживание.</p>\n\n<p>Для того, чтобы понять различие между ними, необходимо проанализировать цели. Дизайнер Для более наглядного объяснения различий, следует рассмотреть их цели. В обязанности дизайнера включены следующие пункты: создание макета для веб-сайта и определение набора его функций. Как видим, в этот список не входит написание кода для реализации идеи. Самыми популярными программами для веб-дизайна являются Adobe Dreamweaver и Photoshop.</p>\n\n<p>Но для того, чтобы сайт мог функционировать, веб-дизайнерам и программистам необходимо связующее звено: веб-разработчик. Во время процесса разработки веб-дизайнер занимается проработкой внешнего вида сайта; веб-разработчик, учитывая все спецификации, занимается формированием сайта. А создание инструмента для обработки запросов лежит на программисте. После завершения работы он, вероятнее всего, приступит к следующему проекту. А вот веб-дизайнер и в дальнейшем будет отвечать за обслуживание и обновление сайта.</p>\n\n<p>Следующий немаловажный пункт — количество работы для каждого из специалистов. Обычно бизнес-среда требует от программиста улучшение программного обеспечения, которое будет использоваться компанией на протяжении длительного времени.</p>\n\n<p>То есть, разработчику требуется немало времени, чтобы улучшить и добавить новые функции в код старых приложений, так как выбросить на помойку проект — не в интересах компании. Но если речь идёт об улучшении дизайна веб-сайта, скорее всего, от веб-дизайнера потребуется не улучшение старого, а создание нового.</p>\n\n<h3>Использование разных языков</h3>\n<p>Скорее всего, Вам уже известно о том, что на сегодняшний день существует огромное количество языков программирования: каждый со своими достоинствами, недостатками и особенностями. К примеру, разработчику мобильных приложений ни к чему использование языков, предназначенных для веб-разработки. Предоставляем Вам возможность узнать о всех тонкостях выбора языка программирования.</p>\n\n<p>Самые популярные среди веб-разработчиков - HTML (который, кстати, является не языком программирования, а языком разметки) для организации текста и CSS (который также не относится к языкам программирования), настраивающий отображение этого текста. Для работы на стороне клиента веб-разработчиками используется JavaScript. Если речь идёт о работе со стороны сервера — PHP, к примеру, для поиска слова, которое ввёл пользователь. Но ими веб-разработка не ограничивается: существуют другие языки, например, Ruby.</p>\n\n<p>Для создания приложений, в зависимости от назначения, программистом могут использоваться различные языки, которые предоставляют все возможности для разработки: C, C#, C++, Java, Python и многие другие.</p>\n\n<p>Таким образом, обучение веб-программированию на курсах в Бишкеке будет более эффективным, чем при изучении учебников. Из-за вышеуказанных различий программисты обязаны своевременно узнавать о новых технологиях и обновлённых языках, которыми они пользуются. Стремительное развитие языков и программного обеспечения влияет и на учебные материалы, таким образом, напечатанный в 2015 году учебник может попросту оказаться устаревшим. Поэтому наиболее эффективным методом обучения являются курсы программирования, а не изучение учебников.</p>\n\n<p>Именно по этой причине мы рекомендуем Вам курсы IT-Academy в Бишкеке, ведь во время занятий Вы сможете услышать нужные советы и узнать о передовых технологиях и наиболее актуальных вещах, о которых Вам расскажут преподаватели-практики.</p>', '<p>Вопреки тому, что такие термины, как «разработчик программного обеспечения», «веб-разработчик» и «программист» сейчас у всех на слуху в Бишкеке, не все знакомы с ключевыми различиями в рабочих обязанностях данных специалистов. Предлагаем разобраться в отличиях программирования и веб-разработки.</p>', NULL, 'Компьютерные курсы в Бишкеке для любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'курсы, программирование, обучение, Бишкек', '2019-02-25 14:28:31', '2019-02-25 14:28:31'),
 (15, 'Кто такой Java-специалист', 'MBd7uXAvoaCqgWE.png', 'Th90UzCccCv3VqA.png', 'kto-takoy-java-specialist', 1, '<h1>Кто такой программист и что его характеризует?</h1>\n<p>Программист - это человек, который создает коды для компьютерных программ, используя для этого соответствующий язык программирования. Программист может специализироваться на одном из них, но обычно люди на этой должности знают нескольких из них. Они создают не только системы и приложения, но и веб-сайты. Трудно четко определить объем задач программистов, потому что это профессия, которая быстро растет, и то, что мы скажем сегодня, может быть изменено или расширено завтра. Однако это не меняет того факта, что человек, занимающий эту должность, должен обладать большими знаниями и уметь использовать их на практике.</p>\n\n<p>Какими характеристиками должен обладать хороший программист в Бишкеке? Прежде всего, он деловой, сфокусированный на порученной задаче, умеющий работать независимо, но в то же время хорошо работающий в команде, программирование - это его настоящая страсть, он постоянно развивается, приобретает новые знания и отлично знает новые технологии.\n</p>\n\n<h2>Кто такой Java программист</h2>\n\n<p>Программист JAVA - человек, программирующий на языке JAVA. В его обязанности входит: разработка IT-решений для удовлетворения требований, установленных аналитиками, создание программного обеспечения, создание технической документации и работа с аналитикой. </p>\n<h3>Требования</h3>\n<p>Лицо, занимающее эту должность, должно иметь степень IT. Этот сотрудник должен характеризоваться, среди прочего: знанием базовых шаблонов проектирования, знанием Java EE, UML, SQL, PL / SQL, опытом разработки и реализации приложений Java, знанием IntelliJ Idea или Eclipse, SVN, CVS или других инструментов для управления версиями.</p>\n\n<h3>Условия работы</h3>\n<p>Программист работает в офисных помещениях, кроме поездок по внедрению программного обеспечения. Работа индивидуальная или командная. Рабочее время обычно составляет восемь часов. Программист обычно обладает большой свободой действий, иногда даже сам устанавливает свое рабочее время. Эта профессия требует постоянного обучения, повышения квалификации и отслеживания изменений на рынке ИТ. Этот сотрудник, из-за того, что он много времени проводит за компьютером в сидячем положении, подвержен нагрузке на глаза, а также болезням позвоночника. </p>\n\n<h4>Возможности занятости</h4>\n<p>Программист может найти работу во многих областях, но чаще всего он будет работать в компании по разработке программного обеспечения. Заработок программиста зависит от места работы. Он обычно получает базовую зарплату и имеет право на бонус за проект. </p>\n\n', '<p>Программист JAVA - человек, программирующий на языке JAVA. В его обязанности входит: разработка IT-решений для удовлетворения требований, установленных аналитиками, создание программного обеспечения, создание технической документации и работа с аналитикой. </p>', NULL, 'Компьютерные курсы в Бишкеке для любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'курсы, обучение, Бишкек, java, джава', '2019-02-25 14:46:26', '2019-02-25 14:46:26'),
 (16, 'Что такое Python и где он пригодится', 'TQMCdSmEVrtjRwu.png', 'SDRt8bdBSL3YEj3.png', 'chto-takoe-python-i-gde-on-prigoditsya', 1, '<h1>Что такое Python и где он пригодится</h1>\n<p>Python - это динамический объектно-ориентированный язык программирования, который легко выучить и который можно использовать для создания различных программ. Python распространяется по открытой лицензии, которая позволяет также использовать его для закрытых коммерческих проектов. В сети доступно множество руководств, а также дополнительные библиотеки и инструментов для облегчения программирования на этом языке. Python активно развивается и имеет широкий круг пользователей по всему миру.</p>\n\n<h2>Где используется Python?</h2>\n<p>Google, Yahoo, Nokia, IBM и NASA используют Python для своих приложений и проектов. Microsoft и Apple предлагают полную поддержку Python в своих операционных системах и платформах разработки. Многие крупные веб-сайты, такие как YouTube, написаны на Python.</p>\n\n<p>NASA уже много лет использует Python в своих приложениях. Одной из хорошо описанных реализаций является использование приложений, написанных на Python для управления запуском челноков. Кроме того, недавно выпущенный проект Nebula представляет собой распределенную вычислительную среду, адаптированную для выполнения вычислений в «облаке», соединяющую многие модули и приложения Python (инфраструктура Django, Trac, API для LUSTER, RabbitMQ, Subversion) с другими языками и технологиями (например, Solr в Java для полнотекстового поиска).</p>\n\n<h3>YouTube</h3>\n<p>YouTube - популярный сайт с видеоклипами, который в основном написан на Python. Создатели сервиса (приобретенного Google) подчеркнули производительность, предлагаемую Python, а также быструю реализацию новых функций с помощью легко читаемого кода, который просто расширять и обновлять. Google использует Python во многих своих приложениях и сервисах, таких как Google App Engine и Google Wave,</p>\n\n<h3>Где работает Python?</h3>\n<p>Приложения, написанные на Python, работают во многих системах, таких как Windows, Linux / Unix, Mac OS X, OS / 2, Amiga, а также смартфонах КПК и Nokia. Существуют также реализации Python в Java (Jython) и .NET (IronPython), которые работают везде, где доступны эти платформы.</p>\n\n<h4>Для чего вы можете использовать Python?</h4>\n<p>Python может использоваться для создания веб-сайтов, настольных приложений, работающих на компьютерах пользователей, включая игры. Вы также можете использовать Python в веб-приложениях или скриптах, например, для генерации выписок и отчетов. Это универсальный язык программирования.</p>', '<p>Python - это динамический объектно-ориентированный язык программирования, который легко выучить и который можно использовать для создания различных программ. </p>', NULL, 'Компьютерные курсы в Бишкеке для любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'курсы, python, обучение, Бишкек, питон', '2019-02-25 15:01:36', '2019-02-25 15:01:36'),
 (17, 'Плюсы и минусы работы в сфере IT, если ты девушка', 'kt4bYi8XefsK85J.png', 'OPz6tSFhKfitVxS.png', 'plyusy-i-minusy-raboty-v-sfere-it-esli-ty-devushka', 1, '<p>Ни для кого не секрет, что сегодня IT-сфера — для многих людей является лакомым кусочком в плане работы и зарплаты, которая во многих странах значительно превышает среднюю заработную плату. Например, в Беларуси специалисты IT-компаний зачастую относятся к категории высокооплачиваемых. Такая же ситуация и в Кыргызстане. </p>\n\n<p>Но не только в этом есть сходство в IT между двумя странами. И там, и там в сферу высоких технологий приходят, в основном, мужчины. Девушек не так много, как могло бы быть. Во-первых, они сами не всегда горят желанием связать жизнь с IT. Во-вторых, по-прежнему в некоторых компаниях руководители отдают предпочтение мужчинам, считая, что они более ответственны в плане выполнения заданий. Что касается минусов непосредственно в работе, то практически все они такие же, как и для программистов мужского пола. </p>\n\n<h2>Что мы предлагаем девушкам в сфере IT?</h2>\n\n\n<p>То же самое, что и парням! Наша IT-академия предлагает пройти обучение на курсах программирования. Но лучше определиться с одним конкретным курсом. Каждый из них впоследствии приводит к высокооплачиваемой работе в каком-то одном направлении, так что записываться сразу на несколько курсов программирования не стоит.</p>\n\n\n<h3>Наши предложения:</h3>\n \n \n<ul>\n    <li> С#. С помощью его создаются многие приложения, работающие на .NET.Framework. Облагает богатым синтаксисом, но при этом легко даётся в учёбе;</li>\n<li> Front-End. Отвечает за пользовательский интерфейс на любом из сайтов;</li>\n<li> Python. На нём функционируют многие известные сайты — YouTube и другие;</li>\n<li> Java\\Mobile App. Связан с разработками на платформе Android;</li>\n<li> Java. Один из наиболее известных языков программирования, имеет широкую область применения;</li>\n<li> PHP. Множество небольших сайтов, сайтов-визиток, гостевых книг разработаны именно с помощью этого языка программирования. </li>\n\n</ul>\n  \n<p>Обучение проводят опытные тренеры, которые обладают солидным багажом знаний о языках программирования и других аспектах IT-сферы. </p>\n\n<h3>Перспективы</h3>\n\n\n<p>Мы гарантируем трудоустройство большинству слушателей данных курсов. Причём как мужчинам, так и женщинам. Нашим работодателям не важен пол. Главное — знания и желание кандидата работать, совершенствоваться, приносить пользу. Как следствие — получать высокие заработки!</p>\n', '<p>Ни для кого не секрет, что сегодня IT-сфера — для многих людей является лакомым кусочком в плане работы и зарплаты, которая во многих странах значительно превышает среднюю заработную плату. Например, в Беларуси специалисты IT-компаний зачастую относятся к категории высокооплачиваемых. Такая же ситуация и в Кыргызстане. </p>', NULL, 'Компьютерные курсы в Бишкеке для девушек любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'девушка, айти, курсы, академия, Бишкек', '2019-04-01 17:30:35', '2019-04-01 17:30:35'),
 (18, '8 перспективных IT-профессий для женщин', 'IZoOjbrbx9FyiBF.png', 'CnzakexCwL9nr5J.png', '8-perspektivnyh-it-professiy-dlya-zhenshchin', 1, '<p>Ни одно направление не развивается сегодня так стремительно, как IT-технологии. Промышленность, образование не могут похвастаться такими темпами, которые сегодня присутствуют в IT. Здесь едва ли не каждый день создаётся какой-то новый интересный продукт, что-то совершенствуется. Соответственно, в плане кадрового обеспечения ситуация более чем благоприятная в том смысле, что всегда нужны люди. Причём необязательно поступать в высшие учебные заведения для получения профильного образования. Можно воспользоваться нашими курсами программирования, предлагаемыми IT-Академией в Кыргызстане. Совет: лучше выбирать какой-то один курс и изучать его</p>\n\n<h2>Курсы в IT-Академии в Бишкеке</h2>\n\n<ul>\n    <li> PHP. C его помощью разрабатываются многочисленные приложения, без которых сайты не могут нормально функционировать. Среди известных — Joomla, Magento, Drupal и так далее</li>\n<li> Java. По востребованности находится в лидерах среди языков. Создание и совершенствование веб-ресурсов, основанных на нём, — постоянный процесс. Без участия Java он будет малоэффективным и не даст требуемого результата</li>\n<li> Python. Несмотря на высокий уровень языка, овладеть им несложно с помощью нашей IT-Академии</li>\n<li> C#. Имеет богатый синтаксис и работает с платформой .NET Framework</li>\n<li> Front-End. Отвечает за клиентский «набор» сайта</li>\n<li> Java/Mobile App. Связан с приложениями для Android</li>\n</ul>\n\n<h3>Приглашаем девушек на айти курсы!</h3>\n\n\n<p>Анализ показывает, что девушки чаще всего выбирают профессии менеджера проектов, веб-дизайнера, верстальщика, тестировщика, а также Sales, PR и HR. Нечасто их можно увидеть в роли сисадминов или разработчиков. Приглашаем не только мужчин, но и женщин на курсы программирования! Теперь не надо тратить годы на университеты, где преподаются как основные, так и второстепенные предметы. Предлагаем сконцентрироваться на том, что действительно важно в IT. Лучше потратить свободное время на саморазвитие и практические занятия по овладению тем или иным языком. Пользы будет гораздо больше, так как информационные технологии развиваются с приличной скоростью. Вместо устаревших программ быстро приходят новые. То есть самообучение для представителя IT-сферы — непрерывное занятие.  </p>\n\n  \n<p>Девушки после окончания курсов гарантированно получают место работы. Мы успешно ломаем стереотипы типа «женщины — не для IT», предлагая им реализовать себя в интересных направлениях и получать при этом высокий заработок. </p>\n', '<p>Ни одно направление не развивается сегодня так стремительно, как IT-технологии. Промышленность, образование не могут похвастаться такими темпами, которые сегодня присутствуют в IT.</p>', NULL, 'Компьютерные курсы в Бишкеке для девушек любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'курсы, программирование, девушки, обучение, it, Бишкек', '2019-04-01 17:43:49', '2019-04-01 17:44:49'),
 (19, 'Программирование для девушек', '4uIBFUlZjtvrS8U.png', 'x5YpsZFF1l2hLjV.png', 'programmirovanie-dlya-devushek', 1, '<p>Постепенно факультеты IT-технологий в вузах пополняются девушками. Интерес со стороны «слабого пола» к, казалось бы, исконно мужской профессии вполне объясним. Сегодня данная отрасль — это:</p>\n \n<ul>\n    <li> постоянное наличие вакансий вследствие активного развития. Ежедневно в больших количествах создаются новые или совершенствуются старые программы, приложения. В Интернете появляются сайты, которые надо не только сделать, но и содержать, развивать. Так что IT-сотрудники востребованы всегда. Причём это касается не только опытных, уже состоявшихся специалистов. Многие компании готовы предложить обучение и переобучение потенциальных перспективных сотрудников; </li>\n<li> высокая заработная плата. За IT-технологи хорошо платят, это не секрет. По заработной плате данная сфера уверенно входит в тройку лучших во многих странах мира. Это главный фактор популярности IT сегодня; </li>\n<li> карьерный рост. Здесь тоже всё просто: хорошо работаешь — продвигаешься по карьерной лестнице — зарабатываешь больше.</li>\n</ul>\n\n\n<p>Но всё это преодолимо. Главное — желание овладеть IT-специальностью. И здесь важно определиться для себя с направлением, потому что в Ай-Ти-технологиях их очень много.   </p>\n \n<h2>Что мы предлагаем?</h2>\n\n\n<p>IT-Академия в Бишкеке проводит курсы по программированию. Мы готовы предложить обучение языкам программирования с участием профессиональных тренеров-педагогов. Но сначала желательно определиться, с каким именно из них решено связать свою деятельность. Проще работать сначала с одним языком программирования, а затем изучать остальные, которые могут понадобиться. Мы готовы обучить всех желающих:\n </p>\n \n<ul>\n    <li> Python. Обладает понятным синтаксисом. Служебных символов немного. Считается одним из наиболее простых</li>\n<li> C#. Присутствует в десктопных, мобильных приложениях, которые функционируют на платформе .NET.FRAMEWORK</li>\n<li> Java. Один из самых распространённых языков программирования. Востребован практически всегда</li>\n<li> Java/Mobile App. Тесно связан с базой Android. По окончании данного курса девушки смогут заниматься разработками, изучать логику действий работающих на Android приложений, знать всё о клиент-серверных приложениях и так далее</li>\n<li> Python. Несмотря на непростой синтаксис, легко поддающийся изучению язык программирования. Его знание поможет в работе с Django, разработке приложений, создании виртуальных окружений</li>\n<li> PHP. Помогает в создании небольших сайтов, ресурсов-визиток, гостевых книг, проектов. Овладев им, можно будет заниматься созданием реляционной БД для простых систем, работать с рисунками</li>\n</ul>\n', '<p>Постепенно факультеты IT-технологий в вузах пополняются девушками. Интерес со стороны «слабого пола» к, казалось бы, исконно мужской профессии вполне объясним.</p>', NULL, 'Компьютерные курсы в Бишкеке для девушек любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'курсы, программирование, Бишкек, девушки, обучение', '2019-04-01 17:52:34', '2019-04-01 17:57:08'),
-(20, 'Девушка и программирование - несовместимые вещи?', 'KQ5zD5w9ZbNn3cg.png', 's6IvFflYS4kai0j.png', 'devushka-i-programmirovanie-nesovmestimye-veshchi', 1, '<p>Считается, что девушка и программирование — это вещи, несовместимые между собой. Но в последние годы в IT стало приходить всё больше представительниц прекрасного пола, и данный стереотип начал стремительно ломаться. В качестве примера можно привести как минимум пять женщин, добившихся значительных успехов в IT.</p>\n \n<ul>\n    <li> Мэри Микер. Ознакомила людей с колоссальным потенциалом, которым обладает сеть Интернет. Три года назад была аналитиком Morgan Stanley, тогда каждый её отчёт был сродни открытию в сфере IT. Сегодня она аналитик в венчурном фонде КРСВ, считается одним из самых значимых экспертов в Digital</li>\n<li> Шерил Сандберг. Стала топ-менеджером, благодаря трудолюбию, знанию законов программирования, Интернету и соцсетям. Старательная работа в Google стала причиной предложения о сотрудничестве от руководителя Facebook Марка Цукерберга. После её появления доходная часть Facebook ежегодно удваивалась. Сегодня она в Фэйсбуке — главный координационный директор</li>\n<li> Марисса Майер. Является самым молодым, но в тоже время и самым успешным руководителем за всё время существования сервиса Yahoo, обеспечивая до ухода (в 2017 году) стабильный рост акций. До Yahoo успешно сотрудничала с Google, помогая в осуществлении многих проектов (Books. News, Maps, Search и других)</li>\n<li> Эстер Дайсон. Американка входит в состав Совета директоров Yandex. Возглавляла корпорацию ICANN. Но в самом начале карьеры занималась исследованиями IT-рынка</li>\n<li> Сьюзан Войчицки. Начинала с того, что не побоялась в молодом возрасте сдать собственный гараж парням, занимавшимся стартапом. Сегодня о нём знает весь мир — это Google. А Войчицки возглавляет одно из подразделений YouTube, не побоявшись в своё время уйти из Intel и присоединиться к Google. Много времени уделяла работе над интернет-рекламой.</li>\n</ul>\n\n\n<h2>Курсы программирования в IT-Академии: начало большого пути</h2>\n\n\n<p>Чтобы достичь таких успехов, как эти женщины, надо много трудиться. Причём начинать сазов. И в этом мы готовы помочь! Проводим курсы по программированию по следующим направлениям: Python, C#, Java, Java/Mobile App, PHP и Front-End. Обучение ведут профессиональные преподаватели. Рекомендуется выбрать одно направление и сконцентрироваться изначально полностью на нём. По окончании курсов женщин и мужчин в 95 процентов случаях мы трудоустраиваем. Плюсы IT:</p>\n\n<ul>\n    <li> возможность карьерного роста;</li>\n<li> постоянный «кадровый голод» на рынке труда (технологии едва ли не ежедневно совершенствуются, и айтишников всегда не хватает);</li>\n<li> высокая зарплата. Во многих странах IT-специалисты — самые богатые люди</li>\n</ul>\n', '<p>Считается, что девушка и программирование — это вещи, несовместимые между собой. Но в последние годы в IT стало приходить всё больше представительниц прекрасного пола, и данный стереотип начал стремительно ломаться. В качестве примера можно привести как минимум пять женщин, добившихся значительных успехов в IT.</p>', NULL, 'Компьютерные курсы в Бишкеке для девушек любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'курсы, программирование, it, Бишкек', '2019-04-01 18:06:27', '2019-04-01 18:06:27'),
-(21, 'Как выбрать подходящий вам язык программирования', 'R1Ono54h7Ont8pB.png', 'nfETbiBFVlvmOgS.png', 'kak-vybrat-podhodyashchiy-vam-yazyk-programmirovaniya', 1, '<p>Один из наиболее часто задаваемых вопросов - «какой язык выбрать?» Или «какой язык будет для меня лучшим?». Как вы можете догадаться, простого ответа на этот вопрос не существует, нет, и нужно сказать даже больше, что поиск ответа на этот вопрос стал ещё труднее за последние 20 лет.</p>\n\n<h2>Одно из самых простых направлений для начинающих – это веб-разработка.</h2>\n\n<ul>\n    <li>HTML и CSS - являются языками гипертекстовой разметки и стали ключевыми для разработки веб-страниц.</li>\n<li>JavaScript служит для создания интерактивных сценариев на странице.</li>\n<li>Python. Очень простой в изучении язык, с огромным количеством библиотек, и, кстати, с хорошим форматированием кода и хорошей документацией.</li>\n<li>PHP широко используется при разработке веб-приложений, а также в системах управления сайтами.</li>\n</ul>\n<h2>Языки программирования для разработки мобильных приложений</h2>\n<p>Больше всего нас интересуют две вещи - это язык программирования и инструменты, которые, к сожалению, различаются в зависимости от выбранной платформы. Как это выглядит:</p>\n\n<h3>IOS</h3>\n<ul>\n    <li>язык: Objective-C или Swift</li>\n<li>инструменты: среда программирования XCode и, к сожалению, у вас должен быть доступ к Mac (конечно, всегда есть выход, и вместо Mac мы можем попытаться использовать виртуальную машину или другие доступные решения</li>\n</ul>\n<h3>Андроид</h3>\n<ul>\n    <li>язык: Java</li>\n<li>инструменты: среда разработки Android Studio</li>\n</ul>\n<p>Мы создаем приложения для обеих платформ двумя разными способами, которые во многих местах могут существенно различаться. У нас нет единого установленного стандарта, который бы контролировал производителей Android и iOS, как в случае браузеров и связанных с ними веб-разработок.</p>\n\n<h3>Языки программирования для настольных ПК</h3>\n<p>Популярность приложений для настольных компьютеров снизилась. Вот наиболее популярные языки для разработки ПО для компьютеров:</p>\n\n<ul>\n    <li>Java. Обладает простотой, которая может понравиться большому количеству людей. Данный язык хорошо документирован (хотя к документации Java, на мой взгляд, нужно привыкнуть), и имеет много различных библиотек.</li>\n<li>Javascript. С применением фреймворка Electron можно писать приложения для ПК. Таким образом, не потребуется переписывать приложение, разработанное под веб.</li>\n<li>Swift – это язык программирования для MAC.</li>\n</ul>\n<h4>Разработка скриптов и утилит</h4>\n<p>Для целей, когда не требуется создание полноценных программ, подойдёт язык Python. Очень простой в изучении язык, с огромным количеством библиотек, и, кстати, с хорошим форматированием кода и хорошей документацией.</p>', '<p>Один из наиболее часто задаваемых вопросов - «какой язык выбрать?» Или «какой язык будет для меня лучшим?». Как вы можете догадаться, простого ответа на этот вопрос не существует, нет, и нужно сказать даже больше, что поиск ответа на этот вопрос стал ещё труднее за последние 20 лет.</p>', NULL, 'Компьютерные курсы в Бишкеке для любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'курсы, обучение, IT, Бишкек', '2019-04-01 18:31:16', '2019-04-01 18:31:16');
+(20, 'Девушка и программирование - несовместимые вещи?', 'KQ5zD5w9ZbNn3cg.png', 's6IvFflYS4kai0j.png', 'devushka-i-programmirovanie-nesovmestimye-veshchi', 1, '<p>Считается, что девушка и программирование — это вещи, несовместимые между собой. Но в последние годы в IT стало приходить всё больше представительниц прекрасного пола, и данный стереотип начал стремительно ломаться. В качестве примера можно привести как минимум пять женщин, добившихся значительных успехов в IT.</p>\n \n<ul>\n    <li> Мэри Микер. Ознакомила людей с колоссальным потенциалом, которым обладает сеть Интернет. Три года назад была аналитиком Morgan Stanley, тогда каждый её отчёт был сродни открытию в сфере IT. Сегодня она аналитик в венчурном фонде КРСВ, считается одним из самых значимых экспертов в Digital</li>\n<li> Шерил Сандберг. Стала топ-менеджером, благодаря трудолюбию, знанию законов программирования, Интернету и соцсетям. Старательная работа в Google стала причиной предложения о сотрудничестве от руководителя Facebook Марка Цукерберга. После её появления доходная часть Facebook ежегодно удваивалась. Сегодня она в Фэйсбуке — главный координационный директор</li>\n<li> Марисса Майер. Является самым молодым, но в тоже время и самым успешным руководителем за всё время существования сервиса Yahoo, обеспечивая до ухода (в 2017 году) стабильный рост акций. До Yahoo успешно сотрудничала с Google, помогая в осуществлении многих проектов (Books. News, Maps, Search и других)</li>\n<li> Эстер Дайсон. Американка входит в состав Совета директоров Yandex. Возглавляла корпорацию ICANN. Но в самом начале карьеры занималась исследованиями IT-рынка</li>\n<li> Сьюзан Войчицки. Начинала с того, что не побоялась в молодом возрасте сдать собственный гараж парням, занимавшимся стартапом. Сегодня о нём знает весь мир — это Google. А Войчицки возглавляет одно из подразделений YouTube, не побоявшись в своё время уйти из Intel и присоединиться к Google. Много времени уделяла работе над интернет-рекламой.</li>\n</ul>\n\n\n<h2>Курсы программирования в IT-Академии: начало большого пути</h2>\n\n\n<p>Чтобы достичь таких успехов, как эти женщины, надо много трудиться. Причём начинать сазов. И в этом мы готовы помочь! Проводим курсы по программированию по следующим направлениям: Python, C#, Java, Java/Mobile App, PHP и Front-End. Обучение ведут профессиональные преподаватели. Рекомендуется выбрать одно направление и сконцентрироваться изначально полностью на нём. По окончании курсов женщин и мужчин в 95 процентов случаях мы трудоустраиваем. Плюсы IT:</p>\n\n<ul>\n    <li> возможность карьерного роста;</li>\n<li> постоянный «кадровый голод» на рынке труда (технологии едва ли не ежедневно совершенствуются, и айтишников всегда не хватает);</li>\n<li> высокая зарплата. Во многих странах IT-специалисты — самые богатые люди</li>\n</ul>\n', '<p>Считается, что девушка и программирование — это вещи, несовместимые между собой. Но в последние годы в IT стало приходить всё больше представительниц прекрасного пола, и данный стереотип начал стремительно ломаться. В качестве примера можно привести как минимум пять женщин, добившихся значительных успехов в IT.</p>', NULL, 'Компьютерные курсы в Бишкеке для девушек любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'курсы, программирование, it, Бишкек', '2019-04-01 18:06:27', '2019-04-01 18:06:27');
 INSERT INTO `static_page` (`id`, `title`, `logo_name`, `cover_name`, `alt_url`, `is_available`, `content`, `context`, `notes`, `meta_description`, `meta_keywords`, `created_at`, `updated_at`) VALUES
+(21, 'Как выбрать подходящий вам язык программирования', 'R1Ono54h7Ont8pB.png', 'nfETbiBFVlvmOgS.png', 'kak-vybrat-podhodyashchiy-vam-yazyk-programmirovaniya', 1, '<p>Один из наиболее часто задаваемых вопросов - «какой язык выбрать?» Или «какой язык будет для меня лучшим?». Как вы можете догадаться, простого ответа на этот вопрос не существует, нет, и нужно сказать даже больше, что поиск ответа на этот вопрос стал ещё труднее за последние 20 лет.</p>\n\n<h2>Одно из самых простых направлений для начинающих – это веб-разработка.</h2>\n\n<ul>\n    <li>HTML и CSS - являются языками гипертекстовой разметки и стали ключевыми для разработки веб-страниц.</li>\n<li>JavaScript служит для создания интерактивных сценариев на странице.</li>\n<li>Python. Очень простой в изучении язык, с огромным количеством библиотек, и, кстати, с хорошим форматированием кода и хорошей документацией.</li>\n<li>PHP широко используется при разработке веб-приложений, а также в системах управления сайтами.</li>\n</ul>\n<h2>Языки программирования для разработки мобильных приложений</h2>\n<p>Больше всего нас интересуют две вещи - это язык программирования и инструменты, которые, к сожалению, различаются в зависимости от выбранной платформы. Как это выглядит:</p>\n\n<h3>IOS</h3>\n<ul>\n    <li>язык: Objective-C или Swift</li>\n<li>инструменты: среда программирования XCode и, к сожалению, у вас должен быть доступ к Mac (конечно, всегда есть выход, и вместо Mac мы можем попытаться использовать виртуальную машину или другие доступные решения</li>\n</ul>\n<h3>Андроид</h3>\n<ul>\n    <li>язык: Java</li>\n<li>инструменты: среда разработки Android Studio</li>\n</ul>\n<p>Мы создаем приложения для обеих платформ двумя разными способами, которые во многих местах могут существенно различаться. У нас нет единого установленного стандарта, который бы контролировал производителей Android и iOS, как в случае браузеров и связанных с ними веб-разработок.</p>\n\n<h3>Языки программирования для настольных ПК</h3>\n<p>Популярность приложений для настольных компьютеров снизилась. Вот наиболее популярные языки для разработки ПО для компьютеров:</p>\n\n<ul>\n    <li>Java. Обладает простотой, которая может понравиться большому количеству людей. Данный язык хорошо документирован (хотя к документации Java, на мой взгляд, нужно привыкнуть), и имеет много различных библиотек.</li>\n<li>Javascript. С применением фреймворка Electron можно писать приложения для ПК. Таким образом, не потребуется переписывать приложение, разработанное под веб.</li>\n<li>Swift – это язык программирования для MAC.</li>\n</ul>\n<h4>Разработка скриптов и утилит</h4>\n<p>Для целей, когда не требуется создание полноценных программ, подойдёт язык Python. Очень простой в изучении язык, с огромным количеством библиотек, и, кстати, с хорошим форматированием кода и хорошей документацией.</p>', '<p>Один из наиболее часто задаваемых вопросов - «какой язык выбрать?» Или «какой язык будет для меня лучшим?». Как вы можете догадаться, простого ответа на этот вопрос не существует, нет, и нужно сказать даже больше, что поиск ответа на этот вопрос стал ещё труднее за последние 20 лет.</p>', NULL, 'Компьютерные курсы в Бишкеке для любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'курсы, обучение, IT, Бишкек', '2019-04-01 18:31:16', '2019-04-01 18:31:16'),
 (22, 'Советы новичку по обучению программированию', 'V5U1YnHlZq39bol.png', 'r2i5VqTsLVcupwo.png', 'sovety-novichku-po-obucheniyu-programmirovaniyu', 1, '<p>Представляем несколько советов для желающих освоить профессию программиста.</p>\n\n<h2>Совет 1. Выберите язык программирования.</h2>\n\n<p>Начните с выбора языка, на котором вы будете вести разработку. Среди программистов есть различные мнения на счет того, с какого языка стоит начать освоение программирования. В этом случае можно ориентироваться на ваши пожелания. Игры можно делать на Unity, для разработки сайтов потребуются знания CSS, HTML и Javascript, а для бизнес-приложений можно использовать C#. Для простых вычислений пригодится язык программирования Python.</p>\n\n<h2>Совет 2. Используйте дробление материала.</h2>\n\n<p>Для освоения профессии программиста потребуется большой объём знаний и навыков. Не стоит пытаться охватить весь обширный объём знаний за один приём. Лучше разделяйте обучения на этапы, каждый из которых следует закреплять практикой.</p>\n\n<p>Для облегчения процесса запоминания можно использовать карточки. Так вы сможете легко и эффективно структурировать новый материал.\nЕсли остаются пробелы в полученных знаниях, возможно имеет смысл двигаться дальше, но вернуться к ним потом. Впрочем, слишком много пробелов оставлять не стоит – можно запутаться.</p>\n\n<h2>Совет 3. Программы и курсы в Бишкеке для детей могут быть полезны.</h2>\n\n\n<p>В программах для детей многие вопросы рассмотрены в упрощенном варианте, что облегчает изучение нового языка программирования. Также такой способ обучения не даст вам заскучать.</p>\n\n<p>Получайте новые знания на слух или с помощью чтения.</p>\n\n<h2>Совет 4. Анализируйте чужой код.</h2>\n\n<p>Смотрите и изучайте чужой код. Так вы улучшите свои навыки, сможете избежать множества глупых ошибок.</p>\n\n<p>Сегодня в интернете есть множество сайтов, где можно посмотреть чужой исходный код различных программ и приложений.</p>\n\n<h2>Совет 5. Закажите литературу по тематике программирования.</h2>\n\n<p>В сфере программирования есть множество книг, которые являются классическими. Многие работы указывают на приёмы создания красивого кода, рассказывают о хитростях и полезных навыках.</p>\n\n<p>Найдя в поисковых системах такие книги, можно получить некий набор литературы, который будет помогать в освоении профессии. Можно читать как в переводе, так и на языке оригинала – это в основном английский.</p>\n\n<h2>Совет 6. Посетите специализированные курсы в Бишкеке.</h2>\n\n\n<p>Если самостоятельное обучение дается вам с трудом, запишите на специальные курсы. Под руководством наставника освоение программирования будет происходить проще. Так вы будете быстрее продвигаться в освоении нового материала.</p>', '<p>Представляем несколько советов для желающих освоить профессию программиста.</p>', NULL, 'Компьютерные курсы в Бишкеке для любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'курсы, Бишкек, программирование, it, обучение', '2019-04-01 18:36:18', '2019-04-01 18:37:58'),
 (23, 'Как научиться программировать, работая в другой сфере', '7wbT8bHQirPNzDE.png', 'nXkeEfgSbtonBC0.png', 'kak-nauchitsya-programmirovat-rabotaya-v-drugoy-sfere', 1, '<p>Допустим, вы уже работаете по специальности. У вас есть определенные достижения, но вдруг вы начинаете чувствовать, что вы хотели бы развиваться в другой сфере. Кто-то мечтает работать журналистом, кто-то желает стать дизайнером – перечислять можно долго.</p>\n\n<p>Иногда люди задумываются о смене профессии, чтобы получать большую зарплату или удовлетворение. Многие интересуются, как научиться программировать, работая в другой сфере. Давайте поговорим об этом.</p>\n\n<p>Вы думаете об изучении программирования в Бишкеке и не знаете, как это сделать? Все, что вам нужно сделать, это найти хорошего наставника, который проведет вас через этот процесс. Даже если он не является очень опытным специалистом, он сможет показать вам классные способы саморазвития, рассказать вам свою историю получения необходимых навыков, а также порекомендовать классные репозитории, где вы можете найти нужные знания. Есть много онлайн-уроков - также бесплатно. Однако если вы считаете, что знаний, за которые вы не платите, вам недостаточно, существуют также интересные онлайн-курсы, которые подготовят вас за относительно короткое время для получения первой работы в качестве младшего специалиста. Вы даже можете научиться отдыхать во время работы - все, что вам нужно, это основы.</p>\n\n<h2>Решите, хотите ли вы работать в сфере IT</h2>\n<p>Четко решите для себя, хотите ли вы работать в сфере информационных технологий. Если у вас нет абсолютной уверенности в этом, посмотрите вебинары, семинары – лучше несколько, чтобы вы смогли точно определиться. При смене области деятельности нужно понимать, что это того стоит.</p>\n\n<h2>Запишитесь на IT курсы в Бишкеке</h2>\n<p>Неплохой идеей будет записаться на вечерние курсы программистов. Это лучше, чем полностью самостоятельное обучение. Тем более это удобно, т.к. такие курсы помогут вам развиваться в новой сфере одновременно с основной работой.</p>\n\n<p>При выборе курсов нужно тщательно рассчитать время, которое вы сможете тратить на них. У вас должно оставаться время еще и на работу. Обычно без значительного ущерба для свободного времени можно выделить, например, два часа в день. Не стоит создавать бешеный ритм жизни, уменьшать время сна или время для прогулки – это только повредит вам.</p>\n\n<p>Очень хорошо иметь план действий на год. Так как сегодня есть множество различных направлений информационных технологий, учебный план не даст вам запутаться. Именно в этом состоит основное преимущество курсов в IT-Academy.</p>', '<p>Допустим, вы уже работаете по специальности. У вас есть определенные достижения, но вдруг вы начинаете чувствовать, что вы хотели бы развиваться в другой сфере. Кто-то мечтает работать журналистом, кто-то желает стать дизайнером – перечислять можно долго.</p>', NULL, 'Компьютерные курсы в Бишкеке для любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'курсы, программирование, айти, it, Бишкек', '2019-04-01 18:46:26', '2019-04-01 18:46:26'),
 (24, 'Тренировочные лагеря для перспективных молодых программистов', 'bIRqVvH7qS0V7RW.png', '71ddt8bRrAtecci.png', 'trenirovochnye-lagerya-dlya-perspektivnyh-molodyh-programmistov', 1, '<p>Существует известный американский термин bootcamp, который в переводе на русский означает несколько смежных понятий. Если углубляться в этимологию слова, можно увидеть, что изначально оно обозначало специальный лагерь для подготовки, тренировки и обучения будущих военных-профессионалов.</p>\n\n<p>В современном же представлении значение слова сильно расширилось. В обычной повседневной жизни оно означает и школьный лагерь, и летние курсы, и интернет-тренинги. Одним словом, теперь bootcamp – это действительная или виртуальная площадка, где в течение определенного времени люди активно развивают свои таланты и способности в выбранном направлении, например, программировании.</p>\n\n<p>Важнейшим условием для участников является наличие огромной мотивации, хорошей подготовленности и энтузиазма. Изучим подробнее основные преимущества таких лагерей для программистов и исследуем их местоположения.\n</p>\n<h2>Главные преимущества летнего лагеря в Бишкеке</h2>\n<h3>Одинаковые условия</h3>\n<p>Для того чтобы попасть в лагерь, все участники должны обладать равным уровнем знаний в области программирования. Суть этого требования в следующем: ни один молодой программист не должен скучать или отвлекаться, только так учебное время будет расходоваться с максимальной пользой и эффективностью.</p>\n\n<h3>Конкретные сроки проведения</h3>\n<p>Большая часть времени в лагере отводится на обучение и получение конкретных знаний по главным направлениям. В то же время, параллельно проводится культурно-развлекательная программа и различные светские мероприятия. Наличие временных рамок помогает лучше концентрироваться на задачах, осмыслять новые знания и применять их. </p>\n\n<h3>Деловая и перспективная среда </h3>\n<p>Во время смены вы будете находиться среди мотивированных, энергичных, интересных и целеустремленных молодых специалистов со схожими интересами. Именно поэтому совместное времяпрепровождение обернется приятным опытом, зарядит на успешную работу и саморазвитие.</p>\n<h3>\nВыпускные дипломы для участников</h3>\n\n<p>По окончании смены каждый участник получает выпускной диплом, в котором отражаются его успехи в выполнении заданий и проектов, участие в конкурсах, а также уровень полученных знаний. Дипломы подобных лагерей очень ценятся из-за тесного взаимодействия с профессиональными преподавателями, огромного количества получаемых знаний и живого общения с перспективными специалистами.</p>', '<p>Существует известный американский термин bootcamp, который в переводе на русский означает несколько смежных понятий. Если углубляться в этимологию слова, можно увидеть, что изначально оно обозначало специальный лагерь для подготовки, тренировки и обучения будущих военных-профессионалов.</p>', NULL, 'Компьютерные курсы в Бишкеке для любого возраста. IT-Academy центр компьютерного обучения, учебные курсы компьютерных программ и технологий: Java, Java/Mobile, PHP, Front-End, C#, Python. Наши курсы - самый короткий путь в IT.', 'лагерь, программирование, лето, Бишкек, курсы', '2019-04-01 18:56:22', '2019-04-01 18:56:22');
@@ -1106,11 +1108,70 @@ INSERT INTO `static_page` (`id`, `title`, `logo_name`, `cover_name`, `alt_url`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Структура таблицы `stream_lesson`
 --
 
-CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `stream_lesson` (
+  `id` int(11) NOT NULL,
+  `title` varchar(90) NOT NULL,
+  `dateStart` datetime DEFAULT NULL,
+  `dateEnd` datetime DEFAULT NULL,
+  `doc` varchar(255) DEFAULT NULL,
+  `video_link` varchar(255) DEFAULT NULL,
+  `all_day` tinyint(1) DEFAULT NULL,
+  `stream_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `stream_lesson`
+--
+
+INSERT INTO `stream_lesson` (`id`, `title`, `dateStart`, `dateEnd`, `doc`, `video_link`, `all_day`, `stream_id`, `created_at`, `updated_at`) VALUES
+(1, 'Tilek', '2019-08-19 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 'Tilek2', '2019-08-20 13:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(3, 'Tilek', '2019-06-08 12:00:00', '2019-06-08 14:00:00', 'doc_5d5dc7e3eec4a.png', NULL, 0, NULL, '2019-08-22 01:38:28', '2019-08-22 01:38:28'),
+(4, 'Tilek', '2019-08-22 12:00:00', '2019-08-22 14:00:00', NULL, NULL, 0, NULL, '2019-08-22 01:40:18', '2019-08-22 01:40:18'),
+(5, 'Tilekцфвфцв', '2019-08-22 13:00:00', '2019-08-22 16:00:00', NULL, NULL, 0, NULL, '2019-08-22 01:41:48', '2019-08-22 01:41:48'),
+(6, 'Tilek', '2019-09-04 12:00:00', '2019-09-04 14:00:00', NULL, NULL, 0, NULL, '2019-09-04 00:42:13', '2019-09-04 00:42:13'),
+(8, 'Tilek', '2019-09-04 06:00:00', NULL, NULL, NULL, 1, NULL, '2019-09-04 01:55:31', '2019-09-04 01:55:31'),
+(9, '8 марта', '2019-09-05 06:00:00', NULL, NULL, NULL, 1, NULL, '2019-09-04 01:59:21', '2019-09-04 01:59:21'),
+(10, 'wdwadwad', '2019-09-06 06:00:00', NULL, NULL, NULL, 1, NULL, '2019-09-04 02:00:09', '2019-09-04 02:00:09'),
+(11, 'Tilek', '2019-09-05 12:59:00', NULL, NULL, NULL, 0, NULL, '2019-09-04 02:01:06', '2019-09-04 02:01:06'),
+(12, 'Tilek', '2019-09-05 06:00:00', NULL, NULL, NULL, 1, NULL, '2019-09-04 02:02:36', '2019-09-04 02:02:36');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `stream_user`
+--
+
+CREATE TABLE `stream_user` (
+  `stream_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `stream_user`
+--
+
+INSERT INTO `stream_user` (`stream_id`, `user_id`) VALUES
+(8, 12),
+(7, 16),
+(8, 16),
+(8, 17),
+(8, 18),
+(8, 19);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `user`
+--
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
   `name` varchar(32) NOT NULL,
   `user_name` varchar(32) DEFAULT NULL,
   `email` varchar(128) DEFAULT NULL,
@@ -1129,22 +1190,18 @@ CREATE TABLE IF NOT EXISTS `user` (
   `currency_id` int(11) DEFAULT NULL,
   `admin_style_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_fi_0278b4` (`group_id`),
-  KEY `user_fi_4b365c` (`admin_style_id`),
-  KEY `user_fi_16a5a4` (`currency_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `user`
+-- Дамп данных таблицы `user`
 --
 
 INSERT INTO `user` (`id`, `name`, `user_name`, `email`, `about`, `birth_date`, `password`, `phone`, `logo_name`, `cover_name`, `address`, `address_coordinates`, `is_activated`, `social_id`, `social_token`, `group_id`, `currency_id`, `admin_style_id`, `created_at`, `updated_at`) VALUES
 (1, 'Mister Admin Adminovich', 'admin', 'azamatjon.98@gmail.com', NULL, '1998-03-07', 'Sb.lhOd9d6nA2', '996500006638', 'L5WScWFBurJjsIh.png', NULL, NULL, NULL, 1, NULL, NULL, 1, NULL, 14, '2019-01-04 18:29:25', '2019-05-24 17:36:13'),
-(3, 'Мурат Жумашев', 'murat.jumashev', 'murat.jumashev@it-academy.kg', '<p>Привет! Меня зовут Мурат, я научился программировать самостоятельно, а нарабатывал практику в таких компаниях, как Шоро, MegaCom, IT-Attractor, ZenSoft и PaulCamper. Писал веб-приложения на Python/Django, работал во фронтенде, используя React.js.На данный момент, работаю в Beeline в сфере проект-менеджмента, параллельно пишу веб-приложение класса Talent Management System. Искренне верю, что программировать может научиться любой человек. Я буду рад помочь вам сделать первые шаги в интереснейший мир разработки программного обеспечения через языки Python и JavaScript. С нетерпением жду нашей встречи!" Курс по Python эффективно объединяет теоретические основы с их практическим применением. Кроме овладения профессиональными навыками работы с Рython, обучение предполагает прокачку и soft skills, которые помогут эффективно использовать личностный и творческий потенциал разработчика. Окончив курс Python с высокими баллами, вы сможете пройти стажировку с возможностью дальнейшего трудоустройства в компаниях IТ-рынка, партнерах КАРПОУ.<br></p>', '2019-01-01', 'Sb.lhOd9d6nA2', NULL, 'dUMSTwBXcojWYNO.png', NULL, '', NULL, 1, NULL, NULL, 2, NULL, NULL, '2019-02-15 11:46:52', '2019-02-21 19:01:57'),
-(4, 'Алишкер Касымов', 'alisher.kasymov', 'alisher.kasymov@it-academy.kg', '<p>Родился в 1984г в г.Фрунзе. Окончил СШ #58 в 2000г, в том же году поступил в Кыргызский Технический Университет им. Раззакова на Факультет Информационных Технологий. Получил специальность "Вычислительные, машины, сети, системы и комплексы". В 2005г, сразу после получения диплома о высшем образовании начал трудовую деятельность в Национальном Банке Кыргызской Республики в качестве программиста. В 2009г продолжил профессиональный рост в качестве программиста в "Айыл-Банке". С 2011 по 2017 г работал в "Финка-Банке", начав свою трудовую деятельность в качестве SQL, Java программиста, вырос до заместителя начальника Управления Информационных Технологий. С 2017 по 2018 работал в разработческой компании ФинансСофт, в качестве C# программиста. С 2018 г по текущий день работаю в компании Скай Мобайл (Билайн), в качестве бекенд-разработчика Java. В настоящий момент я работаю в компании Скай Мобайл (Билайн) в качестве Java разработчика. Являюсь сертифицированным специалистом Java и Oracle (сертификаты OCA). Имею более 11 лет практической разработки на языках Java, C#, PL\\\\SQL. Более 3 лет занимался обучением программированию в т.ч сотрудников коммерческих банков. На курсе мы изучим язык Java с самых основ. По итогам курса вы будете способны самостоятельно написать работоспособное веб-приложение с использованием обширного стека Java технологий (Hibernate, Spring итд). Вы получите представление о реализации ORM, шаблонов проектирования в Java. Научитесь правильно взаимодействовать с базами данных. Мы затронем использование Java как в Back так и во Front.<br></p>', '2019-01-01', 'Sb.lhOd9d6nA2', NULL, NULL, NULL, '', NULL, 1, NULL, NULL, 2, NULL, NULL, '2019-02-15 11:51:14', '2019-02-21 19:00:59'),
-(5, 'Бекжан Джумабаев', 'bekzhan.zhumabaev', 'bekzhan.zhumabaev@it-academy.kg', '<p>Я, Джумабаев Бекжан. Окончил Ошский Турецкий лицей "СЕМА" в 2005 году. Потом закончил Средневосточный Технический Университет по программе компьютерной инженерии. Работал как JAVA разработчик в двух Турецких фирмах. 1. Писали софт для организации Турецкого Красного Креста по системе управления и хранения данных крови доноров, Kan Bankası Bilgi Yönetim Sistemi. 2. Второй проект - система по хранению данных о стихийных бедствиях в Турции, TABB (Türkiye Afet Bilgi Bankası). Затем 3 года, писал веб приложение для компании , которая занимается производством биотехнологических продуктов. Веб приложение было написано ASP.NET MVC. Также по приезду в Кыргызстан работал бэкенд разработчиком в Скай Мобайле(Билайн), проект Митап. В данное время работаю в компании Финансофт, которая разрабатывает АБС (Автоматизированная банковская система)<br></p>', '2019-01-01', 'Sb.lhOd9d6nA2', NULL, 'xRkQwkkQfL1iIqs.png', NULL, '', NULL, 1, NULL, NULL, 2, NULL, NULL, '2019-02-15 11:52:23', '2019-02-21 19:00:07'),
+(3, 'Мурат Жумашев', 'murat.jumashev', 'murat.jumashev@it-academy.kg', '<p>Привет! Меня зовут Мурат, я научился программировать самостоятельно, а нарабатывал практику в таких компаниях, как Шоро, MegaCom, IT-Attractor, ZenSoft и PaulCamper. Писал веб-приложения на Python/Django, работал во фронтенде, используя React.js.На данный момент, работаю в Beeline в сфере проект-менеджмента, параллельно пишу веб-приложение класса Talent Management System. Искренне верю, что программировать может научиться любой человек. Я буду рад помочь вам сделать первые шаги в интереснейший мир разработки программного обеспечения через языки Python и JavaScript. С нетерпением жду нашей встречи!\" Курс по Python эффективно объединяет теоретические основы с их практическим применением. Кроме овладения профессиональными навыками работы с Рython, обучение предполагает прокачку и soft skills, которые помогут эффективно использовать личностный и творческий потенциал разработчика. Окончив курс Python с высокими баллами, вы сможете пройти стажировку с возможностью дальнейшего трудоустройства в компаниях IТ-рынка, партнерах КАРПОУ.<br></p>', '2019-01-01', 'Sb.lhOd9d6nA2', NULL, 'dUMSTwBXcojWYNO.png', NULL, '', NULL, 1, NULL, NULL, 2, NULL, 16, '2019-02-15 11:46:52', '2019-02-21 19:01:57'),
+(4, 'Алишкер Касымов', 'alisher.kasymov', 'alisher.kasymov@it-academy.kg', '<p>Родился в 1984г в г.Фрунзе. Окончил СШ #58 в 2000г, в том же году поступил в Кыргызский Технический Университет им. Раззакова на Факультет Информационных Технологий. Получил специальность \"Вычислительные, машины, сети, системы и комплексы\". В 2005г, сразу после получения диплома о высшем образовании начал трудовую деятельность в Национальном Банке Кыргызской Республики в качестве программиста. В 2009г продолжил профессиональный рост в качестве программиста в \"Айыл-Банке\". С 2011 по 2017 г работал в \"Финка-Банке\", начав свою трудовую деятельность в качестве SQL, Java программиста, вырос до заместителя начальника Управления Информационных Технологий. С 2017 по 2018 работал в разработческой компании ФинансСофт, в качестве C# программиста. С 2018 г по текущий день работаю в компании Скай Мобайл (Билайн), в качестве бекенд-разработчика Java. В настоящий момент я работаю в компании Скай Мобайл (Билайн) в качестве Java разработчика. Являюсь сертифицированным специалистом Java и Oracle (сертификаты OCA). Имею более 11 лет практической разработки на языках Java, C#, PL\\\\SQL. Более 3 лет занимался обучением программированию в т.ч сотрудников коммерческих банков. На курсе мы изучим язык Java с самых основ. По итогам курса вы будете способны самостоятельно написать работоспособное веб-приложение с использованием обширного стека Java технологий (Hibernate, Spring итд). Вы получите представление о реализации ORM, шаблонов проектирования в Java. Научитесь правильно взаимодействовать с базами данных. Мы затронем использование Java как в Back так и во Front.<br></p>', '2019-01-01', 'Sb.lhOd9d6nA2', NULL, NULL, NULL, '', NULL, 1, NULL, NULL, 2, NULL, 15, '2019-02-15 11:51:14', '2019-02-21 19:00:59'),
+(5, 'Бекжан Джумабаев', 'bekzhan.zhumabaev', 'bekzhan.zhumabaev@it-academy.kg', '<p>Я, Джумабаев Бекжан. Окончил Ошский Турецкий лицей \"СЕМА\" в 2005 году. Потом закончил Средневосточный Технический Университет по программе компьютерной инженерии. Работал как JAVA разработчик в двух Турецких фирмах. 1. Писали софт для организации Турецкого Красного Креста по системе управления и хранения данных крови доноров, Kan Bankası Bilgi Yönetim Sistemi. 2. Второй проект - система по хранению данных о стихийных бедствиях в Турции, TABB (Türkiye Afet Bilgi Bankası). Затем 3 года, писал веб приложение для компании , которая занимается производством биотехнологических продуктов. Веб приложение было написано ASP.NET MVC. Также по приезду в Кыргызстан работал бэкенд разработчиком в Скай Мобайле(Билайн), проект Митап. В данное время работаю в компании Финансофт, которая разрабатывает АБС (Автоматизированная банковская система)<br></p>', '2019-01-01', 'Sb.lhOd9d6nA2', NULL, 'xRkQwkkQfL1iIqs.png', NULL, '', NULL, 1, NULL, NULL, 2, NULL, NULL, '2019-02-15 11:52:23', '2019-02-21 19:00:07'),
 (6, 'Бакир', 'bakir.alumni', 'bakir.alumni@it-academy.kg', NULL, '1987-01-01', 'Sb.lhOd9d6nA2', NULL, '6L7hklizkLFZMkA.png', NULL, NULL, NULL, 1, NULL, NULL, 3, NULL, 8, '2019-02-15 12:54:57', '2019-02-15 13:16:50'),
 (7, 'Алтынбек', 'altynbek.alumni', 'altynbek.alumni@it-academy.kg', NULL, '1997-01-01', 'Sb.lhOd9d6nA2', NULL, 'hA5cV9or3IQRWjg.png', NULL, NULL, NULL, 1, NULL, NULL, 3, NULL, 10, '2019-02-15 12:56:01', '2019-02-15 13:20:34'),
 (8, 'Али', 'ali.alumni', 'ali.alumni@it-academy.kg', NULL, '1994-01-01', 'Sb.lhOd9d6nA2', NULL, 'vs8XJgbqqOPCA9w.png', NULL, NULL, NULL, 1, NULL, NULL, 3, NULL, 9, '2019-02-15 12:57:17', '2019-02-15 13:18:34'),
@@ -1153,17 +1210,20 @@ INSERT INTO `user` (`id`, `name`, `user_name`, `email`, `about`, `birth_date`, `
 (11, 'Аскер', 'asker.alumni', 'asker.alumni@it-academy.kg', NULL, '1981-01-01', 'Sb.lhOd9d6nA2', NULL, 'mULz5tYUDvrIDPK.png', NULL, NULL, NULL, 1, NULL, NULL, 3, NULL, 6, '2019-02-15 13:01:28', '2019-02-15 13:13:27'),
 (12, 'Ислам', 'islam.alumni', 'islam.alumni@it-academy.kg', NULL, '2000-01-01', 'Sb.lhOd9d6nA2', NULL, 'HxslNA6Ch23MBZV.png', NULL, NULL, NULL, 1, NULL, NULL, 3, NULL, 5, '2019-02-15 13:02:16', '2019-02-15 13:12:04'),
 (13, 'Элиза', 'eliza.alumni', 'eliza.alumni@it-academy.kg', NULL, '2000-01-01', 'Sb.lhOd9d6nA2', NULL, '2xi1nRoWwa4Yoxr.png', NULL, NULL, NULL, 1, NULL, NULL, 3, NULL, 4, '2019-02-15 13:02:55', '2019-02-15 13:10:52'),
-(14, 'Чынгыз Исаков', 'chyngyz.isakov', 'chyngyz.isakov@it-academy.kg', '<p>В общем так, серьезно программированием я занялся 2 года назад с мобильных разработок. Я разрабатывал приложения на андроид. Моей первой компанией называлась "Put in Byte", где я занимался разработкой разных приложений для достаточно большой аудитории. Например, такси (для пассажиров и водителей) для города Джалал-Абад, затем приложение для заказа билетов в разные страны по всему миру, приложение было тесно связано с системой Амадеус, и приложение вакансий предназначенное для всего Кыргызстана. Спустя год я перешел в компанию CS-soft, где я разрабатывал музыкальное приложение для пользователей, локальное приложение для сотрудников строительной компании и некоторые приложения для страховых компаний. В прошлом году, открылась ИТ-лаборатория в АУЦА, которая ныне называется НеоБис. Лаборатория занималась разработкой мобильных приложений, где мы с ребятами разрабатывали разные проекты для локальных и пару немецких компаний. Лаборатория набирала стажеров, которых мы менторили и доводили их уровень разработки до junior-level, а далее они могли работать над реальными проектами, получая свои заслуженные заработки. Сейчас я работаю в компании Зенсофт мобильным и фронт-энд разработчиком. Компания занимается исключительно зарубежными проектами, некоторые из которых разрабатываются на протяжении пару лет.<br></p>', '2019-01-01', 'Sb.lhOd9d6nA2', NULL, 'jJrkKHDRH1ZNHhA.png', NULL, '', NULL, 1, NULL, NULL, 2, NULL, NULL, '2019-02-15 15:22:21', '2019-02-21 18:59:05'),
-(16, 'Daniyar Mukanbetov', 'dannymukash@gmail.com', 'daniyar743@gmail.com', NULL, NULL, 'SbX1xgz0WIlac', '996772188549', NULL, NULL, 'wqdasda', NULL, 1, NULL, NULL, 4, NULL, 13, '2019-04-17 20:17:56', '2019-04-17 20:17:56');
+(14, 'Чынгыз Исаков', 'chyngyz.isakov', 'chyngyz.isakov@it-academy.kg', '<p>В общем так, серьезно программированием я занялся 2 года назад с мобильных разработок. Я разрабатывал приложения на андроид. Моей первой компанией называлась \"Put in Byte\", где я занимался разработкой разных приложений для достаточно большой аудитории. Например, такси (для пассажиров и водителей) для города Джалал-Абад, затем приложение для заказа билетов в разные страны по всему миру, приложение было тесно связано с системой Амадеус, и приложение вакансий предназначенное для всего Кыргызстана. Спустя год я перешел в компанию CS-soft, где я разрабатывал музыкальное приложение для пользователей, локальное приложение для сотрудников строительной компании и некоторые приложения для страховых компаний. В прошлом году, открылась ИТ-лаборатория в АУЦА, которая ныне называется НеоБис. Лаборатория занималась разработкой мобильных приложений, где мы с ребятами разрабатывали разные проекты для локальных и пару немецких компаний. Лаборатория набирала стажеров, которых мы менторили и доводили их уровень разработки до junior-level, а далее они могли работать над реальными проектами, получая свои заслуженные заработки. Сейчас я работаю в компании Зенсофт мобильным и фронт-энд разработчиком. Компания занимается исключительно зарубежными проектами, некоторые из которых разрабатываются на протяжении пару лет.<br></p>', '2019-01-01', 'Sb.lhOd9d6nA2', NULL, 'jJrkKHDRH1ZNHhA.png', NULL, '', NULL, 1, NULL, NULL, 2, NULL, NULL, '2019-02-15 15:22:21', '2019-02-21 18:59:05'),
+(16, 'Daniyar Mukanbetov', 'dannymukash@gmail.com', 'daniyar743@gmail.com', NULL, NULL, 'Sb.lhOd9d6nA2', '996772188549', NULL, NULL, 'wqdasda', NULL, 1, NULL, NULL, 4, NULL, 13, '2019-04-17 20:17:56', '2019-04-17 20:17:56'),
+(17, 'Tilek Kubanov', 'tilek.kubanov', 'tilek.kubanov@gmail.com', '<p>Коротко обо мне</p>', '1997-09-05', 'Sbj0pEyo9HTE6', '996701001052', NULL, NULL, 'Sanjira st.20', NULL, 1, NULL, NULL, 4, NULL, NULL, '2019-07-29 02:05:01', '2019-07-29 02:05:01'),
+(18, 'Tilek Kubanov', 'tilek.kubanov2', 'tilek.kubanov@gmail.com2', '<p>Коротко обо мне</p>', '1997-09-05', 'Sbj0pEyo9HTE6', '996701001052', NULL, NULL, 'Sanjira st.20', NULL, 1, NULL, NULL, 4, NULL, NULL, '2019-07-29 02:05:38', '2019-07-29 02:05:38'),
+(19, 'Tilek Kubanov', 'admin3', 'tilek.kubanov@gmail.com3', '<p><br></p>', '2015-01-29', 'Sbj0pEyo9HTE6', '996701001052', NULL, NULL, 'Sanjira st.\n20', NULL, 1, NULL, NULL, 2, NULL, NULL, '2019-07-29 02:08:05', '2019-08-11 17:29:42');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `vacancy`
+-- Структура таблицы `vacancy`
 --
 
-CREATE TABLE IF NOT EXISTS `vacancy` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `vacancy` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `description` text,
   `context` text,
@@ -1174,13 +1234,11 @@ CREATE TABLE IF NOT EXISTS `vacancy` (
   `meta_keywords` text,
   `sortable_rank` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `vacancy_fi_c4cfb6` (`vacancy_salary_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `vacancy`
+-- Дамп данных таблицы `vacancy`
 --
 
 INSERT INTO `vacancy` (`id`, `name`, `description`, `context`, `alt_url`, `logo_name`, `vacancy_salary_id`, `meta_description`, `meta_keywords`, `sortable_rank`, `created_at`, `updated_at`) VALUES
@@ -1191,19 +1249,18 @@ INSERT INTO `vacancy` (`id`, `name`, `description`, `context`, `alt_url`, `logo_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `vacancy_salary`
+-- Структура таблицы `vacancy_salary`
 --
 
-CREATE TABLE IF NOT EXISTS `vacancy_salary` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `vacancy_salary` (
+  `id` int(11) NOT NULL,
   `name` varchar(20) NOT NULL,
   `description` varchar(300) DEFAULT NULL,
-  `sortable_rank` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+  `sortable_rank` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `vacancy_salary`
+-- Дамп данных таблицы `vacancy_salary`
 --
 
 INSERT INTO `vacancy_salary` (`id`, `name`, `description`, `sortable_rank`) VALUES
@@ -1212,24 +1269,22 @@ INSERT INTO `vacancy_salary` (`id`, `name`, `description`, `sortable_rank`) VALU
 -- --------------------------------------------------------
 
 --
--- Table structure for table `verification_token`
+-- Структура таблицы `verification_token`
 --
 
-CREATE TABLE IF NOT EXISTS `verification_token` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `verification_token` (
+  `id` int(11) NOT NULL,
   `email` varchar(254) DEFAULT NULL,
   `token` varchar(100) NOT NULL,
   `type` tinyint(1) NOT NULL DEFAULT '1',
   `expires_at` datetime DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `verification_token_fi_29554a` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `verification_token`
+-- Дамп данных таблицы `verification_token`
 --
 
 INSERT INTO `verification_token` (`id`, `email`, `token`, `type`, `expires_at`, `user_id`, `created_at`, `updated_at`) VALUES
@@ -1240,11 +1295,336 @@ INSERT INTO `verification_token` (`id`, `email`, `token`, `type`, `expires_at`, 
 (30, 'daniyar743@gmail.com', 'kmuN2iYfi5AMrPBB7DwNJniGvarhNvgRzsIRyuy5Av3B8A8Jzc', 1, '2019-04-18 20:17:13', NULL, '2019-04-17 20:17:13', '2019-04-17 20:17:13');
 
 --
--- Constraints for dumped tables
+-- Индексы сохранённых таблиц
 --
 
 --
--- Constraints for table `application`
+-- Индексы таблицы `admin_style`
+--
+ALTER TABLE `admin_style`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `application`
+--
+ALTER TABLE `application`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `application_fi_0ebdd7` (`application_status_id`),
+  ADD KEY `application_fi_ebed28` (`course_id`),
+  ADD KEY `application_fi_f39771` (`course_stream_id`);
+
+--
+-- Индексы таблицы `application_status`
+--
+ALTER TABLE `application_status`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `branch`
+--
+ALTER TABLE `branch`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `config`
+--
+ALTER TABLE `config`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `course`
+--
+ALTER TABLE `course`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `course_skill`
+--
+ALTER TABLE `course_skill`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `course_skill_fi_ebed28` (`course_id`);
+
+--
+-- Индексы таблицы `course_stream`
+--
+ALTER TABLE `course_stream`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `course_stream_fi_16a5a4` (`currency_id`),
+  ADD KEY `course_stream_fi_e53930` (`instructor_id`),
+  ADD KEY `course_stream_fi_ebed28` (`course_id`),
+  ADD KEY `course_stream_fi_f865a5` (`course_stream_status_id`),
+  ADD KEY `course_stream_fi_6cc548` (`branch_id`);
+
+--
+-- Индексы таблицы `course_stream_status`
+--
+ALTER TABLE `course_stream_status`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `currency`
+--
+ALTER TABLE `currency`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `currency_rate`
+--
+ALTER TABLE `currency_rate`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `currency_rate_fi_8596aa` (`default_currency_id`),
+  ADD KEY `currency_rate_fi_78514f` (`to_currency_id`);
+
+--
+-- Индексы таблицы `faq`
+--
+ALTER TABLE `faq`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `feedback`
+--
+ALTER TABLE `feedback`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `feedback_fi_16a5a4` (`currency_id`),
+  ADD KEY `feedback_fi_29554a` (`user_id`);
+
+--
+-- Индексы таблицы `group`
+--
+ALTER TABLE `group`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `group_privilege`
+--
+ALTER TABLE `group_privilege`
+  ADD PRIMARY KEY (`group_id`,`privilege_id`),
+  ADD KEY `group_privilege_fi_da39c7` (`privilege_id`);
+
+--
+-- Индексы таблицы `notification`
+--
+ALTER TABLE `notification`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `notification_fi_3703f2` (`to_user_id`),
+  ADD KEY `notification_fi_122792` (`from_user_id`);
+
+--
+-- Индексы таблицы `passport`
+--
+ALTER TABLE `passport`
+  ADD PRIMARY KEY (`user_id`);
+
+--
+-- Индексы таблицы `privilege`
+--
+ALTER TABLE `privilege`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `project`
+--
+ALTER TABLE `project`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `static_page`
+--
+ALTER TABLE `static_page`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `stream_lesson`
+--
+ALTER TABLE `stream_lesson`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `stream_lesson_fi_54b7e7` (`stream_id`);
+
+--
+-- Индексы таблицы `stream_user`
+--
+ALTER TABLE `stream_user`
+  ADD PRIMARY KEY (`stream_id`,`user_id`),
+  ADD KEY `stream_user_fi_29554a` (`user_id`);
+
+--
+-- Индексы таблицы `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_fi_0278b4` (`group_id`),
+  ADD KEY `user_fi_4b365c` (`admin_style_id`),
+  ADD KEY `user_fi_16a5a4` (`currency_id`);
+
+--
+-- Индексы таблицы `vacancy`
+--
+ALTER TABLE `vacancy`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `vacancy_fi_c4cfb6` (`vacancy_salary_id`);
+
+--
+-- Индексы таблицы `vacancy_salary`
+--
+ALTER TABLE `vacancy_salary`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `verification_token`
+--
+ALTER TABLE `verification_token`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `verification_token_fi_29554a` (`user_id`);
+
+--
+-- AUTO_INCREMENT для сохранённых таблиц
+--
+
+--
+-- AUTO_INCREMENT для таблицы `admin_style`
+--
+ALTER TABLE `admin_style`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT для таблицы `application`
+--
+ALTER TABLE `application`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=333;
+
+--
+-- AUTO_INCREMENT для таблицы `application_status`
+--
+ALTER TABLE `application_status`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT для таблицы `branch`
+--
+ALTER TABLE `branch`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT для таблицы `config`
+--
+ALTER TABLE `config`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT для таблицы `course`
+--
+ALTER TABLE `course`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT для таблицы `course_skill`
+--
+ALTER TABLE `course_skill`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
+--
+-- AUTO_INCREMENT для таблицы `course_stream`
+--
+ALTER TABLE `course_stream`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT для таблицы `course_stream_status`
+--
+ALTER TABLE `course_stream_status`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT для таблицы `currency`
+--
+ALTER TABLE `currency`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT для таблицы `currency_rate`
+--
+ALTER TABLE `currency_rate`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT для таблицы `faq`
+--
+ALTER TABLE `faq`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT для таблицы `feedback`
+--
+ALTER TABLE `feedback`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT для таблицы `group`
+--
+ALTER TABLE `group`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT для таблицы `notification`
+--
+ALTER TABLE `notification`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `privilege`
+--
+ALTER TABLE `privilege`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT для таблицы `project`
+--
+ALTER TABLE `project`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT для таблицы `static_page`
+--
+ALTER TABLE `static_page`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT для таблицы `stream_lesson`
+--
+ALTER TABLE `stream_lesson`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT для таблицы `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT для таблицы `vacancy`
+--
+ALTER TABLE `vacancy`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT для таблицы `vacancy_salary`
+--
+ALTER TABLE `vacancy_salary`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT для таблицы `verification_token`
+--
+ALTER TABLE `verification_token`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- Ограничения внешнего ключа сохраненных таблиц
+--
+
+--
+-- Ограничения внешнего ключа таблицы `application`
 --
 ALTER TABLE `application`
   ADD CONSTRAINT `application_fk_0ebdd7` FOREIGN KEY (`application_status_id`) REFERENCES `application_status` (`id`),
@@ -1252,13 +1632,13 @@ ALTER TABLE `application`
   ADD CONSTRAINT `application_fk_f39771` FOREIGN KEY (`course_stream_id`) REFERENCES `course_stream` (`id`) ON DELETE SET NULL;
 
 --
--- Constraints for table `course_skill`
+-- Ограничения внешнего ключа таблицы `course_skill`
 --
 ALTER TABLE `course_skill`
   ADD CONSTRAINT `course_skill_fk_ebed28` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `course_stream`
+-- Ограничения внешнего ключа таблицы `course_stream`
 --
 ALTER TABLE `course_stream`
   ADD CONSTRAINT `course_stream_fk_16a5a4` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`id`) ON DELETE CASCADE,
@@ -1268,35 +1648,54 @@ ALTER TABLE `course_stream`
   ADD CONSTRAINT `course_stream_fk_f865a5` FOREIGN KEY (`course_stream_status_id`) REFERENCES `course_stream_status` (`id`);
 
 --
--- Constraints for table `currency_rate`
+-- Ограничения внешнего ключа таблицы `currency_rate`
 --
 ALTER TABLE `currency_rate`
   ADD CONSTRAINT `currency_rate_fk_78514f` FOREIGN KEY (`to_currency_id`) REFERENCES `currency` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `currency_rate_fk_8596aa` FOREIGN KEY (`default_currency_id`) REFERENCES `currency` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `feedback`
+-- Ограничения внешнего ключа таблицы `feedback`
 --
 ALTER TABLE `feedback`
   ADD CONSTRAINT `feedback_fk_16a5a4` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `feedback_fk_29554a` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `group_privilege`
+-- Ограничения внешнего ключа таблицы `group_privilege`
 --
 ALTER TABLE `group_privilege`
   ADD CONSTRAINT `group_privilege_fk_0278b4` FOREIGN KEY (`group_id`) REFERENCES `group` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `group_privilege_fk_da39c7` FOREIGN KEY (`privilege_id`) REFERENCES `privilege` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `notification`
+-- Ограничения внешнего ключа таблицы `notification`
 --
 ALTER TABLE `notification`
   ADD CONSTRAINT `notification_fk_122792` FOREIGN KEY (`from_user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `notification_fk_3703f2` FOREIGN KEY (`to_user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `user`
+-- Ограничения внешнего ключа таблицы `passport`
+--
+ALTER TABLE `passport`
+  ADD CONSTRAINT `passport_fk_29554a` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `stream_lesson`
+--
+ALTER TABLE `stream_lesson`
+  ADD CONSTRAINT `stream_lesson_fk_54b7e7` FOREIGN KEY (`stream_id`) REFERENCES `course_stream` (`id`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `stream_user`
+--
+ALTER TABLE `stream_user`
+  ADD CONSTRAINT `stream_user_fk_29554a` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `stream_user_fk_54b7e7` FOREIGN KEY (`stream_id`) REFERENCES `course_stream` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `user`
 --
 ALTER TABLE `user`
   ADD CONSTRAINT `user_fk_0278b4` FOREIGN KEY (`group_id`) REFERENCES `group` (`id`),
@@ -1304,17 +1703,17 @@ ALTER TABLE `user`
   ADD CONSTRAINT `user_fk_4b365c` FOREIGN KEY (`admin_style_id`) REFERENCES `admin_style` (`id`) ON DELETE SET NULL;
 
 --
--- Constraints for table `vacancy`
+-- Ограничения внешнего ключа таблицы `vacancy`
 --
 ALTER TABLE `vacancy`
   ADD CONSTRAINT `vacancy_fk_c4cfb6` FOREIGN KEY (`vacancy_salary_id`) REFERENCES `vacancy_salary` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `verification_token`
+-- Ограничения внешнего ключа таблицы `verification_token`
 --
 ALTER TABLE `verification_token`
   ADD CONSTRAINT `verification_token_fk_29554a` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
-SET FOREIGN_KEY_CHECKS=1;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
