@@ -93,7 +93,7 @@ class Lesson extends Base
     {
         $id = (isset($_POST['lesson_id']) ? $_POST['lesson_id'] : null);
         try {
-//            $this->helper->shouldHavePrivilege('LEAVE_LESSON');
+            $this->helper->shouldHavePrivilege('CREATE_LESSON');
 
             if (is_null($id) || intval($id) == 0){
                 throw new CustomException("ID не был указан", 1);
