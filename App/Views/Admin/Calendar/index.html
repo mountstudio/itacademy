@@ -121,6 +121,11 @@
         eventClick: function(calEvent, jsEvent, view) {
             $('#editCalendarEvent').modal('show');
 
+            console.log(calEvent);
+            $('#deleteEditCalendarEvent').attr('coursestreamid', calEvent.id);
+            $('#confirmEditCalendarEventBtn').attr('coursestreamid', calEvent.id);
+            $('#titleEditCalendarEvent').val(calEvent.title);
+
             $('#confirmEditCalendarEventBtn').off('click').on('click', e => {
                 $('#editCalendarEvent').modal('hide');
                 let title = $('#titleEditCalendarEvent').val();
@@ -191,6 +196,7 @@
                                 backgroundColor: '#ff0000'
                             });
                             events.push({
+                                id: item.id,
                                 title: item.title,
                                 start: item.dateStart ? item.dateStart.date : null,
                                 forceEventDuration: true,
@@ -198,6 +204,7 @@
                             });
                         } else {
                             events.push({
+                                id: item.id,
                                 title: item.title,
                                 start: item.dateStart ? item.dateStart.date : null,
                                 end: item.dateEnd ? item.dateEnd.date : null,
@@ -214,6 +221,18 @@
                 }
             });
         }
+    });
+
+    $('#deleteEditCalendarEvent').click(e => {
+        let btn = $(e.currentTarget);
+        let id = btn.attr('coursestreamid');
+        console.log(id);
+        let formData = new FormData();
+        formData.append('lesson_id', id);
+        ajaxRequest('/admin/ajax/lesson/delete', formData, data => {
+            console.log(data);
+        });
+        $('#editCalendarEvent').modal('hide');
     });
 
 </script>

@@ -9,6 +9,7 @@
 namespace App\Controllers\Admin\Ajax;
 
 
+use Core\CustomException;
 use Core\Helper;
 use Core\JsonResponse;
 use DateTime;
@@ -85,6 +86,34 @@ class Lesson extends Base
 
         $this->response->setData($lesson->toArray());
         $this->response->setStatus(JsonResponse::SUCCESS);
+        $this->response->show();
+    }
+
+    public function deleteAction()
+    {
+        $id = (isset($_POST['lesson_id']) ? $_POST['lesson_id'] : null);
+        try {
+//            $this->helper->shouldHavePrivilege('LEAVE_LESSON');
+
+            if (is_null($id) || intval($id) == 0){
+                throw new CustomException("ID не был указан", 1);
+            }
+
+            $lesson = LessonQuery::create()->findOneById(intval($id));
+            if (is_null($lesson)){
+                throw new CustomException("Урок не найден", 1);
+            }
+
+            $lesson->delete();
+            $this->response->setStatus(JsonResponse::SUCCESS);
+            $this->response->setMessage('Урок была успешно удален');
+
+            $this->response->setStatus(JsonResponse::SUCCESS);
+
+        } catch (CustomException $e) {
+            $this->response->setException($e);
+        }
+
         $this->response->show();
     }
 }
