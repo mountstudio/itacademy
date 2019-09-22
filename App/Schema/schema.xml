@@ -255,6 +255,17 @@
         <behavior name="query_cache" />
     </table>
 
+    <table name="tasks" phpName="Task">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="title" required="true" type="varchar" />
+        <column name="description" required="true" type="longvarchar" />
+        <column name="dateEnd" type="timestamp" required="true" />
+        <column name="done" type="boolean" required="false" />
+
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+    </table>
+
     <table name="stream_user" isCrossRef="true">
         <column name="stream_id" type="integer" primaryKey="true" />
         <foreign-key foreignTable="course_stream">
