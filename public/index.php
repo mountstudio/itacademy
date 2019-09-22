@@ -559,7 +559,10 @@ $router->add('admin/ajax/course/deleteCover', ['controller' => 'Admin\Ajax\Cours
 $router->add('admin/ajax/course/edit', ['controller' => 'Admin\Ajax\Course', 'action' => 'edit']);
 //End Course
 
-
+$router->add('admin/ajax/task/list', ['controller' => 'Admin\Ajax\Task', 'action' => 'list']);
+$router->add('admin/ajax/task/add', ['controller' => 'Admin\Ajax\Task', 'action' => 'add']);
+$router->add('admin/ajax/task/edit', ['controller' => 'Admin\Ajax\Task', 'action' => 'edit']);
+$router->add('admin/ajax/task/delete', ['controller' => 'Admin\Ajax\Task', 'action' => 'delete']);
 
 
 //Skill Routes

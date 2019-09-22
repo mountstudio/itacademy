@@ -19,6 +19,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title text-center">Предстоящие задачи</h3>
+                        <a href="#" class="btn btn-danger" id="add-task" style="float: right;">+</a>
                     </div>
                     <div class="panel-body" style="padding-top: 20px;">
                         <ul id="sortable" style="list-style: none; margin: 0px; padding: 0px;">
@@ -113,10 +114,59 @@
     </div>
     {{ include("Admin/copyrightFooter.html") }}
 </div>
+{{ include("Admin/Dashboard/modals/addTask.html") }}
+{{ include("Admin/Dashboard/modals/editTask.html") }}
 {% endblock %}
 
 {% block endBodies %}
 <!-- Scripts are shown there-->
+
+<script>
+    $.ajax({
+        url: '/admin/ajax/task/list',
+        success: data => {
+            console.log(data);
+        },
+        error: () => {
+            console.log('error');
+        }
+    });
+
+    $('#add-task').click(e => {
+        e.preventDefault();
+
+        $('#addTaskModal').modal('show');
+    });
+
+    $('#confirmAddTask').click(e => {
+        e.preventDefault();
+
+        let btn = $(e.currentTarget);
+        let formData = new FormData();
+
+        let title = $('#titleAddTask').val();
+        let dateend = $('#dateendAddTask').val();
+        let description = $('#descriptionAddTask').val();
+        let done = $('#done').val();
+
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('dateend', dateend);
+        formData.append('done', done);
+        
+        $.ajax({
+            url: '/admin/ajax/task/add',
+            data: formData,
+            method: "POST",
+            success: data => {
+                console.log(data);
+            },
+            error: () => {
+                console.log('error');
+            }
+        });
+    });
+</script>
 <script>
     $( function() {
         $( "#sortable" ).sortable({
