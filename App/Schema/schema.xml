@@ -260,7 +260,7 @@
         <column name="title" required="true" type="varchar" />
         <column name="description" required="true" type="longvarchar" />
         <column name="dateEnd" type="timestamp" required="true" />
-        <column name="done" type="boolean" required="false" />
+        <column name="done" type="boolean" required="false" default="false" />
 
         <behavior name="timestampable" />
         <behavior name="query_cache" />

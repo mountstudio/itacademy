@@ -4,10 +4,10 @@
 namespace App\Controllers\Admin\Ajax;
 
 
+use Core\CustomException;
 use Core\Helper;
 use Core\JsonResponse;
 use DateTime;
-use Models\LessonQuery;
 use Models\TaskQuery;
 
 class Task extends Base
@@ -18,7 +18,23 @@ class Task extends Base
         $tasks = TaskQuery::create()->find();
         $tasksEnded = TaskQuery::create()->filterByDone(true);
 
-        $this->response->setData([$tasks, $tasksEnded]);
+        $dashboard = [];
+
+        foreach ($tasks as $index => $task) {
+            $dashboard['tasks'][$index]['id'] = $task->getId();
+            $dashboard['tasks'][$index]['title'] = $task->getTitle();
+            $dashboard['tasks'][$index]['description'] = $task->getDescription();
+            $dashboard['tasks'][$index]['dateend'] = $task->getDateend();
+        }
+
+        foreach ($tasksEnded as $index => $task) {
+            $dashboard['tasksEnded'][$index]['id'] = $task->getId();
+            $dashboard['tasksEnded'][$index]['title'] = $task->getTitle();
+            $dashboard['tasksEnded'][$index]['description'] = $task->getDescription();
+            $dashboard['tasksEnded'][$index]['dateend'] = $task->getDateend();
+        }
+
+        $this->response->setData($dashboard);
         $this->response->setStatus(JsonResponse::SUCCESS);
         $this->response->show();
     }
@@ -26,38 +42,57 @@ class Task extends Base
     public function addAction()
     {
         $title = (isset($_POST['title']) ? $_POST['title'] : null);
-        $dateEnd = (isset($_POST['dateEnd']) ? $_POST['dateEnd'] : null);
+        $dateEnd = (isset($_POST['dateend']) ? $_POST['dateend'] : null);
         $description = (isset($_POST['description']) ? $_POST['description'] : null);
         $done = (isset($_POST['done']) ? $_POST['done'] : null);
 
         if ($dateEnd) {
             $dateArray = date_parse($dateEnd);
-            $dateEnd = new DateTime(vsprintf('%s/%s/%s %s:%s', [
+            $dateEnd = new DateTime(vsprintf('%s/%s/%s', [
                 $dateArray['month'],
                 $dateArray['day'],
                 $dateArray['year'],
-                $dateArray['hour'],
-                $dateArray['minute'],
             ]));
         }
 
-        $lesson = new \Models\Task();
-        $lesson->setTitle($title);
-        $lesson->setDateend($dateEnd);
-        $lesson->setDescription($description);
-        $lesson->setDone(false);
+        $task = new \Models\Task();
+        $task->setTitle($title);
+        $task->setDateend($dateEnd);
+        $task->setDescription($description);
+        $task->setDone(false);
 
-        if (isset($_FILES['doc'])) {
-            $helper = new Helper();
-            $fileName = uniqid('doc_').'.'.pathinfo($_FILES['doc']['name'], PATHINFO_EXTENSION);
-            if (move_uploaded_file($_FILES['doc']['tmp_name'], $helper->getUploadDir().'/'.$fileName)) {
-                $lesson->setDoc($fileName);
-            }
-        }
-        $lesson->save();
+        $task->save();
 
-        $this->response->setData($lesson->toArray());
+        $this->response->setData($task->toArray());
         $this->response->setStatus(JsonResponse::SUCCESS);
+        $this->response->show();
+    }
+    
+    public function deleteAction()
+    {
+        $id = (isset($_POST['id']) ? $_POST['id'] : null);
+        try {
+            $this->helper->shouldHavePrivilege('CREATE_TASK');
+
+            if (is_null($id) || intval($id) == 0){
+                throw new CustomException("ID не был указан", 1);
+            }
+
+            $task = TaskQuery::create()->findOneById(intval($id));
+            if (is_null($task)){
+                throw new CustomException("Задание не найдено", 1);
+            }
+
+            $task->delete();
+            $this->response->setStatus(JsonResponse::SUCCESS);
+            $this->response->setMessage('Задание было успешно удалено');
+
+            $this->response->setStatus(JsonResponse::SUCCESS);
+
+        } catch (CustomException $e) {
+            $this->response->setException($e);
+        }
+
         $this->response->show();
     }
 }
