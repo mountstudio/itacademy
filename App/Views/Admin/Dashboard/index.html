@@ -23,7 +23,7 @@
                         <a href="#" class="btn btn-danger" id="add-task" style="float: right;">+</a>
                     </div>
                     <div class="panel-body" style="padding-top: 20px;">
-                        <ul id="sortable" style="list-style: none; margin: 0px; padding: 0px;">
+                        <ul id="sortable" class="sortable-lists" style="min-height: 550px; overflow-y: auto; overflow-x: hidden; list-style: none; margin: 0px; padding: 0px;">
 
                         </ul>
                     </div>
@@ -35,43 +35,8 @@
                         <h3 class="panel-title text-center">Сделанные задачи</h3>
                     </div>
                     <div class="panel-body" style="padding-top: 20px;">
-                        <ul id="sortable2" style="list-style: none; margin: 0px; padding: 0px;">
-                            <li class="ui-state-default bg-white w-100" style="border-bottom: 1px solid #d4d4d4; padding: 10px 5px 5px 5px; border-top: 3px solid #ff0000; margin: 5px; box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1);">
-                                <div class="row">
-                                    <div class="col-md-9">
-                                        <h4 class="font-weight-bold">Card title</h4>
-                                        <p>Card description</p>
-                                    </div>
-                                    <div class="col-md-3 text-right">
-                                        <span class="small text-muted">12.12.19</span>
-                                        <span class="small text-muted">12:00</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="ui-state-default bg-white w-100" style="border-bottom: 1px solid #d4d4d4; padding: 10px 5px 5px 5px; border-top: 3px solid #00ff00; margin: 5px; box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1);">
-                                <div class="row">
-                                    <div class="col-md-9">
-                                        <h4 class="font-weight-bold">Card title</h4>
-                                        <p>Card description</p>
-                                    </div>
-                                    <div class="col-md-3 text-right">
-                                        <span class="small text-muted">12.12.19</span>
-                                        <span class="small text-muted">12:00</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="ui-state-default bg-white w-100" style="border-bottom: 1px solid #d4d4d4; padding: 10px 5px 5px 5px; border-top: 3px solid #0000ff; margin: 5px; box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1);">
-                                <div class="row">
-                                    <div class="col-md-9">
-                                        <h4 class="font-weight-bold">Card title</h4>
-                                        <p>Card description</p>
-                                    </div>
-                                    <div class="col-md-3 text-right">
-                                        <span class="small text-muted">12.12.19</span>
-                                        <span class="small text-muted">12:00</span>
-                                    </div>
-                                </div>
-                            </li>
+                        <ul id="sortable2" class="sortable-lists" style="min-height: 550px; overflow-y: auto; overflow-x: hidden; list-style: none; margin: 0px; padding: 0px;">
+
                         </ul>
                     </div>
                 </div>
@@ -90,7 +55,7 @@
 <script src="/static/admin/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script>
     $('#dateendAddTask').datetimepicker({
-        format: 'DD/MM/YYYY',
+        format: 'YYYY-MM-DD',
         minDate: new Date()
     });
 </script>
@@ -98,29 +63,68 @@
     $.ajax({
         url: '/admin/ajax/task/list',
         success: data => {
-            for (let [i, v] of data.data.tasks.entries()) {
-                let card = $('<li class="ui-state-default draggable bg-white w-100" style="border-bottom: 1px solid #d4d4d4; padding: 10px 5px 5px 5px; border-top: 3px solid #ff0000; margin: 5px; box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); z-index: 2;">\n' +
-                    '                                <div class="row">\n' +
-                    '                                    <div class="col-md-9">\n' +
-                    '                                        <h4 class="font-weight-bold">' + v.title + '</h4>\n' +
-                    '                                        <p>' + v.description + '</p>\n' +
-                    '                                    </div>\n' +
-                    '                                    <div class="col-md-3 text-right">\n' +
-                    '                                        <span class="small text-muted">12.12.19</span>\n' +
-                    '                                        <span class="small text-muted">12:00</span>\n' +
-                    '                                        <p>\n' +
-                    '                                            <a href="#" class="delete-task" data-id="' + v.id + '">\n' +
-                    '                                                <i class="fa fa-trash text-danger"></i>\n' +
-                    '                                            </a>\n' +
-                    '                                        </p>\n' +
-                    '                                    </div>\n' +
-                    '                                </div>\n' +
-                    '                            </li>');
-                let result = $('#sortable').append(card);
+            let sortable = $('#sortable');
+            let sortableDone = $('#sortable2');
+            console.log(data);
+            if (data.data.tasks) {
+                for (let [i, v] of data.data.tasks.entries()) {
+                    let date = new Date(v.dateend);
+                    console.log(date);
+                    let card = $('<li class="ui-state-default draggable bg-white w-100" style="border-bottom: 1px solid #d4d4d4; padding: 10px 5px 5px 5px; border-top: 3px solid #ff0000; margin: 5px; box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); z-index: 2;">\n' +
+                        '                                <div class="row">\n' +
+                        '                                    <div class="col-md-9">\n' +
+                        '                                        <h4 class="title font-weight-bold">' + v.title + '</h4>\n' +
+                        '                                        <p class="description">' + v.description + '</p>\n' +
+                        '                                    </div>\n' +
+                        '                                    <div class="col-md-3 text-right">\n' +
+                        '                                        <span class="small text-muted">' + date.getDate() + '/' + (date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth()) + '/' + date.getFullYear() + '</span>\n' +
+                        '                                        <p>\n' +
+                        '                                            <a href="#" class="edit-task" data-id="' + v.id + '">\n' +
+                        '                                                <i class="fa fa-edit text-primary"></i>\n' +
+                        '                                            </a>\n' +
+                        '                                            <a href="#" class="delete-task" data-id="' + v.id + '">\n' +
+                        '                                                <i class="fa fa-trash text-danger"></i>\n' +
+                        '                                            </a>\n' +
+                        '                                        </p>\n' +
+                        '                                    </div>\n' +
+                        '                                </div>\n' +
+                        '                            </li>');
+                    sortable.append(card);
+                    registerDraggable(card);
+                }
             }
-            $('#sortable').find('.delete-task').each((i, v) => {
+            if (data.data.tasksEnded) {
+                for (let [i, v] of data.data.tasksEnded.entries()) {
+                    let date = new Date(v.dateend);
+                    let card = $('<li class="ui-state-default draggable bg-white w-100" style="border-bottom: 1px solid #d4d4d4; padding: 10px 5px 5px 5px; border-top: 3px solid #ff0000; margin: 5px; box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); z-index: 2;">\n' +
+                        '                                <div class="row">\n' +
+                        '                                    <div class="col-md-9">\n' +
+                        '                                        <h4 class="title font-weight-bold">' + v.title + '</h4>\n' +
+                        '                                        <p class="description">' + v.description + '</p>\n' +
+                        '                                    </div>\n' +
+                        '                                    <div class="col-md-3 text-right">\n' +
+                        '                                        <span class="small text-muted">' + date.getDate() + '/' + (date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth()) + '/' + date.getFullYear() + '</span>\n' +
+                        '                                        <p>\n' +
+                        '                                            <a href="#" class="edit-task" data-id="' + v.id + '">\n' +
+                        '                                                <i class="fa fa-edit text-primary"></i>\n' +
+                        '                                            </a>\n' +
+                        '                                            <a href="#" class="delete-task" data-id="' + v.id + '">\n' +
+                        '                                                <i class="fa fa-trash text-danger"></i>\n' +
+                        '                                            </a>\n' +
+                        '                                        </p>\n' +
+                        '                                    </div>\n' +
+                        '                                </div>\n' +
+                        '                            </li>');
+                    sortableDone.append(card);
+                    registerDraggable(card);
+                }
+            }
+            sortable.find('.delete-task').each((i, v) => {
                 registerDeleteBtn($(v));
-            })
+            });
+            sortableDone.find('.delete-task').each((i, v) => {
+                registerDeleteBtn($(v));
+            });
         },
         error: () => {
             console.log('error');
@@ -156,17 +160,19 @@
         ajaxRequest('/admin/ajax/task/add',
             formData,
             data => {
-            console.log(data.data.Title);
+                let date = new Date(data.data.Dateend);
                 let card = $('<li class="ui-state-default draggable bg-white w-100" style="border-bottom: 1px solid #d4d4d4; padding: 10px 5px 5px 5px; border-top: 3px solid #ff0000; margin: 5px; box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); z-index: 2;">\n' +
                     '                                <div class="row">\n' +
                     '                                    <div class="col-md-9">\n' +
-                    '                                        <h4 class="font-weight-bold">' + data.data.Title + '</h4>\n' +
-                    '                                        <p>' + data.data.Description + '</p>\n' +
+                    '                                        <h4 class="title font-weight-bold">' + data.data.Title + '</h4>\n' +
+                    '                                        <p class="description">' + data.data.Description + '</p>\n' +
                     '                                    </div>\n' +
                     '                                    <div class="col-md-3 text-right">\n' +
-                    '                                        <span class="small text-muted">12.12.19</span>\n' +
-                    '                                        <span class="small text-muted">12:00</span>\n' +
+                    '                                        <span class="small text-muted">' + date.getDate() + '/' + (date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth()) + '/' + date.getFullYear() + '</span>\n' +
                     '                                        <p>\n' +
+                    '                                            <a href="#" class="edit-task" data-id="' + data.data.Id + '">\n' +
+                    '                                                <i class="fa fa-edit text-primary"></i>\n' +
+                    '                                            </a>\n' +
                     '                                            <a href="#" class="delete-task" data-id="' + data.data.Id + '">\n' +
                     '                                                <i class="fa fa-trash text-danger"></i>\n' +
                     '                                            </a>\n' +
@@ -176,7 +182,8 @@
                     '                            </li>');
 
                 let result = $('#sortable').append(card);
-                result.find('.delete-task').each((i, v) => {
+                registerDraggable(card);
+                card.find('.delete-task').each((i, v) => {
                     registerDeleteBtn($(v));
                 })
             }
@@ -189,7 +196,6 @@
             let btn = $(e.currentTarget);
             let id = btn.data('id');
             let card = btn.parents('li.ui-state-default');
-            console.log(id);
 
             let formData = new FormData();
             formData.append('id', id);
@@ -197,27 +203,50 @@
             ajaxRequest('/admin/ajax/task/delete',
                 formData,
                 data => {
-                    console.log(data);
                 }
             );
 
             card.hide('slow', function(){ card.remove(); });
         });
     }
-</script>
-<script>
-    $( function() {
-        $( "#sortable" ).sortable({
-            revert: true
+
+    function registerEditBtn(item) {
+        item.click(e => {
+            e.preventDefault();
+            let btn = $(e.currentTarget);
+            let id = btn.data('id');
+            let card = btn.parents('li.ui-state-default');
+
+            let title = card.find('.title');
+            let description = card.find('.description');
+
+            let formData = new FormData();
+            formData.append('id', id);
+
+            ajaxRequest('/admin/ajax/task/delete',
+                formData,
+                data => {
+                }
+            );
+
+            card.hide('slow', function(){ card.remove(); });
         });
-        $( "#sortable2" ).sortable({
-            revert: true
+    }
+    $( "#sortable" ).sortable({
+        revert: true
+    });
+    $( "#sortable2" ).sortable({
+        revert: true
+    });
+    function registerDraggable(item) {
+        item.draggable({
+            connectToSortable: "#sortable2, #sortable",
+            revert: "invalid",
+            stop: (e, ui) => {
+                console.log($(e.target).parents('.sortable-lists'), ui);
+            }
         });
-        $( ".draggable" ).draggable({
-            connectToSortable: "#sortable2",
-            revert: "invalid"
-        });
-        $( "ul, li" ).disableSelection();
-    } );
+    }
+    $( "ul, li" ).disableSelection();
 </script>
 {% endblock %}

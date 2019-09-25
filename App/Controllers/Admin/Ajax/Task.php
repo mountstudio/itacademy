@@ -15,7 +15,7 @@ class Task extends Base
     public function listAction()
     {
         $this->response = new JsonResponse();
-        $tasks = TaskQuery::create()->find();
+        $tasks = TaskQuery::create()->filterByDone(false);
         $tasksEnded = TaskQuery::create()->filterByDone(true);
 
         $dashboard = [];
@@ -24,14 +24,14 @@ class Task extends Base
             $dashboard['tasks'][$index]['id'] = $task->getId();
             $dashboard['tasks'][$index]['title'] = $task->getTitle();
             $dashboard['tasks'][$index]['description'] = $task->getDescription();
-            $dashboard['tasks'][$index]['dateend'] = $task->getDateend();
+            $dashboard['tasks'][$index]['dateend'] = $task->getDateend()->format('Y-m-d');
         }
 
         foreach ($tasksEnded as $index => $task) {
             $dashboard['tasksEnded'][$index]['id'] = $task->getId();
             $dashboard['tasksEnded'][$index]['title'] = $task->getTitle();
             $dashboard['tasksEnded'][$index]['description'] = $task->getDescription();
-            $dashboard['tasksEnded'][$index]['dateend'] = $task->getDateend();
+            $dashboard['tasksEnded'][$index]['dateend'] = $task->getDateend()->format('Y-m-d');
         }
 
         $this->response->setData($dashboard);
@@ -46,15 +46,6 @@ class Task extends Base
         $description = (isset($_POST['description']) ? $_POST['description'] : null);
         $done = (isset($_POST['done']) ? $_POST['done'] : null);
 
-        if ($dateEnd) {
-            $dateArray = date_parse($dateEnd);
-            $dateEnd = new DateTime(vsprintf('%s/%s/%s', [
-                $dateArray['month'],
-                $dateArray['day'],
-                $dateArray['year'],
-            ]));
-        }
-
         $task = new \Models\Task();
         $task->setTitle($title);
         $task->setDateend($dateEnd);
@@ -62,6 +53,8 @@ class Task extends Base
         $task->setDone(false);
 
         $task->save();
+
+        $task->setDateend($task->getDateend()->format('Y-m-d'));
 
         $this->response->setData($task->toArray());
         $this->response->setStatus(JsonResponse::SUCCESS);

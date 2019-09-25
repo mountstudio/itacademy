@@ -261,6 +261,7 @@
         <column name="description" required="true" type="longvarchar" />
         <column name="dateEnd" type="timestamp" required="true" />
         <column name="done" type="boolean" required="false" default="false" />
+        <column name="order" type="integer" required="false" default="null" />
 
         <behavior name="timestampable" />
         <behavior name="query_cache" />
