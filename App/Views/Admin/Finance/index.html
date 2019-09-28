@@ -1,0 +1,79 @@
+{% set page = 'dashboard' %}
+{% block title %}
+Информационная панель
+{% endblock %}
+
+{% set titleEndPostfix = ' - «IT-Academy.kg» | Панель управления' %}
+
+{% extends "Admin/base.html" %}
+{% block headers %}
+<!-- nothing to write to headers -->
+<link rel="stylesheet" href="/static/admin/assets/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="page-inner">
+    <div id="main-wrapper">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center">Приход</h3>
+                        <a href="#" class="btn btn-danger" id="add-coming" style="float: right;">+</a>
+                    </div>
+                    <div class="panel-body" style="padding-top: 20px;">
+                        <ul class="sortable-lists" style="min-height: 550px; overflow-y: auto; overflow-x: hidden; list-style: none; margin: 0px; padding: 0px;">
+                            <li class="bg-white w-100" style="border-bottom: 1px solid #d4d4d4; padding: 10px 5px 5px 5px; border-top: 3px solid #ff0000; margin: 5px; box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); z-index: 2;">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <h4 class="title font-weight-bold">' + v.title + '</h4>
+                                        <p class="description">' + v.description + '</p>
+                                    </div>
+                                    <div class="col-md-3 text-right">
+                                        <span class="small text-muted">12/12/2019</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center">Расход</h3>
+                        <a href="#" class="btn btn-danger" id="add-consumtion" style="float: right;">+</a>
+                    </div>
+                    <div class="panel-body" style="padding-top: 20px;">
+                        <ul class="sortable-lists" style="min-height: 550px; overflow-y: auto; overflow-x: hidden; list-style: none; margin: 0px; padding: 0px;">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center">Отчет</h3>
+                    </div>
+                    <div class="panel-body" style="padding-top: 20px;">
+                        <ul class="sortable-lists" style="min-height: 550px; overflow-y: auto; overflow-x: hidden; list-style: none; margin: 0px; padding: 0px;">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- Row -->
+    </div>
+    {{ include("Admin/copyrightFooter.html") }}
+</div>
+{{ include("Admin/Dashboard/modals/addTask.html") }}
+{{ include("Admin/Dashboard/modals/editTask.html") }}
+{% endblock %}
+
+{% block endBodies %}
+<!-- Scripts are shown there-->
+
+
+{% endblock %}

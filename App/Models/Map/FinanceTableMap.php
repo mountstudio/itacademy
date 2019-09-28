@@ -2,8 +2,8 @@
 
 namespace Models\Map;
 
-use Models\Task;
-use Models\TaskQuery;
+use Models\Finance;
+use Models\FinanceQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'tasks' table.
+ * This class defines the structure of the 'finances' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class TaskTableMap extends TableMap
+class FinanceTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class TaskTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'Models.Map.TaskTableMap';
+    const CLASS_NAME = 'Models.Map.FinanceTableMap';
 
     /**
      * The default database name for this class
@@ -44,17 +44,17 @@ class TaskTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'tasks';
+    const TABLE_NAME = 'finances';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Models\\Task';
+    const OM_CLASS = '\\Models\\Finance';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Models.Task';
+    const CLASS_DEFAULT = 'Models.Finance';
 
     /**
      * The total number of columns
@@ -74,42 +74,42 @@ class TaskTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'tasks.id';
+    const COL_ID = 'finances.id';
 
     /**
      * the column name for the title field
      */
-    const COL_TITLE = 'tasks.title';
+    const COL_TITLE = 'finances.title';
 
     /**
      * the column name for the description field
      */
-    const COL_DESCRIPTION = 'tasks.description';
+    const COL_DESCRIPTION = 'finances.description';
 
     /**
-     * the column name for the dateEnd field
+     * the column name for the manager_id field
      */
-    const COL_DATEEND = 'tasks.dateEnd';
+    const COL_MANAGER_ID = 'finances.manager_id';
 
     /**
-     * the column name for the done field
+     * the column name for the user_id field
      */
-    const COL_DONE = 'tasks.done';
+    const COL_USER_ID = 'finances.user_id';
 
     /**
-     * the column name for the order field
+     * the column name for the type field
      */
-    const COL_ORDER = 'tasks.order';
+    const COL_TYPE = 'finances.type';
 
     /**
      * the column name for the created_at field
      */
-    const COL_CREATED_AT = 'tasks.created_at';
+    const COL_CREATED_AT = 'finances.created_at';
 
     /**
      * the column name for the updated_at field
      */
-    const COL_UPDATED_AT = 'tasks.updated_at';
+    const COL_UPDATED_AT = 'finances.updated_at';
 
     /**
      * The default string format for model objects of the related table
@@ -123,10 +123,10 @@ class TaskTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Title', 'Description', 'Dateend', 'Done', 'Order', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_CAMELNAME     => array('id', 'title', 'description', 'dateend', 'done', 'order', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(TaskTableMap::COL_ID, TaskTableMap::COL_TITLE, TaskTableMap::COL_DESCRIPTION, TaskTableMap::COL_DATEEND, TaskTableMap::COL_DONE, TaskTableMap::COL_ORDER, TaskTableMap::COL_CREATED_AT, TaskTableMap::COL_UPDATED_AT, ),
-        self::TYPE_FIELDNAME     => array('id', 'title', 'description', 'dateEnd', 'done', 'order', 'created_at', 'updated_at', ),
+        self::TYPE_PHPNAME       => array('Id', 'Title', 'Description', 'ManagerId', 'UserId', 'Type', 'CreatedAt', 'UpdatedAt', ),
+        self::TYPE_CAMELNAME     => array('id', 'title', 'description', 'managerId', 'userId', 'type', 'createdAt', 'updatedAt', ),
+        self::TYPE_COLNAME       => array(FinanceTableMap::COL_ID, FinanceTableMap::COL_TITLE, FinanceTableMap::COL_DESCRIPTION, FinanceTableMap::COL_MANAGER_ID, FinanceTableMap::COL_USER_ID, FinanceTableMap::COL_TYPE, FinanceTableMap::COL_CREATED_AT, FinanceTableMap::COL_UPDATED_AT, ),
+        self::TYPE_FIELDNAME     => array('id', 'title', 'description', 'manager_id', 'user_id', 'type', 'created_at', 'updated_at', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
@@ -137,10 +137,10 @@ class TaskTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Description' => 2, 'Dateend' => 3, 'Done' => 4, 'Order' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'dateend' => 3, 'done' => 4, 'order' => 5, 'createdAt' => 6, 'updatedAt' => 7, ),
-        self::TYPE_COLNAME       => array(TaskTableMap::COL_ID => 0, TaskTableMap::COL_TITLE => 1, TaskTableMap::COL_DESCRIPTION => 2, TaskTableMap::COL_DATEEND => 3, TaskTableMap::COL_DONE => 4, TaskTableMap::COL_ORDER => 5, TaskTableMap::COL_CREATED_AT => 6, TaskTableMap::COL_UPDATED_AT => 7, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'dateEnd' => 3, 'done' => 4, 'order' => 5, 'created_at' => 6, 'updated_at' => 7, ),
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Description' => 2, 'ManagerId' => 3, 'UserId' => 4, 'Type' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'managerId' => 3, 'userId' => 4, 'type' => 5, 'createdAt' => 6, 'updatedAt' => 7, ),
+        self::TYPE_COLNAME       => array(FinanceTableMap::COL_ID => 0, FinanceTableMap::COL_TITLE => 1, FinanceTableMap::COL_DESCRIPTION => 2, FinanceTableMap::COL_MANAGER_ID => 3, FinanceTableMap::COL_USER_ID => 4, FinanceTableMap::COL_TYPE => 5, FinanceTableMap::COL_CREATED_AT => 6, FinanceTableMap::COL_UPDATED_AT => 7, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'manager_id' => 3, 'user_id' => 4, 'type' => 5, 'created_at' => 6, 'updated_at' => 7, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
@@ -154,19 +154,19 @@ class TaskTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('tasks');
-        $this->setPhpName('Task');
+        $this->setName('finances');
+        $this->setPhpName('Finance');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Models\\Task');
+        $this->setClassName('\\Models\\Finance');
         $this->setPackage('Models');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', true, 255, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('dateEnd', 'Dateend', 'TIMESTAMP', true, null, null);
-        $this->addColumn('done', 'Done', 'BOOLEAN', false, 1, false);
-        $this->addColumn('order', 'Order', 'INTEGER', false, null, null);
+        $this->addColumn('manager_id', 'ManagerId', 'INTEGER', true, null, null);
+        $this->addColumn('user_id', 'UserId', 'INTEGER', false, null, null);
+        $this->addColumn('type', 'Type', 'INTEGER', true, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
     } // initialize()
@@ -249,7 +249,7 @@ class TaskTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? TaskTableMap::CLASS_DEFAULT : TaskTableMap::OM_CLASS;
+        return $withPrefix ? FinanceTableMap::CLASS_DEFAULT : FinanceTableMap::OM_CLASS;
     }
 
     /**
@@ -263,22 +263,22 @@ class TaskTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Task object, last column rank)
+     * @return array           (Finance object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = TaskTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = TaskTableMap::getInstanceFromPool($key))) {
+        $key = FinanceTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = FinanceTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + TaskTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + FinanceTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = TaskTableMap::OM_CLASS;
-            /** @var Task $obj */
+            $cls = FinanceTableMap::OM_CLASS;
+            /** @var Finance $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            TaskTableMap::addInstanceToPool($obj, $key);
+            FinanceTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -301,18 +301,18 @@ class TaskTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = TaskTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = TaskTableMap::getInstanceFromPool($key))) {
+            $key = FinanceTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = FinanceTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Task $obj */
+                /** @var Finance $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                TaskTableMap::addInstanceToPool($obj, $key);
+                FinanceTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -333,21 +333,21 @@ class TaskTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(TaskTableMap::COL_ID);
-            $criteria->addSelectColumn(TaskTableMap::COL_TITLE);
-            $criteria->addSelectColumn(TaskTableMap::COL_DESCRIPTION);
-            $criteria->addSelectColumn(TaskTableMap::COL_DATEEND);
-            $criteria->addSelectColumn(TaskTableMap::COL_DONE);
-            $criteria->addSelectColumn(TaskTableMap::COL_ORDER);
-            $criteria->addSelectColumn(TaskTableMap::COL_CREATED_AT);
-            $criteria->addSelectColumn(TaskTableMap::COL_UPDATED_AT);
+            $criteria->addSelectColumn(FinanceTableMap::COL_ID);
+            $criteria->addSelectColumn(FinanceTableMap::COL_TITLE);
+            $criteria->addSelectColumn(FinanceTableMap::COL_DESCRIPTION);
+            $criteria->addSelectColumn(FinanceTableMap::COL_MANAGER_ID);
+            $criteria->addSelectColumn(FinanceTableMap::COL_USER_ID);
+            $criteria->addSelectColumn(FinanceTableMap::COL_TYPE);
+            $criteria->addSelectColumn(FinanceTableMap::COL_CREATED_AT);
+            $criteria->addSelectColumn(FinanceTableMap::COL_UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');
-            $criteria->addSelectColumn($alias . '.dateEnd');
-            $criteria->addSelectColumn($alias . '.done');
-            $criteria->addSelectColumn($alias . '.order');
+            $criteria->addSelectColumn($alias . '.manager_id');
+            $criteria->addSelectColumn($alias . '.user_id');
+            $criteria->addSelectColumn($alias . '.type');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }
@@ -362,7 +362,7 @@ class TaskTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(TaskTableMap::DATABASE_NAME)->getTable(TaskTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(FinanceTableMap::DATABASE_NAME)->getTable(FinanceTableMap::TABLE_NAME);
     }
 
     /**
@@ -370,16 +370,16 @@ class TaskTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(TaskTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(TaskTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new TaskTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(FinanceTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(FinanceTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new FinanceTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Task or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Finance or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Task object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Finance object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -390,27 +390,27 @@ class TaskTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(TaskTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FinanceTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Models\Task) { // it's a model object
+        } elseif ($values instanceof \Models\Finance) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(TaskTableMap::DATABASE_NAME);
-            $criteria->add(TaskTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(FinanceTableMap::DATABASE_NAME);
+            $criteria->add(FinanceTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
-        $query = TaskQuery::create()->mergeWith($criteria);
+        $query = FinanceQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            TaskTableMap::clearInstancePool();
+            FinanceTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                TaskTableMap::removeInstanceFromPool($singleval);
+                FinanceTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -418,20 +418,20 @@ class TaskTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the tasks table.
+     * Deletes all rows from the finances table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return TaskQuery::create()->doDeleteAll($con);
+        return FinanceQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Task or Criteria object.
+     * Performs an INSERT on the database, given a Finance or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Task object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Finance object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -440,22 +440,22 @@ class TaskTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(TaskTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FinanceTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Task object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Finance object
         }
 
-        if ($criteria->containsKey(TaskTableMap::COL_ID) && $criteria->keyContainsValue(TaskTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.TaskTableMap::COL_ID.')');
+        if ($criteria->containsKey(FinanceTableMap::COL_ID) && $criteria->keyContainsValue(FinanceTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.FinanceTableMap::COL_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = TaskQuery::create()->mergeWith($criteria);
+        $query = FinanceQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -464,7 +464,7 @@ class TaskTableMap extends TableMap
         });
     }
 
-} // TaskTableMap
+} // FinanceTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-TaskTableMap::buildTableMap();
+FinanceTableMap::buildTableMap();

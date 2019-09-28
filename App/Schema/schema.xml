@@ -267,6 +267,18 @@
         <behavior name="query_cache" />
     </table>
 
+    <table name="finances" phpName="Finance" >
+        <column name="id" type="integer" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="title" type="varchar" required="true" />
+        <column name="description" type="longvarchar" required="true" />
+        <column name="manager_id" type="integer" required="true" />
+        <column name="user_id" required="false" type="integer" />
+        <column name="type" required="true" type="integer" />
+
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+    </table>
+
     <table name="stream_user" isCrossRef="true">
         <column name="stream_id" type="integer" primaryKey="true" />
         <foreign-key foreignTable="course_stream">

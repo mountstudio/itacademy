@@ -426,6 +426,21 @@ $router->add('admin/ajax/lesson/update', ['controller' => 'Admin\Ajax\Lesson', '
 //End Calendar lesson events
 
 
+//Calendar finance events
+$router->add('admin/finance', ['controller' => 'Admin\Finance', 'action' => 'index']);
+$router->add('admin/finance/add', ['controller' => 'Admin\Finance', 'action' => 'add']);
+$router->add('admin/finance/{id:\d+}/edit', ['controller' => 'Admin\Finance', 'action' => 'edit']);
+
+
+
+$router->add('admin/ajax/finance/list', ['controller' => 'Admin\Ajax\Finance', 'action' => 'list']);
+$router->add('admin/ajax/finance/add', ['controller' => 'Admin\Ajax\Finance', 'action' => 'add']);
+$router->add('admin/ajax/finance/delete', ['controller' => 'Admin\Ajax\Finance', 'action' => 'delete']);
+$router->add('admin/ajax/finance/edit', ['controller' => 'Admin\Ajax\Finance', 'action' => 'edit']);
+$router->add('admin/ajax/finance/update', ['controller' => 'Admin\Ajax\Finance', 'action' => 'update']);
+//End Calendar finance events
+
+
 
 
 

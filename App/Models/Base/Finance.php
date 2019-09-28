@@ -5,9 +5,9 @@ namespace Models\Base;
 use \DateTime;
 use \Exception;
 use \PDO;
-use Models\Task as ChildTask;
-use Models\TaskQuery as ChildTaskQuery;
-use Models\Map\TaskTableMap;
+use Models\Finance as ChildFinance;
+use Models\FinanceQuery as ChildFinanceQuery;
+use Models\Map\FinanceTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -22,18 +22,18 @@ use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
 
 /**
- * Base class that represents a row from the 'tasks' table.
+ * Base class that represents a row from the 'finances' table.
  *
  *
  *
  * @package    propel.generator.Models.Base
  */
-abstract class Task implements ActiveRecordInterface
+abstract class Finance implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Models\\Map\\TaskTableMap';
+    const TABLE_MAP = '\\Models\\Map\\FinanceTableMap';
 
 
     /**
@@ -84,26 +84,25 @@ abstract class Task implements ActiveRecordInterface
     protected $description;
 
     /**
-     * The value for the dateend field.
-     *
-     * @var        DateTime
-     */
-    protected $dateend;
-
-    /**
-     * The value for the done field.
-     *
-     * Note: this column has a database default value of: false
-     * @var        boolean
-     */
-    protected $done;
-
-    /**
-     * The value for the order field.
+     * The value for the manager_id field.
      *
      * @var        int
      */
-    protected $order;
+    protected $manager_id;
+
+    /**
+     * The value for the user_id field.
+     *
+     * @var        int
+     */
+    protected $user_id;
+
+    /**
+     * The value for the type field.
+     *
+     * @var        int
+     */
+    protected $type;
 
     /**
      * The value for the created_at field.
@@ -128,23 +127,10 @@ abstract class Task implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Applies default values to this object.
-     * This method should be called from the object's constructor (or
-     * equivalent initialization method).
-     * @see __construct()
-     */
-    public function applyDefaultValues()
-    {
-        $this->done = false;
-    }
-
-    /**
-     * Initializes internal state of Models\Base\Task object.
-     * @see applyDefaults()
+     * Initializes internal state of Models\Base\Finance object.
      */
     public function __construct()
     {
-        $this->applyDefaultValues();
     }
 
     /**
@@ -236,9 +222,9 @@ abstract class Task implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Task</code> instance.  If
-     * <code>obj</code> is an instance of <code>Task</code>, delegates to
-     * <code>equals(Task)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>Finance</code> instance.  If
+     * <code>obj</code> is an instance of <code>Finance</code>, delegates to
+     * <code>equals(Finance)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -304,7 +290,7 @@ abstract class Task implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return $this|Task The current object, for fluid interface
+     * @return $this|Finance The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -396,53 +382,33 @@ abstract class Task implements ActiveRecordInterface
     }
 
     /**
-     * Get the [optionally formatted] temporal [dateend] column value.
-     *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getDateend($format = NULL)
-    {
-        if ($format === null) {
-            return $this->dateend;
-        } else {
-            return $this->dateend instanceof \DateTimeInterface ? $this->dateend->format($format) : null;
-        }
-    }
-
-    /**
-     * Get the [done] column value.
-     *
-     * @return boolean
-     */
-    public function getDone()
-    {
-        return $this->done;
-    }
-
-    /**
-     * Get the [done] column value.
-     *
-     * @return boolean
-     */
-    public function isDone()
-    {
-        return $this->getDone();
-    }
-
-    /**
-     * Get the [order] column value.
+     * Get the [manager_id] column value.
      *
      * @return int
      */
-    public function getOrder()
+    public function getManagerId()
     {
-        return $this->order;
+        return $this->manager_id;
+    }
+
+    /**
+     * Get the [user_id] column value.
+     *
+     * @return int
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    /**
+     * Get the [type] column value.
+     *
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
@@ -489,7 +455,7 @@ abstract class Task implements ActiveRecordInterface
      * Set the value of [id] column.
      *
      * @param int $v new value
-     * @return $this|\Models\Task The current object (for fluent API support)
+     * @return $this|\Models\Finance The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -499,7 +465,7 @@ abstract class Task implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[TaskTableMap::COL_ID] = true;
+            $this->modifiedColumns[FinanceTableMap::COL_ID] = true;
         }
 
         return $this;
@@ -509,7 +475,7 @@ abstract class Task implements ActiveRecordInterface
      * Set the value of [title] column.
      *
      * @param string $v new value
-     * @return $this|\Models\Task The current object (for fluent API support)
+     * @return $this|\Models\Finance The current object (for fluent API support)
      */
     public function setTitle($v)
     {
@@ -519,7 +485,7 @@ abstract class Task implements ActiveRecordInterface
 
         if ($this->title !== $v) {
             $this->title = $v;
-            $this->modifiedColumns[TaskTableMap::COL_TITLE] = true;
+            $this->modifiedColumns[FinanceTableMap::COL_TITLE] = true;
         }
 
         return $this;
@@ -529,7 +495,7 @@ abstract class Task implements ActiveRecordInterface
      * Set the value of [description] column.
      *
      * @param string $v new value
-     * @return $this|\Models\Task The current object (for fluent API support)
+     * @return $this|\Models\Finance The current object (for fluent API support)
      */
     public function setDescription($v)
     {
@@ -539,86 +505,78 @@ abstract class Task implements ActiveRecordInterface
 
         if ($this->description !== $v) {
             $this->description = $v;
-            $this->modifiedColumns[TaskTableMap::COL_DESCRIPTION] = true;
+            $this->modifiedColumns[FinanceTableMap::COL_DESCRIPTION] = true;
         }
 
         return $this;
     } // setDescription()
 
     /**
-     * Sets the value of [dateend] column to a normalized version of the date/time value specified.
-     *
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
-     * @return $this|\Models\Task The current object (for fluent API support)
-     */
-    public function setDateend($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->dateend !== null || $dt !== null) {
-            if ($this->dateend === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->dateend->format("Y-m-d H:i:s.u")) {
-                $this->dateend = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[TaskTableMap::COL_DATEEND] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setDateend()
-
-    /**
-     * Sets the value of the [done] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param  boolean|integer|string $v The new value
-     * @return $this|\Models\Task The current object (for fluent API support)
-     */
-    public function setDone($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
-        }
-
-        if ($this->done !== $v) {
-            $this->done = $v;
-            $this->modifiedColumns[TaskTableMap::COL_DONE] = true;
-        }
-
-        return $this;
-    } // setDone()
-
-    /**
-     * Set the value of [order] column.
+     * Set the value of [manager_id] column.
      *
      * @param int $v new value
-     * @return $this|\Models\Task The current object (for fluent API support)
+     * @return $this|\Models\Finance The current object (for fluent API support)
      */
-    public function setOrder($v)
+    public function setManagerId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->order !== $v) {
-            $this->order = $v;
-            $this->modifiedColumns[TaskTableMap::COL_ORDER] = true;
+        if ($this->manager_id !== $v) {
+            $this->manager_id = $v;
+            $this->modifiedColumns[FinanceTableMap::COL_MANAGER_ID] = true;
         }
 
         return $this;
-    } // setOrder()
+    } // setManagerId()
+
+    /**
+     * Set the value of [user_id] column.
+     *
+     * @param int $v new value
+     * @return $this|\Models\Finance The current object (for fluent API support)
+     */
+    public function setUserId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->user_id !== $v) {
+            $this->user_id = $v;
+            $this->modifiedColumns[FinanceTableMap::COL_USER_ID] = true;
+        }
+
+        return $this;
+    } // setUserId()
+
+    /**
+     * Set the value of [type] column.
+     *
+     * @param int $v new value
+     * @return $this|\Models\Finance The current object (for fluent API support)
+     */
+    public function setType($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->type !== $v) {
+            $this->type = $v;
+            $this->modifiedColumns[FinanceTableMap::COL_TYPE] = true;
+        }
+
+        return $this;
+    } // setType()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
      *               Empty strings are treated as NULL.
-     * @return $this|\Models\Task The current object (for fluent API support)
+     * @return $this|\Models\Finance The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -626,7 +584,7 @@ abstract class Task implements ActiveRecordInterface
         if ($this->created_at !== null || $dt !== null) {
             if ($this->created_at === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->created_at->format("Y-m-d H:i:s.u")) {
                 $this->created_at = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[TaskTableMap::COL_CREATED_AT] = true;
+                $this->modifiedColumns[FinanceTableMap::COL_CREATED_AT] = true;
             }
         } // if either are not null
 
@@ -638,7 +596,7 @@ abstract class Task implements ActiveRecordInterface
      *
      * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
      *               Empty strings are treated as NULL.
-     * @return $this|\Models\Task The current object (for fluent API support)
+     * @return $this|\Models\Finance The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -646,7 +604,7 @@ abstract class Task implements ActiveRecordInterface
         if ($this->updated_at !== null || $dt !== null) {
             if ($this->updated_at === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->updated_at->format("Y-m-d H:i:s.u")) {
                 $this->updated_at = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[TaskTableMap::COL_UPDATED_AT] = true;
+                $this->modifiedColumns[FinanceTableMap::COL_UPDATED_AT] = true;
             }
         } // if either are not null
 
@@ -663,10 +621,6 @@ abstract class Task implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
-            if ($this->done !== false) {
-                return false;
-            }
-
         // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
@@ -693,34 +647,31 @@ abstract class Task implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : TaskTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : FinanceTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : TaskTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : FinanceTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
             $this->title = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : TaskTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : FinanceTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
             $this->description = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : TaskTableMap::translateFieldName('Dateend', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00 00:00:00') {
-                $col = null;
-            }
-            $this->dateend = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : FinanceTableMap::translateFieldName('ManagerId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->manager_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : TaskTableMap::translateFieldName('Done', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->done = (null !== $col) ? (boolean) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : FinanceTableMap::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->user_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : TaskTableMap::translateFieldName('Order', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->order = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : FinanceTableMap::translateFieldName('Type', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->type = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : TaskTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : FinanceTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : TaskTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : FinanceTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -733,10 +684,10 @@ abstract class Task implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 8; // 8 = TaskTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = FinanceTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\Models\\Task'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\Models\\Finance'), 0, $e);
         }
     }
 
@@ -778,13 +729,13 @@ abstract class Task implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(TaskTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(FinanceTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildTaskQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildFinanceQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -803,8 +754,8 @@ abstract class Task implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Task::setDeleted()
-     * @see Task::isDeleted()
+     * @see Finance::setDeleted()
+     * @see Finance::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -813,11 +764,11 @@ abstract class Task implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(TaskTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FinanceTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildTaskQuery::create()
+            $deleteQuery = ChildFinanceQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -852,7 +803,7 @@ abstract class Task implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(TaskTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FinanceTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -863,16 +814,16 @@ abstract class Task implements ActiveRecordInterface
                 // timestampable behavior
                 $time = time();
                 $highPrecision = \Propel\Runtime\Util\PropelDateTime::createHighPrecision();
-                if (!$this->isColumnModified(TaskTableMap::COL_CREATED_AT)) {
+                if (!$this->isColumnModified(FinanceTableMap::COL_CREATED_AT)) {
                     $this->setCreatedAt($highPrecision);
                 }
-                if (!$this->isColumnModified(TaskTableMap::COL_UPDATED_AT)) {
+                if (!$this->isColumnModified(FinanceTableMap::COL_UPDATED_AT)) {
                     $this->setUpdatedAt($highPrecision);
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(TaskTableMap::COL_UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(FinanceTableMap::COL_UPDATED_AT)) {
                     $this->setUpdatedAt(\Propel\Runtime\Util\PropelDateTime::createHighPrecision());
                 }
             }
@@ -884,7 +835,7 @@ abstract class Task implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                TaskTableMap::addInstanceToPool($this);
+                FinanceTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -941,39 +892,39 @@ abstract class Task implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[TaskTableMap::COL_ID] = true;
+        $this->modifiedColumns[FinanceTableMap::COL_ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . TaskTableMap::COL_ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . FinanceTableMap::COL_ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(TaskTableMap::COL_ID)) {
+        if ($this->isColumnModified(FinanceTableMap::COL_ID)) {
             $modifiedColumns[':p' . $index++]  = 'id';
         }
-        if ($this->isColumnModified(TaskTableMap::COL_TITLE)) {
+        if ($this->isColumnModified(FinanceTableMap::COL_TITLE)) {
             $modifiedColumns[':p' . $index++]  = 'title';
         }
-        if ($this->isColumnModified(TaskTableMap::COL_DESCRIPTION)) {
+        if ($this->isColumnModified(FinanceTableMap::COL_DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = 'description';
         }
-        if ($this->isColumnModified(TaskTableMap::COL_DATEEND)) {
-            $modifiedColumns[':p' . $index++]  = 'dateEnd';
+        if ($this->isColumnModified(FinanceTableMap::COL_MANAGER_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'manager_id';
         }
-        if ($this->isColumnModified(TaskTableMap::COL_DONE)) {
-            $modifiedColumns[':p' . $index++]  = 'done';
+        if ($this->isColumnModified(FinanceTableMap::COL_USER_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'user_id';
         }
-        if ($this->isColumnModified(TaskTableMap::COL_ORDER)) {
-            $modifiedColumns[':p' . $index++]  = 'order';
+        if ($this->isColumnModified(FinanceTableMap::COL_TYPE)) {
+            $modifiedColumns[':p' . $index++]  = 'type';
         }
-        if ($this->isColumnModified(TaskTableMap::COL_CREATED_AT)) {
+        if ($this->isColumnModified(FinanceTableMap::COL_CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'created_at';
         }
-        if ($this->isColumnModified(TaskTableMap::COL_UPDATED_AT)) {
+        if ($this->isColumnModified(FinanceTableMap::COL_UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'updated_at';
         }
 
         $sql = sprintf(
-            'INSERT INTO tasks (%s) VALUES (%s)',
+            'INSERT INTO finances (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -991,14 +942,14 @@ abstract class Task implements ActiveRecordInterface
                     case 'description':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
-                    case 'dateEnd':
-                        $stmt->bindValue($identifier, $this->dateend ? $this->dateend->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
+                    case 'manager_id':
+                        $stmt->bindValue($identifier, $this->manager_id, PDO::PARAM_INT);
                         break;
-                    case 'done':
-                        $stmt->bindValue($identifier, (int) $this->done, PDO::PARAM_INT);
+                    case 'user_id':
+                        $stmt->bindValue($identifier, $this->user_id, PDO::PARAM_INT);
                         break;
-                    case 'order':
-                        $stmt->bindValue($identifier, $this->order, PDO::PARAM_INT);
+                    case 'type':
+                        $stmt->bindValue($identifier, $this->type, PDO::PARAM_INT);
                         break;
                     case 'created_at':
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
@@ -1052,7 +1003,7 @@ abstract class Task implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = TaskTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = FinanceTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -1078,13 +1029,13 @@ abstract class Task implements ActiveRecordInterface
                 return $this->getDescription();
                 break;
             case 3:
-                return $this->getDateend();
+                return $this->getManagerId();
                 break;
             case 4:
-                return $this->getDone();
+                return $this->getUserId();
                 break;
             case 5:
-                return $this->getOrder();
+                return $this->getType();
                 break;
             case 6:
                 return $this->getCreatedAt();
@@ -1115,25 +1066,21 @@ abstract class Task implements ActiveRecordInterface
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
-        if (isset($alreadyDumpedObjects['Task'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['Finance'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Task'][$this->hashCode()] = true;
-        $keys = TaskTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['Finance'][$this->hashCode()] = true;
+        $keys = FinanceTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getTitle(),
             $keys[2] => $this->getDescription(),
-            $keys[3] => $this->getDateend(),
-            $keys[4] => $this->getDone(),
-            $keys[5] => $this->getOrder(),
+            $keys[3] => $this->getManagerId(),
+            $keys[4] => $this->getUserId(),
+            $keys[5] => $this->getType(),
             $keys[6] => $this->getCreatedAt(),
             $keys[7] => $this->getUpdatedAt(),
         );
-        if ($result[$keys[3]] instanceof \DateTimeInterface) {
-            $result[$keys[3]] = $result[$keys[3]]->format('c');
-        }
-
         if ($result[$keys[6]] instanceof \DateTimeInterface) {
             $result[$keys[6]] = $result[$keys[6]]->format('c');
         }
@@ -1160,11 +1107,11 @@ abstract class Task implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\Models\Task
+     * @return $this|\Models\Finance
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = TaskTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = FinanceTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -1175,7 +1122,7 @@ abstract class Task implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\Models\Task
+     * @return $this|\Models\Finance
      */
     public function setByPosition($pos, $value)
     {
@@ -1190,13 +1137,13 @@ abstract class Task implements ActiveRecordInterface
                 $this->setDescription($value);
                 break;
             case 3:
-                $this->setDateend($value);
+                $this->setManagerId($value);
                 break;
             case 4:
-                $this->setDone($value);
+                $this->setUserId($value);
                 break;
             case 5:
-                $this->setOrder($value);
+                $this->setType($value);
                 break;
             case 6:
                 $this->setCreatedAt($value);
@@ -1228,7 +1175,7 @@ abstract class Task implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = TaskTableMap::getFieldNames($keyType);
+        $keys = FinanceTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
             $this->setId($arr[$keys[0]]);
@@ -1240,13 +1187,13 @@ abstract class Task implements ActiveRecordInterface
             $this->setDescription($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setDateend($arr[$keys[3]]);
+            $this->setManagerId($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setDone($arr[$keys[4]]);
+            $this->setUserId($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setOrder($arr[$keys[5]]);
+            $this->setType($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
             $this->setCreatedAt($arr[$keys[6]]);
@@ -1273,7 +1220,7 @@ abstract class Task implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\Models\Task The current object, for fluid interface
+     * @return $this|\Models\Finance The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -1293,31 +1240,31 @@ abstract class Task implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(TaskTableMap::DATABASE_NAME);
+        $criteria = new Criteria(FinanceTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(TaskTableMap::COL_ID)) {
-            $criteria->add(TaskTableMap::COL_ID, $this->id);
+        if ($this->isColumnModified(FinanceTableMap::COL_ID)) {
+            $criteria->add(FinanceTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(TaskTableMap::COL_TITLE)) {
-            $criteria->add(TaskTableMap::COL_TITLE, $this->title);
+        if ($this->isColumnModified(FinanceTableMap::COL_TITLE)) {
+            $criteria->add(FinanceTableMap::COL_TITLE, $this->title);
         }
-        if ($this->isColumnModified(TaskTableMap::COL_DESCRIPTION)) {
-            $criteria->add(TaskTableMap::COL_DESCRIPTION, $this->description);
+        if ($this->isColumnModified(FinanceTableMap::COL_DESCRIPTION)) {
+            $criteria->add(FinanceTableMap::COL_DESCRIPTION, $this->description);
         }
-        if ($this->isColumnModified(TaskTableMap::COL_DATEEND)) {
-            $criteria->add(TaskTableMap::COL_DATEEND, $this->dateend);
+        if ($this->isColumnModified(FinanceTableMap::COL_MANAGER_ID)) {
+            $criteria->add(FinanceTableMap::COL_MANAGER_ID, $this->manager_id);
         }
-        if ($this->isColumnModified(TaskTableMap::COL_DONE)) {
-            $criteria->add(TaskTableMap::COL_DONE, $this->done);
+        if ($this->isColumnModified(FinanceTableMap::COL_USER_ID)) {
+            $criteria->add(FinanceTableMap::COL_USER_ID, $this->user_id);
         }
-        if ($this->isColumnModified(TaskTableMap::COL_ORDER)) {
-            $criteria->add(TaskTableMap::COL_ORDER, $this->order);
+        if ($this->isColumnModified(FinanceTableMap::COL_TYPE)) {
+            $criteria->add(FinanceTableMap::COL_TYPE, $this->type);
         }
-        if ($this->isColumnModified(TaskTableMap::COL_CREATED_AT)) {
-            $criteria->add(TaskTableMap::COL_CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(FinanceTableMap::COL_CREATED_AT)) {
+            $criteria->add(FinanceTableMap::COL_CREATED_AT, $this->created_at);
         }
-        if ($this->isColumnModified(TaskTableMap::COL_UPDATED_AT)) {
-            $criteria->add(TaskTableMap::COL_UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(FinanceTableMap::COL_UPDATED_AT)) {
+            $criteria->add(FinanceTableMap::COL_UPDATED_AT, $this->updated_at);
         }
 
         return $criteria;
@@ -1335,8 +1282,8 @@ abstract class Task implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildTaskQuery::create();
-        $criteria->add(TaskTableMap::COL_ID, $this->id);
+        $criteria = ChildFinanceQuery::create();
+        $criteria->add(FinanceTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -1398,7 +1345,7 @@ abstract class Task implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Models\Task (or compatible) type.
+     * @param      object $copyObj An object of \Models\Finance (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1407,9 +1354,9 @@ abstract class Task implements ActiveRecordInterface
     {
         $copyObj->setTitle($this->getTitle());
         $copyObj->setDescription($this->getDescription());
-        $copyObj->setDateend($this->getDateend());
-        $copyObj->setDone($this->getDone());
-        $copyObj->setOrder($this->getOrder());
+        $copyObj->setManagerId($this->getManagerId());
+        $copyObj->setUserId($this->getUserId());
+        $copyObj->setType($this->getType());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         if ($makeNew) {
@@ -1427,7 +1374,7 @@ abstract class Task implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \Models\Task Clone of current object.
+     * @return \Models\Finance Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1450,14 +1397,13 @@ abstract class Task implements ActiveRecordInterface
         $this->id = null;
         $this->title = null;
         $this->description = null;
-        $this->dateend = null;
-        $this->done = null;
-        $this->order = null;
+        $this->manager_id = null;
+        $this->user_id = null;
+        $this->type = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
-        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1485,7 +1431,7 @@ abstract class Task implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(TaskTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(FinanceTableMap::DEFAULT_STRING_FORMAT);
     }
 
     // timestampable behavior
@@ -1493,11 +1439,11 @@ abstract class Task implements ActiveRecordInterface
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     $this|ChildTask The current object (for fluent API support)
+     * @return     $this|ChildFinance The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[TaskTableMap::COL_UPDATED_AT] = true;
+        $this->modifiedColumns[FinanceTableMap::COL_UPDATED_AT] = true;
 
         return $this;
     }

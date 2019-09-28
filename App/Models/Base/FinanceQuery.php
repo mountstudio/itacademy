@@ -4,9 +4,9 @@ namespace Models\Base;
 
 use \Exception;
 use \PDO;
-use Models\Task as ChildTask;
-use Models\TaskQuery as ChildTaskQuery;
-use Models\Map\TaskTableMap;
+use Models\Finance as ChildFinance;
+use Models\FinanceQuery as ChildFinanceQuery;
+use Models\Map\FinanceTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -15,73 +15,73 @@ use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 
 /**
- * Base class that represents a query for the 'tasks' table.
+ * Base class that represents a query for the 'finances' table.
  *
  *
  *
- * @method     ChildTaskQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ChildTaskQuery orderByTitle($order = Criteria::ASC) Order by the title column
- * @method     ChildTaskQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method     ChildTaskQuery orderByDateend($order = Criteria::ASC) Order by the dateEnd column
- * @method     ChildTaskQuery orderByDone($order = Criteria::ASC) Order by the done column
- * @method     ChildTaskQuery orderByOrder($order = Criteria::ASC) Order by the order column
- * @method     ChildTaskQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method     ChildTaskQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method     ChildFinanceQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ChildFinanceQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method     ChildFinanceQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method     ChildFinanceQuery orderByManagerId($order = Criteria::ASC) Order by the manager_id column
+ * @method     ChildFinanceQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
+ * @method     ChildFinanceQuery orderByType($order = Criteria::ASC) Order by the type column
+ * @method     ChildFinanceQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method     ChildFinanceQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
- * @method     ChildTaskQuery groupById() Group by the id column
- * @method     ChildTaskQuery groupByTitle() Group by the title column
- * @method     ChildTaskQuery groupByDescription() Group by the description column
- * @method     ChildTaskQuery groupByDateend() Group by the dateEnd column
- * @method     ChildTaskQuery groupByDone() Group by the done column
- * @method     ChildTaskQuery groupByOrder() Group by the order column
- * @method     ChildTaskQuery groupByCreatedAt() Group by the created_at column
- * @method     ChildTaskQuery groupByUpdatedAt() Group by the updated_at column
+ * @method     ChildFinanceQuery groupById() Group by the id column
+ * @method     ChildFinanceQuery groupByTitle() Group by the title column
+ * @method     ChildFinanceQuery groupByDescription() Group by the description column
+ * @method     ChildFinanceQuery groupByManagerId() Group by the manager_id column
+ * @method     ChildFinanceQuery groupByUserId() Group by the user_id column
+ * @method     ChildFinanceQuery groupByType() Group by the type column
+ * @method     ChildFinanceQuery groupByCreatedAt() Group by the created_at column
+ * @method     ChildFinanceQuery groupByUpdatedAt() Group by the updated_at column
  *
- * @method     ChildTaskQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ChildTaskQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ChildTaskQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     ChildFinanceQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     ChildFinanceQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     ChildFinanceQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ChildTaskQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
- * @method     ChildTaskQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
- * @method     ChildTaskQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
+ * @method     ChildFinanceQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
+ * @method     ChildFinanceQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
+ * @method     ChildFinanceQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildTask findOne(ConnectionInterface $con = null) Return the first ChildTask matching the query
- * @method     ChildTask findOneOrCreate(ConnectionInterface $con = null) Return the first ChildTask matching the query, or a new ChildTask object populated from the query conditions when no match is found
+ * @method     ChildFinance findOne(ConnectionInterface $con = null) Return the first ChildFinance matching the query
+ * @method     ChildFinance findOneOrCreate(ConnectionInterface $con = null) Return the first ChildFinance matching the query, or a new ChildFinance object populated from the query conditions when no match is found
  *
- * @method     ChildTask findOneById(int $id) Return the first ChildTask filtered by the id column
- * @method     ChildTask findOneByTitle(string $title) Return the first ChildTask filtered by the title column
- * @method     ChildTask findOneByDescription(string $description) Return the first ChildTask filtered by the description column
- * @method     ChildTask findOneByDateend(string $dateEnd) Return the first ChildTask filtered by the dateEnd column
- * @method     ChildTask findOneByDone(boolean $done) Return the first ChildTask filtered by the done column
- * @method     ChildTask findOneByOrder(int $order) Return the first ChildTask filtered by the order column
- * @method     ChildTask findOneByCreatedAt(string $created_at) Return the first ChildTask filtered by the created_at column
- * @method     ChildTask findOneByUpdatedAt(string $updated_at) Return the first ChildTask filtered by the updated_at column *
+ * @method     ChildFinance findOneById(int $id) Return the first ChildFinance filtered by the id column
+ * @method     ChildFinance findOneByTitle(string $title) Return the first ChildFinance filtered by the title column
+ * @method     ChildFinance findOneByDescription(string $description) Return the first ChildFinance filtered by the description column
+ * @method     ChildFinance findOneByManagerId(int $manager_id) Return the first ChildFinance filtered by the manager_id column
+ * @method     ChildFinance findOneByUserId(int $user_id) Return the first ChildFinance filtered by the user_id column
+ * @method     ChildFinance findOneByType(int $type) Return the first ChildFinance filtered by the type column
+ * @method     ChildFinance findOneByCreatedAt(string $created_at) Return the first ChildFinance filtered by the created_at column
+ * @method     ChildFinance findOneByUpdatedAt(string $updated_at) Return the first ChildFinance filtered by the updated_at column *
 
- * @method     ChildTask requirePk($key, ConnectionInterface $con = null) Return the ChildTask by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildTask requireOne(ConnectionInterface $con = null) Return the first ChildTask matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildFinance requirePk($key, ConnectionInterface $con = null) Return the ChildFinance by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildFinance requireOne(ConnectionInterface $con = null) Return the first ChildFinance matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildTask requireOneById(int $id) Return the first ChildTask filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildTask requireOneByTitle(string $title) Return the first ChildTask filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildTask requireOneByDescription(string $description) Return the first ChildTask filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildTask requireOneByDateend(string $dateEnd) Return the first ChildTask filtered by the dateEnd column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildTask requireOneByDone(boolean $done) Return the first ChildTask filtered by the done column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildTask requireOneByOrder(int $order) Return the first ChildTask filtered by the order column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildTask requireOneByCreatedAt(string $created_at) Return the first ChildTask filtered by the created_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildTask requireOneByUpdatedAt(string $updated_at) Return the first ChildTask filtered by the updated_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildFinance requireOneById(int $id) Return the first ChildFinance filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildFinance requireOneByTitle(string $title) Return the first ChildFinance filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildFinance requireOneByDescription(string $description) Return the first ChildFinance filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildFinance requireOneByManagerId(int $manager_id) Return the first ChildFinance filtered by the manager_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildFinance requireOneByUserId(int $user_id) Return the first ChildFinance filtered by the user_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildFinance requireOneByType(int $type) Return the first ChildFinance filtered by the type column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildFinance requireOneByCreatedAt(string $created_at) Return the first ChildFinance filtered by the created_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildFinance requireOneByUpdatedAt(string $updated_at) Return the first ChildFinance filtered by the updated_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildTask[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildTask objects based on current ModelCriteria
- * @method     ChildTask[]|ObjectCollection findById(int $id) Return ChildTask objects filtered by the id column
- * @method     ChildTask[]|ObjectCollection findByTitle(string $title) Return ChildTask objects filtered by the title column
- * @method     ChildTask[]|ObjectCollection findByDescription(string $description) Return ChildTask objects filtered by the description column
- * @method     ChildTask[]|ObjectCollection findByDateend(string $dateEnd) Return ChildTask objects filtered by the dateEnd column
- * @method     ChildTask[]|ObjectCollection findByDone(boolean $done) Return ChildTask objects filtered by the done column
- * @method     ChildTask[]|ObjectCollection findByOrder(int $order) Return ChildTask objects filtered by the order column
- * @method     ChildTask[]|ObjectCollection findByCreatedAt(string $created_at) Return ChildTask objects filtered by the created_at column
- * @method     ChildTask[]|ObjectCollection findByUpdatedAt(string $updated_at) Return ChildTask objects filtered by the updated_at column
- * @method     ChildTask[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildFinance[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildFinance objects based on current ModelCriteria
+ * @method     ChildFinance[]|ObjectCollection findById(int $id) Return ChildFinance objects filtered by the id column
+ * @method     ChildFinance[]|ObjectCollection findByTitle(string $title) Return ChildFinance objects filtered by the title column
+ * @method     ChildFinance[]|ObjectCollection findByDescription(string $description) Return ChildFinance objects filtered by the description column
+ * @method     ChildFinance[]|ObjectCollection findByManagerId(int $manager_id) Return ChildFinance objects filtered by the manager_id column
+ * @method     ChildFinance[]|ObjectCollection findByUserId(int $user_id) Return ChildFinance objects filtered by the user_id column
+ * @method     ChildFinance[]|ObjectCollection findByType(int $type) Return ChildFinance objects filtered by the type column
+ * @method     ChildFinance[]|ObjectCollection findByCreatedAt(string $created_at) Return ChildFinance objects filtered by the created_at column
+ * @method     ChildFinance[]|ObjectCollection findByUpdatedAt(string $updated_at) Return ChildFinance objects filtered by the updated_at column
+ * @method     ChildFinance[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
-abstract class TaskQuery extends ModelCriteria
+abstract class FinanceQuery extends ModelCriteria
 {
 
     // query_cache behavior
@@ -89,31 +89,31 @@ abstract class TaskQuery extends ModelCriteria
 protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
-     * Initializes internal state of \Models\Base\TaskQuery object.
+     * Initializes internal state of \Models\Base\FinanceQuery object.
      *
      * @param     string $dbName The database name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'default', $modelName = '\\Models\\Task', $modelAlias = null)
+    public function __construct($dbName = 'default', $modelName = '\\Models\\Finance', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new ChildTaskQuery object.
+     * Returns a new ChildFinanceQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
      * @param     Criteria $criteria Optional Criteria to build the query from
      *
-     * @return ChildTaskQuery
+     * @return ChildFinanceQuery
      */
     public static function create($modelAlias = null, Criteria $criteria = null)
     {
-        if ($criteria instanceof ChildTaskQuery) {
+        if ($criteria instanceof ChildFinanceQuery) {
             return $criteria;
         }
-        $query = new ChildTaskQuery();
+        $query = new ChildFinanceQuery();
         if (null !== $modelAlias) {
             $query->setModelAlias($modelAlias);
         }
@@ -136,7 +136,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * @param mixed $key Primary key to use for the query
      * @param ConnectionInterface $con an optional connection object
      *
-     * @return ChildTask|array|mixed the result, formatted by the current formatter
+     * @return ChildFinance|array|mixed the result, formatted by the current formatter
      */
     public function findPk($key, ConnectionInterface $con = null)
     {
@@ -145,7 +145,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(TaskTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(FinanceTableMap::DATABASE_NAME);
         }
 
         $this->basePreSelect($con);
@@ -158,7 +158,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             return $this->findPkComplex($key, $con);
         }
 
-        if ((null !== ($obj = TaskTableMap::getInstanceFromPool(null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key)))) {
+        if ((null !== ($obj = FinanceTableMap::getInstanceFromPool(null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key)))) {
             // the object is already in the instance pool
             return $obj;
         }
@@ -175,11 +175,11 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildTask A model object, or null if the key is not found
+     * @return ChildFinance A model object, or null if the key is not found
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, title, description, dateEnd, done, order, created_at, updated_at FROM tasks WHERE id = :p0';
+        $sql = 'SELECT id, title, description, manager_id, user_id, type, created_at, updated_at FROM finances WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -190,10 +190,10 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
         }
         $obj = null;
         if ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
-            /** @var ChildTask $obj */
-            $obj = new ChildTask();
+            /** @var ChildFinance $obj */
+            $obj = new ChildFinance();
             $obj->hydrate($row);
-            TaskTableMap::addInstanceToPool($obj, null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key);
+            FinanceTableMap::addInstanceToPool($obj, null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key);
         }
         $stmt->closeCursor();
 
@@ -206,7 +206,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * @param     mixed $key Primary key to use for the query
      * @param     ConnectionInterface $con A connection object
      *
-     * @return ChildTask|array|mixed the result, formatted by the current formatter
+     * @return ChildFinance|array|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, ConnectionInterface $con)
     {
@@ -248,12 +248,12 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return $this|ChildTaskQuery The current query, for fluid interface
+     * @return $this|ChildFinanceQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(TaskTableMap::COL_ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(FinanceTableMap::COL_ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -261,12 +261,12 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return $this|ChildTaskQuery The current query, for fluid interface
+     * @return $this|ChildFinanceQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(TaskTableMap::COL_ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(FinanceTableMap::COL_ID, $keys, Criteria::IN);
     }
 
     /**
@@ -285,18 +285,18 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildTaskQuery The current query, for fluid interface
+     * @return $this|ChildFinanceQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(TaskTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(FinanceTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(TaskTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(FinanceTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -307,7 +307,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(TaskTableMap::COL_ID, $id, $comparison);
+        return $this->addUsingAlias(FinanceTableMap::COL_ID, $id, $comparison);
     }
 
     /**
@@ -322,7 +322,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * @param     string $title The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildTaskQuery The current query, for fluid interface
+     * @return $this|ChildFinanceQuery The current query, for fluid interface
      */
     public function filterByTitle($title = null, $comparison = null)
     {
@@ -332,7 +332,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(TaskTableMap::COL_TITLE, $title, $comparison);
+        return $this->addUsingAlias(FinanceTableMap::COL_TITLE, $title, $comparison);
     }
 
     /**
@@ -347,7 +347,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * @param     string $description The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildTaskQuery The current query, for fluid interface
+     * @return $this|ChildFinanceQuery The current query, for fluid interface
      */
     public function filterByDescription($description = null, $comparison = null)
     {
@@ -357,39 +357,37 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(TaskTableMap::COL_DESCRIPTION, $description, $comparison);
+        return $this->addUsingAlias(FinanceTableMap::COL_DESCRIPTION, $description, $comparison);
     }
 
     /**
-     * Filter the query on the dateEnd column
+     * Filter the query on the manager_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByDateend('2011-03-14'); // WHERE dateEnd = '2011-03-14'
-     * $query->filterByDateend('now'); // WHERE dateEnd = '2011-03-14'
-     * $query->filterByDateend(array('max' => 'yesterday')); // WHERE dateEnd > '2011-03-13'
+     * $query->filterByManagerId(1234); // WHERE manager_id = 1234
+     * $query->filterByManagerId(array(12, 34)); // WHERE manager_id IN (12, 34)
+     * $query->filterByManagerId(array('min' => 12)); // WHERE manager_id > 12
      * </code>
      *
-     * @param     mixed $dateend The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
+     * @param     mixed $managerId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildTaskQuery The current query, for fluid interface
+     * @return $this|ChildFinanceQuery The current query, for fluid interface
      */
-    public function filterByDateend($dateend = null, $comparison = null)
+    public function filterByManagerId($managerId = null, $comparison = null)
     {
-        if (is_array($dateend)) {
+        if (is_array($managerId)) {
             $useMinMax = false;
-            if (isset($dateend['min'])) {
-                $this->addUsingAlias(TaskTableMap::COL_DATEEND, $dateend['min'], Criteria::GREATER_EQUAL);
+            if (isset($managerId['min'])) {
+                $this->addUsingAlias(FinanceTableMap::COL_MANAGER_ID, $managerId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($dateend['max'])) {
-                $this->addUsingAlias(TaskTableMap::COL_DATEEND, $dateend['max'], Criteria::LESS_EQUAL);
+            if (isset($managerId['max'])) {
+                $this->addUsingAlias(FinanceTableMap::COL_MANAGER_ID, $managerId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -400,64 +398,37 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(TaskTableMap::COL_DATEEND, $dateend, $comparison);
+        return $this->addUsingAlias(FinanceTableMap::COL_MANAGER_ID, $managerId, $comparison);
     }
 
     /**
-     * Filter the query on the done column
+     * Filter the query on the user_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByDone(true); // WHERE done = true
-     * $query->filterByDone('yes'); // WHERE done = true
+     * $query->filterByUserId(1234); // WHERE user_id = 1234
+     * $query->filterByUserId(array(12, 34)); // WHERE user_id IN (12, 34)
+     * $query->filterByUserId(array('min' => 12)); // WHERE user_id > 12
      * </code>
      *
-     * @param     boolean|string $done The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildTaskQuery The current query, for fluid interface
-     */
-    public function filterByDone($done = null, $comparison = null)
-    {
-        if (is_string($done)) {
-            $done = in_array(strtolower($done), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(TaskTableMap::COL_DONE, $done, $comparison);
-    }
-
-    /**
-     * Filter the query on the order column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByOrder(1234); // WHERE order = 1234
-     * $query->filterByOrder(array(12, 34)); // WHERE order IN (12, 34)
-     * $query->filterByOrder(array('min' => 12)); // WHERE order > 12
-     * </code>
-     *
-     * @param     mixed $order The value to use as filter.
+     * @param     mixed $userId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildTaskQuery The current query, for fluid interface
+     * @return $this|ChildFinanceQuery The current query, for fluid interface
      */
-    public function filterByOrder($order = null, $comparison = null)
+    public function filterByUserId($userId = null, $comparison = null)
     {
-        if (is_array($order)) {
+        if (is_array($userId)) {
             $useMinMax = false;
-            if (isset($order['min'])) {
-                $this->addUsingAlias(TaskTableMap::COL_ORDER, $order['min'], Criteria::GREATER_EQUAL);
+            if (isset($userId['min'])) {
+                $this->addUsingAlias(FinanceTableMap::COL_USER_ID, $userId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($order['max'])) {
-                $this->addUsingAlias(TaskTableMap::COL_ORDER, $order['max'], Criteria::LESS_EQUAL);
+            if (isset($userId['max'])) {
+                $this->addUsingAlias(FinanceTableMap::COL_USER_ID, $userId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -468,7 +439,48 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(TaskTableMap::COL_ORDER, $order, $comparison);
+        return $this->addUsingAlias(FinanceTableMap::COL_USER_ID, $userId, $comparison);
+    }
+
+    /**
+     * Filter the query on the type column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByType(1234); // WHERE type = 1234
+     * $query->filterByType(array(12, 34)); // WHERE type IN (12, 34)
+     * $query->filterByType(array('min' => 12)); // WHERE type > 12
+     * </code>
+     *
+     * @param     mixed $type The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildFinanceQuery The current query, for fluid interface
+     */
+    public function filterByType($type = null, $comparison = null)
+    {
+        if (is_array($type)) {
+            $useMinMax = false;
+            if (isset($type['min'])) {
+                $this->addUsingAlias(FinanceTableMap::COL_TYPE, $type['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($type['max'])) {
+                $this->addUsingAlias(FinanceTableMap::COL_TYPE, $type['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(FinanceTableMap::COL_TYPE, $type, $comparison);
     }
 
     /**
@@ -489,18 +501,18 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildTaskQuery The current query, for fluid interface
+     * @return $this|ChildFinanceQuery The current query, for fluid interface
      */
     public function filterByCreatedAt($createdAt = null, $comparison = null)
     {
         if (is_array($createdAt)) {
             $useMinMax = false;
             if (isset($createdAt['min'])) {
-                $this->addUsingAlias(TaskTableMap::COL_CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(FinanceTableMap::COL_CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($createdAt['max'])) {
-                $this->addUsingAlias(TaskTableMap::COL_CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(FinanceTableMap::COL_CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -511,7 +523,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(TaskTableMap::COL_CREATED_AT, $createdAt, $comparison);
+        return $this->addUsingAlias(FinanceTableMap::COL_CREATED_AT, $createdAt, $comparison);
     }
 
     /**
@@ -532,18 +544,18 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildTaskQuery The current query, for fluid interface
+     * @return $this|ChildFinanceQuery The current query, for fluid interface
      */
     public function filterByUpdatedAt($updatedAt = null, $comparison = null)
     {
         if (is_array($updatedAt)) {
             $useMinMax = false;
             if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(TaskTableMap::COL_UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(FinanceTableMap::COL_UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(TaskTableMap::COL_UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(FinanceTableMap::COL_UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -554,27 +566,27 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(TaskTableMap::COL_UPDATED_AT, $updatedAt, $comparison);
+        return $this->addUsingAlias(FinanceTableMap::COL_UPDATED_AT, $updatedAt, $comparison);
     }
 
     /**
      * Exclude object from result
      *
-     * @param   ChildTask $task Object to remove from the list of results
+     * @param   ChildFinance $finance Object to remove from the list of results
      *
-     * @return $this|ChildTaskQuery The current query, for fluid interface
+     * @return $this|ChildFinanceQuery The current query, for fluid interface
      */
-    public function prune($task = null)
+    public function prune($finance = null)
     {
-        if ($task) {
-            $this->addUsingAlias(TaskTableMap::COL_ID, $task->getId(), Criteria::NOT_EQUAL);
+        if ($finance) {
+            $this->addUsingAlias(FinanceTableMap::COL_ID, $finance->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
     }
 
     /**
-     * Deletes all rows from the tasks table.
+     * Deletes all rows from the finances table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
@@ -582,7 +594,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     public function doDeleteAll(ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(TaskTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FinanceTableMap::DATABASE_NAME);
         }
 
         // use transaction because $criteria could contain info
@@ -593,8 +605,8 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            TaskTableMap::clearInstancePool();
-            TaskTableMap::clearRelatedInstancePool();
+            FinanceTableMap::clearInstancePool();
+            FinanceTableMap::clearRelatedInstancePool();
 
             return $affectedRows;
         });
@@ -612,23 +624,23 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     public function delete(ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(TaskTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FinanceTableMap::DATABASE_NAME);
         }
 
         $criteria = $this;
 
         // Set the correct dbName
-        $criteria->setDbName(TaskTableMap::DATABASE_NAME);
+        $criteria->setDbName(FinanceTableMap::DATABASE_NAME);
 
         // use transaction because $criteria could contain info
         // for more than one table or we could emulating ON DELETE CASCADE, etc.
         return $con->transaction(function () use ($con, $criteria) {
             $affectedRows = 0; // initialize var to track total num of affected rows
 
-            TaskTableMap::removeInstanceFromPool($criteria);
+            FinanceTableMap::removeInstanceFromPool($criteria);
 
             $affectedRows += ModelCriteria::delete($con);
-            TaskTableMap::clearRelatedInstancePool();
+            FinanceTableMap::clearRelatedInstancePool();
 
             return $affectedRows;
         });
@@ -641,41 +653,41 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @param      int $nbDays Maximum age of the latest update in days
      *
-     * @return     $this|ChildTaskQuery The current query, for fluid interface
+     * @return     $this|ChildFinanceQuery The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(TaskTableMap::COL_UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(FinanceTableMap::COL_UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by update date desc
      *
-     * @return     $this|ChildTaskQuery The current query, for fluid interface
+     * @return     $this|ChildFinanceQuery The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(TaskTableMap::COL_UPDATED_AT);
+        return $this->addDescendingOrderByColumn(FinanceTableMap::COL_UPDATED_AT);
     }
 
     /**
      * Order by update date asc
      *
-     * @return     $this|ChildTaskQuery The current query, for fluid interface
+     * @return     $this|ChildFinanceQuery The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(TaskTableMap::COL_UPDATED_AT);
+        return $this->addAscendingOrderByColumn(FinanceTableMap::COL_UPDATED_AT);
     }
 
     /**
      * Order by create date desc
      *
-     * @return     $this|ChildTaskQuery The current query, for fluid interface
+     * @return     $this|ChildFinanceQuery The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(TaskTableMap::COL_CREATED_AT);
+        return $this->addDescendingOrderByColumn(FinanceTableMap::COL_CREATED_AT);
     }
 
     /**
@@ -683,21 +695,21 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @param      int $nbDays Maximum age of in days
      *
-     * @return     $this|ChildTaskQuery The current query, for fluid interface
+     * @return     $this|ChildFinanceQuery The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(TaskTableMap::COL_CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(FinanceTableMap::COL_CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by create date asc
      *
-     * @return     $this|ChildTaskQuery The current query, for fluid interface
+     * @return     $this|ChildFinanceQuery The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(TaskTableMap::COL_CREATED_AT);
+        return $this->addAscendingOrderByColumn(FinanceTableMap::COL_CREATED_AT);
     }
 
     // query_cache behavior
@@ -739,8 +751,8 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
         }
         $this->configureSelectColumns();
 
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(TaskTableMap::DATABASE_NAME);
-        $db = Propel::getServiceContainer()->getAdapter(TaskTableMap::DATABASE_NAME);
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(FinanceTableMap::DATABASE_NAME);
+        $db = Propel::getServiceContainer()->getAdapter(FinanceTableMap::DATABASE_NAME);
 
         $key = $this->getQueryKey();
         if ($key && $this->cacheContains($key)) {
@@ -826,4 +838,4 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
         return $con->getDataFetcher($stmt);
     }
 
-} // TaskQuery
+} // FinanceQuery
