@@ -16,5 +16,6 @@ use Models\Base\Finance as BaseFinance;
  */
 class Finance extends BaseFinance
 {
-
+    const FINANCE_UP = 1;
+    const FINANCE_DOWN = 2;
 }
