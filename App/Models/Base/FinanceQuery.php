@@ -22,6 +22,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildFinanceQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildFinanceQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method     ChildFinanceQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method     ChildFinanceQuery orderBySumm($order = Criteria::ASC) Order by the summ column
  * @method     ChildFinanceQuery orderByManagerId($order = Criteria::ASC) Order by the manager_id column
  * @method     ChildFinanceQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
  * @method     ChildFinanceQuery orderByType($order = Criteria::ASC) Order by the type column
@@ -31,6 +32,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildFinanceQuery groupById() Group by the id column
  * @method     ChildFinanceQuery groupByTitle() Group by the title column
  * @method     ChildFinanceQuery groupByDescription() Group by the description column
+ * @method     ChildFinanceQuery groupBySumm() Group by the summ column
  * @method     ChildFinanceQuery groupByManagerId() Group by the manager_id column
  * @method     ChildFinanceQuery groupByUserId() Group by the user_id column
  * @method     ChildFinanceQuery groupByType() Group by the type column
@@ -51,6 +53,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildFinance findOneById(int $id) Return the first ChildFinance filtered by the id column
  * @method     ChildFinance findOneByTitle(string $title) Return the first ChildFinance filtered by the title column
  * @method     ChildFinance findOneByDescription(string $description) Return the first ChildFinance filtered by the description column
+ * @method     ChildFinance findOneBySumm(int $summ) Return the first ChildFinance filtered by the summ column
  * @method     ChildFinance findOneByManagerId(int $manager_id) Return the first ChildFinance filtered by the manager_id column
  * @method     ChildFinance findOneByUserId(int $user_id) Return the first ChildFinance filtered by the user_id column
  * @method     ChildFinance findOneByType(int $type) Return the first ChildFinance filtered by the type column
@@ -63,6 +66,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildFinance requireOneById(int $id) Return the first ChildFinance filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildFinance requireOneByTitle(string $title) Return the first ChildFinance filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildFinance requireOneByDescription(string $description) Return the first ChildFinance filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildFinance requireOneBySumm(int $summ) Return the first ChildFinance filtered by the summ column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildFinance requireOneByManagerId(int $manager_id) Return the first ChildFinance filtered by the manager_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildFinance requireOneByUserId(int $user_id) Return the first ChildFinance filtered by the user_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildFinance requireOneByType(int $type) Return the first ChildFinance filtered by the type column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -73,6 +77,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildFinance[]|ObjectCollection findById(int $id) Return ChildFinance objects filtered by the id column
  * @method     ChildFinance[]|ObjectCollection findByTitle(string $title) Return ChildFinance objects filtered by the title column
  * @method     ChildFinance[]|ObjectCollection findByDescription(string $description) Return ChildFinance objects filtered by the description column
+ * @method     ChildFinance[]|ObjectCollection findBySumm(int $summ) Return ChildFinance objects filtered by the summ column
  * @method     ChildFinance[]|ObjectCollection findByManagerId(int $manager_id) Return ChildFinance objects filtered by the manager_id column
  * @method     ChildFinance[]|ObjectCollection findByUserId(int $user_id) Return ChildFinance objects filtered by the user_id column
  * @method     ChildFinance[]|ObjectCollection findByType(int $type) Return ChildFinance objects filtered by the type column
@@ -179,7 +184,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, title, description, manager_id, user_id, type, created_at, updated_at FROM finances WHERE id = :p0';
+        $sql = 'SELECT id, title, description, summ, manager_id, user_id, type, created_at, updated_at FROM finances WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -358,6 +363,47 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
         }
 
         return $this->addUsingAlias(FinanceTableMap::COL_DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the summ column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySumm(1234); // WHERE summ = 1234
+     * $query->filterBySumm(array(12, 34)); // WHERE summ IN (12, 34)
+     * $query->filterBySumm(array('min' => 12)); // WHERE summ > 12
+     * </code>
+     *
+     * @param     mixed $summ The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildFinanceQuery The current query, for fluid interface
+     */
+    public function filterBySumm($summ = null, $comparison = null)
+    {
+        if (is_array($summ)) {
+            $useMinMax = false;
+            if (isset($summ['min'])) {
+                $this->addUsingAlias(FinanceTableMap::COL_SUMM, $summ['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($summ['max'])) {
+                $this->addUsingAlias(FinanceTableMap::COL_SUMM, $summ['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(FinanceTableMap::COL_SUMM, $summ, $comparison);
     }
 
     /**

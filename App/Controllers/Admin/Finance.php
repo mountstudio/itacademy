@@ -6,6 +6,7 @@ namespace App\Controllers\Admin;
 
 use Core\CustomException;
 use Core\View;
+use Models\UserQuery;
 
 class Finance extends Base
 {
@@ -13,6 +14,8 @@ class Finance extends Base
     {
         try {
             $this->helper->shouldHavePrivilege('SUPER');
+            $students = UserQuery::create()->filterByCurrentGroupId(4);
+            $this->data = array_merge($this->data, ['students' => $students]);
 
             View::renderTemplate('Admin/Finance/index.html', $this->data);
         } catch (CustomException $exception) {

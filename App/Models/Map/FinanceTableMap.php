@@ -59,7 +59,7 @@ class FinanceTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 9;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class FinanceTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /**
      * the column name for the id field
@@ -85,6 +85,11 @@ class FinanceTableMap extends TableMap
      * the column name for the description field
      */
     const COL_DESCRIPTION = 'finances.description';
+
+    /**
+     * the column name for the summ field
+     */
+    const COL_SUMM = 'finances.summ';
 
     /**
      * the column name for the manager_id field
@@ -123,11 +128,11 @@ class FinanceTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Title', 'Description', 'ManagerId', 'UserId', 'Type', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_CAMELNAME     => array('id', 'title', 'description', 'managerId', 'userId', 'type', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(FinanceTableMap::COL_ID, FinanceTableMap::COL_TITLE, FinanceTableMap::COL_DESCRIPTION, FinanceTableMap::COL_MANAGER_ID, FinanceTableMap::COL_USER_ID, FinanceTableMap::COL_TYPE, FinanceTableMap::COL_CREATED_AT, FinanceTableMap::COL_UPDATED_AT, ),
-        self::TYPE_FIELDNAME     => array('id', 'title', 'description', 'manager_id', 'user_id', 'type', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
+        self::TYPE_PHPNAME       => array('Id', 'Title', 'Description', 'Summ', 'ManagerId', 'UserId', 'Type', 'CreatedAt', 'UpdatedAt', ),
+        self::TYPE_CAMELNAME     => array('id', 'title', 'description', 'summ', 'managerId', 'userId', 'type', 'createdAt', 'updatedAt', ),
+        self::TYPE_COLNAME       => array(FinanceTableMap::COL_ID, FinanceTableMap::COL_TITLE, FinanceTableMap::COL_DESCRIPTION, FinanceTableMap::COL_SUMM, FinanceTableMap::COL_MANAGER_ID, FinanceTableMap::COL_USER_ID, FinanceTableMap::COL_TYPE, FinanceTableMap::COL_CREATED_AT, FinanceTableMap::COL_UPDATED_AT, ),
+        self::TYPE_FIELDNAME     => array('id', 'title', 'description', 'summ', 'manager_id', 'user_id', 'type', 'created_at', 'updated_at', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -137,11 +142,11 @@ class FinanceTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Description' => 2, 'ManagerId' => 3, 'UserId' => 4, 'Type' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'managerId' => 3, 'userId' => 4, 'type' => 5, 'createdAt' => 6, 'updatedAt' => 7, ),
-        self::TYPE_COLNAME       => array(FinanceTableMap::COL_ID => 0, FinanceTableMap::COL_TITLE => 1, FinanceTableMap::COL_DESCRIPTION => 2, FinanceTableMap::COL_MANAGER_ID => 3, FinanceTableMap::COL_USER_ID => 4, FinanceTableMap::COL_TYPE => 5, FinanceTableMap::COL_CREATED_AT => 6, FinanceTableMap::COL_UPDATED_AT => 7, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'manager_id' => 3, 'user_id' => 4, 'type' => 5, 'created_at' => 6, 'updated_at' => 7, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Description' => 2, 'Summ' => 3, 'ManagerId' => 4, 'UserId' => 5, 'Type' => 6, 'CreatedAt' => 7, 'UpdatedAt' => 8, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'summ' => 3, 'managerId' => 4, 'userId' => 5, 'type' => 6, 'createdAt' => 7, 'updatedAt' => 8, ),
+        self::TYPE_COLNAME       => array(FinanceTableMap::COL_ID => 0, FinanceTableMap::COL_TITLE => 1, FinanceTableMap::COL_DESCRIPTION => 2, FinanceTableMap::COL_SUMM => 3, FinanceTableMap::COL_MANAGER_ID => 4, FinanceTableMap::COL_USER_ID => 5, FinanceTableMap::COL_TYPE => 6, FinanceTableMap::COL_CREATED_AT => 7, FinanceTableMap::COL_UPDATED_AT => 8, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'summ' => 3, 'manager_id' => 4, 'user_id' => 5, 'type' => 6, 'created_at' => 7, 'updated_at' => 8, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -164,6 +169,7 @@ class FinanceTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', true, 255, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('summ', 'Summ', 'INTEGER', true, null, null);
         $this->addColumn('manager_id', 'ManagerId', 'INTEGER', true, null, null);
         $this->addColumn('user_id', 'UserId', 'INTEGER', false, null, null);
         $this->addColumn('type', 'Type', 'INTEGER', true, null, null);
@@ -336,6 +342,7 @@ class FinanceTableMap extends TableMap
             $criteria->addSelectColumn(FinanceTableMap::COL_ID);
             $criteria->addSelectColumn(FinanceTableMap::COL_TITLE);
             $criteria->addSelectColumn(FinanceTableMap::COL_DESCRIPTION);
+            $criteria->addSelectColumn(FinanceTableMap::COL_SUMM);
             $criteria->addSelectColumn(FinanceTableMap::COL_MANAGER_ID);
             $criteria->addSelectColumn(FinanceTableMap::COL_USER_ID);
             $criteria->addSelectColumn(FinanceTableMap::COL_TYPE);
@@ -345,6 +352,7 @@ class FinanceTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');
+            $criteria->addSelectColumn($alias . '.summ');
             $criteria->addSelectColumn($alias . '.manager_id');
             $criteria->addSelectColumn($alias . '.user_id');
             $criteria->addSelectColumn($alias . '.type');

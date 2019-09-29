@@ -84,6 +84,13 @@ abstract class Finance implements ActiveRecordInterface
     protected $description;
 
     /**
+     * The value for the summ field.
+     *
+     * @var        int
+     */
+    protected $summ;
+
+    /**
      * The value for the manager_id field.
      *
      * @var        int
@@ -382,6 +389,16 @@ abstract class Finance implements ActiveRecordInterface
     }
 
     /**
+     * Get the [summ] column value.
+     *
+     * @return int
+     */
+    public function getSumm()
+    {
+        return $this->summ;
+    }
+
+    /**
      * Get the [manager_id] column value.
      *
      * @return int
@@ -510,6 +527,26 @@ abstract class Finance implements ActiveRecordInterface
 
         return $this;
     } // setDescription()
+
+    /**
+     * Set the value of [summ] column.
+     *
+     * @param int $v new value
+     * @return $this|\Models\Finance The current object (for fluent API support)
+     */
+    public function setSumm($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->summ !== $v) {
+            $this->summ = $v;
+            $this->modifiedColumns[FinanceTableMap::COL_SUMM] = true;
+        }
+
+        return $this;
+    } // setSumm()
 
     /**
      * Set the value of [manager_id] column.
@@ -656,22 +693,25 @@ abstract class Finance implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : FinanceTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
             $this->description = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : FinanceTableMap::translateFieldName('ManagerId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : FinanceTableMap::translateFieldName('Summ', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->summ = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : FinanceTableMap::translateFieldName('ManagerId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->manager_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : FinanceTableMap::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : FinanceTableMap::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->user_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : FinanceTableMap::translateFieldName('Type', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : FinanceTableMap::translateFieldName('Type', TableMap::TYPE_PHPNAME, $indexType)];
             $this->type = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : FinanceTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : FinanceTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : FinanceTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : FinanceTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -684,7 +724,7 @@ abstract class Finance implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 8; // 8 = FinanceTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = FinanceTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Models\\Finance'), 0, $e);
@@ -907,6 +947,9 @@ abstract class Finance implements ActiveRecordInterface
         if ($this->isColumnModified(FinanceTableMap::COL_DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = 'description';
         }
+        if ($this->isColumnModified(FinanceTableMap::COL_SUMM)) {
+            $modifiedColumns[':p' . $index++]  = 'summ';
+        }
         if ($this->isColumnModified(FinanceTableMap::COL_MANAGER_ID)) {
             $modifiedColumns[':p' . $index++]  = 'manager_id';
         }
@@ -941,6 +984,9 @@ abstract class Finance implements ActiveRecordInterface
                         break;
                     case 'description':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case 'summ':
+                        $stmt->bindValue($identifier, $this->summ, PDO::PARAM_INT);
                         break;
                     case 'manager_id':
                         $stmt->bindValue($identifier, $this->manager_id, PDO::PARAM_INT);
@@ -1029,18 +1075,21 @@ abstract class Finance implements ActiveRecordInterface
                 return $this->getDescription();
                 break;
             case 3:
-                return $this->getManagerId();
+                return $this->getSumm();
                 break;
             case 4:
-                return $this->getUserId();
+                return $this->getManagerId();
                 break;
             case 5:
-                return $this->getType();
+                return $this->getUserId();
                 break;
             case 6:
-                return $this->getCreatedAt();
+                return $this->getType();
                 break;
             case 7:
+                return $this->getCreatedAt();
+                break;
+            case 8:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1075,18 +1124,19 @@ abstract class Finance implements ActiveRecordInterface
             $keys[0] => $this->getId(),
             $keys[1] => $this->getTitle(),
             $keys[2] => $this->getDescription(),
-            $keys[3] => $this->getManagerId(),
-            $keys[4] => $this->getUserId(),
-            $keys[5] => $this->getType(),
-            $keys[6] => $this->getCreatedAt(),
-            $keys[7] => $this->getUpdatedAt(),
+            $keys[3] => $this->getSumm(),
+            $keys[4] => $this->getManagerId(),
+            $keys[5] => $this->getUserId(),
+            $keys[6] => $this->getType(),
+            $keys[7] => $this->getCreatedAt(),
+            $keys[8] => $this->getUpdatedAt(),
         );
-        if ($result[$keys[6]] instanceof \DateTimeInterface) {
-            $result[$keys[6]] = $result[$keys[6]]->format('c');
-        }
-
         if ($result[$keys[7]] instanceof \DateTimeInterface) {
             $result[$keys[7]] = $result[$keys[7]]->format('c');
+        }
+
+        if ($result[$keys[8]] instanceof \DateTimeInterface) {
+            $result[$keys[8]] = $result[$keys[8]]->format('c');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -1137,18 +1187,21 @@ abstract class Finance implements ActiveRecordInterface
                 $this->setDescription($value);
                 break;
             case 3:
-                $this->setManagerId($value);
+                $this->setSumm($value);
                 break;
             case 4:
-                $this->setUserId($value);
+                $this->setManagerId($value);
                 break;
             case 5:
-                $this->setType($value);
+                $this->setUserId($value);
                 break;
             case 6:
-                $this->setCreatedAt($value);
+                $this->setType($value);
                 break;
             case 7:
+                $this->setCreatedAt($value);
+                break;
+            case 8:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1187,19 +1240,22 @@ abstract class Finance implements ActiveRecordInterface
             $this->setDescription($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setManagerId($arr[$keys[3]]);
+            $this->setSumm($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setUserId($arr[$keys[4]]);
+            $this->setManagerId($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setType($arr[$keys[5]]);
+            $this->setUserId($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setCreatedAt($arr[$keys[6]]);
+            $this->setType($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setUpdatedAt($arr[$keys[7]]);
+            $this->setCreatedAt($arr[$keys[7]]);
+        }
+        if (array_key_exists($keys[8], $arr)) {
+            $this->setUpdatedAt($arr[$keys[8]]);
         }
     }
 
@@ -1250,6 +1306,9 @@ abstract class Finance implements ActiveRecordInterface
         }
         if ($this->isColumnModified(FinanceTableMap::COL_DESCRIPTION)) {
             $criteria->add(FinanceTableMap::COL_DESCRIPTION, $this->description);
+        }
+        if ($this->isColumnModified(FinanceTableMap::COL_SUMM)) {
+            $criteria->add(FinanceTableMap::COL_SUMM, $this->summ);
         }
         if ($this->isColumnModified(FinanceTableMap::COL_MANAGER_ID)) {
             $criteria->add(FinanceTableMap::COL_MANAGER_ID, $this->manager_id);
@@ -1354,6 +1413,7 @@ abstract class Finance implements ActiveRecordInterface
     {
         $copyObj->setTitle($this->getTitle());
         $copyObj->setDescription($this->getDescription());
+        $copyObj->setSumm($this->getSumm());
         $copyObj->setManagerId($this->getManagerId());
         $copyObj->setUserId($this->getUserId());
         $copyObj->setType($this->getType());
@@ -1397,6 +1457,7 @@ abstract class Finance implements ActiveRecordInterface
         $this->id = null;
         $this->title = null;
         $this->description = null;
+        $this->summ = null;
         $this->manager_id = null;
         $this->user_id = null;
         $this->type = null;

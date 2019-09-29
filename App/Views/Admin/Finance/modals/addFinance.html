@@ -1,0 +1,48 @@
+<!-- Modal -->
+<div class="modal fade" id="addFinanceModal" tabindex="-1" role="dialog"
+     aria-labelledby="addCalendarEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="addCalendarEventModalLabel">Удаление</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="hidden" name="type" id="typeAddFinance">
+                    <input type="hidden" name="manager_id" id="managerAddFinance">
+                </div>
+                <div class="form-group">
+                    <label for="titleAddFinance">Наименование</label>
+                    <input type="text" name="title" id="titleAddFinance">
+                </div>
+                <div class="form-group">
+                    <label for="summAddFinance">Сумма прихода</label>
+                    <input type="text" name="summ" id="summAddFinance">
+                </div>
+                <div class="form-group">
+                    <label for="studentAddFinance">Студент</label>
+                    <select name="student_id" id="studentAddFinance">
+                        <option value="{{ null }}">Выберите студента...</option>
+                        {% for student in students %}
+                        <option value="{{ student.id }}">{{ student.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="descriptionAddFinance">Описание</label>
+                    <textarea name="description" id="descriptionAddFinance" rows="6"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancelAddFinance" class="btn btn-default"
+                        data-dismiss="modal">Отменить
+                </button>
+                <button type="button" id="confirmAddFinance" coursestreamid="none"
+                        class="btn btn-danger">Добавить
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -23,30 +23,7 @@
                         <a href="#" class="btn btn-danger" id="add-coming" style="float: right;">+</a>
                     </div>
                     <div class="panel-body" style="padding-top: 20px;">
-                        <ul class="sortable-lists" style="min-height: 550px; overflow-y: auto; overflow-x: hidden; list-style: none; margin: 0px; padding: 0px;">
-                            <li class="bg-white w-100" style="border-bottom: 1px solid #d4d4d4; padding: 10px 5px 5px 5px; border-top: 3px solid #ff0000; margin: 5px; box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); z-index: 2;">
-                                <div class="row">
-                                    <div class="col-md-9">
-                                        <h4 class="title font-weight-bold">' + v.title + '</h4>
-                                        <p class="description">' + v.description + '</p>
-                                    </div>
-                                    <div class="col-md-3 text-right">
-                                        <span class="small text-muted">12/12/2019</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title text-center">Расход</h3>
-                        <a href="#" class="btn btn-danger" id="add-consumtion" style="float: right;">+</a>
-                    </div>
-                    <div class="panel-body" style="padding-top: 20px;">
-                        <ul class="sortable-lists" style="min-height: 550px; overflow-y: auto; overflow-x: hidden; list-style: none; margin: 0px; padding: 0px;">
+                        <ul class="" id="financeUp" style="min-height: 550px; max-height: 550px; overflow-y: auto; overflow-x: hidden; list-style: none; margin: 0px; padding: 0px;">
 
                         </ul>
                     </div>
@@ -55,10 +32,24 @@
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title text-center">Отчет за {{ "now"|date("F") }}</h3>
+                        <h3 class="panel-title text-center">Расход</h3>
+                        <a href="#" class="btn btn-danger" id="add-consumption" style="float: right;">+</a>
                     </div>
                     <div class="panel-body" style="padding-top: 20px;">
-                        <ul class="sortable-lists" style="min-height: 550px; overflow-y: auto; overflow-x: hidden; list-style: none; margin: 0px; padding: 0px;">
+                        <ul class="" id="financeDown" style="min-height: 550px; max-height: 550px; overflow-y: auto; overflow-x: hidden; list-style: none; margin: 0px; padding: 0px;">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center" style="margin: 0;">Отчет за {{ "now"|date("F") }}</h3>
+                        <span style="float: right;">Бюджет: <span id="budget"></span> сом</span>
+                    </div>
+                    <div class="panel-body" style="padding-top: 20px;">
+                        <ul class="" id="reports" style="min-height: 550px; max-height: 550px; overflow-y: auto; overflow-x: hidden; list-style: none; margin: 0px; padding: 0px;">
 
                         </ul>
                     </div>
@@ -68,12 +59,175 @@
     </div>
     {{ include("Admin/copyrightFooter.html") }}
 </div>
-{{ include("Admin/Dashboard/modals/addTask.html") }}
-{{ include("Admin/Dashboard/modals/editTask.html") }}
+{{ include("Admin/Finance/modals/addFinance.html") }}
+{{ include("Admin/Finance/modals/editFinance.html") }}
 {% endblock %}
 
 {% block endBodies %}
 <!-- Scripts are shown there-->
+<script>
+    $('#add-coming').click(e => {
+        $('#typeAddFinance').val(1);
+        $('#managerAddFinance').val('{{ user.id }}');
+        $('#addFinanceModal').modal('show');
+    });
 
+    $('#add-consumption').click(e => {
+        $('#typeAddFinance').val(2);
+        $('#managerAddFinance').val('{{ user.id }}');
+        $('#addFinanceModal').modal('show');
+    });
+
+    $('#confirmAddFinance').click(e => {
+        e.preventDefault();
+
+        let btn = $(e.currentTarget);
+        let title = $('#titleAddFinance').val();
+        let type = $('#typeAddFinance').val();
+        let summ = $('#summAddFinance').val();
+        let description = $('#descriptionAddFinance').val();
+        let manager = $('#managerAddFinance').val();
+        let student = $('#studentAddFinance').val();
+        $('#titleAddFinance').val('');
+        $('#typeAddFinance').val('');
+        $('#summAddFinance').val('');
+        $('#descriptionAddFinance').val('');
+        $('#managerAddFinance').val('');
+        $('#studentAddFinance').val('');
+
+        $('#addFinanceModal').modal('hide');
+
+        let formData = new FormData();
+        formData.append('title', title);
+        formData.append('summ', summ);
+        formData.append('description', description);
+        formData.append('type', type);
+        formData.append('manager', manager);
+        formData.append('student', student);
+
+        ajaxRequest('/admin/ajax/finance/add',
+            formData,
+            data => {
+                console.log(data);
+                let card = $('<li class="bg-white w-100" style="border-bottom: 1px solid #d4d4d4; padding: 10px 5px 5px 5px; margin: 5px; box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); z-index: 2;">\n' +
+                    '                                <div class="row">\n' +
+                    '                                    <div class="col-md-9">\n' +
+                    '                                        <h4 class="title font-weight-bold">' + data.data.title + '</h4>\n' +
+                    '                                        <p class="description">' + data.data.description + '</p>\n' +
+                    '                                    </div>\n' +
+                    '                                    <div class="col-md-3 text-right">\n' +
+                    '                                        <span class="small text-muted">' + data.data.created_at + '</span>\n' +
+                    '                                        <p style="display:none;">\n' +
+                    '                                            <a href="#" class="delete-task" data-id="\' + v.id + \'">\n' +
+                    '                                                <i class="fa fa-trash text-danger"></i>\n' +
+                    '                                            </a>\n' +
+                    '                                        </p>\n' +
+                    '                                    </div>\n' +
+                    '                                </div>\n' +
+                    '                            </li>');
+
+                if (data.data.type == 1) {
+                    card.css('border-top', '3px solid #00ff00');
+                    $('#budget').html((parseInt($('#budget').html()) + parseInt(data.data.summ)));
+                    $('#financeUp').append(card);
+                }
+                if (data.data.type == 2) {
+                    card.css('border-top', '3px solid #ff0000');
+                    $('#budget').html((parseInt($('#budget').html()) - parseInt(data.data.summ)));
+                    $('#financeDown').append(card);
+                }
+            }
+        )
+    });
+
+    $.ajax({
+        url: '/admin/ajax/finance/list',
+        success: data => {
+            console.log(data);
+            for (let item of data.data.finances) {
+                $('#budget').html(data.data.summ);
+                let card = $('<li class="bg-white w-100" style="border-bottom: 1px solid #d4d4d4; padding: 10px 5px 5px 5px; margin: 5px; box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); z-index: 2;">\n' +
+                    '                                <div class="row">\n' +
+                    '                                    <div class="col-md-9">\n' +
+                    '                                        <h4 class="title font-weight-bold">' + item.title + '</h4>\n' +
+                    '                                        <p class="description">' + item.description + '</p>\n' +
+                    '                                    </div>\n' +
+                    '                                    <div class="col-md-3 text-right">\n' +
+                    '                                        <span class="small text-muted">' + item.created_at + '</span>\n' +
+                    '                                        <p style="display:none;">\n' +
+                    '                                            <a href="#" class="delete-task" data-id="\' + v.id + \'">\n' +
+                    '                                                <i class="fa fa-trash text-danger"></i>\n' +
+                    '                                            </a>\n' +
+                    '                                        </p>\n' +
+                    '                                    </div>\n' +
+                    '                                </div>\n' +
+                    '                            </li>');
+
+                if (item.type == 1) {
+                    card.css('border-top', '3px solid #00ff00');
+                }
+                if (item.type == 2) {
+                    card.css('border-top', '3px solid #ff0000');
+                }
+                $('#reports').append(card);
+            }
+            for (let item of data.data.financeUp) {
+                let card = $('<li class="bg-white w-100" style="border-bottom: 1px solid #d4d4d4; padding: 10px 5px 5px 5px; margin: 5px; box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); z-index: 2;">\n' +
+                    '                                <div class="row">\n' +
+                    '                                    <div class="col-md-9">\n' +
+                    '                                        <h4 class="title font-weight-bold">' + item.title + '</h4>\n' +
+                    '                                        <p class="description">' + item.description + '</p>\n' +
+                    '                                    </div>\n' +
+                    '                                    <div class="col-md-3 text-right">\n' +
+                    '                                        <span class="small text-muted">' + item.created_at + '</span>\n' +
+                    '                                        <p style="display:none;">\n' +
+                    '                                            <a href="#" class="delete-task" data-id="\' + v.id + \'">\n' +
+                    '                                                <i class="fa fa-trash text-danger"></i>\n' +
+                    '                                            </a>\n' +
+                    '                                        </p>\n' +
+                    '                                    </div>\n' +
+                    '                                </div>\n' +
+                    '                            </li>');
+
+                if (item.type == 1) {
+                    card.css('border-top', '3px solid #00ff00');
+                }
+                if (item.type == 2) {
+                    card.css('border-top', '3px solid #ff0000');
+                }
+                $('#financeUp').append(card);
+            }
+            for (let item of data.data.financeDown) {
+                let card = $('<li class="bg-white w-100" style="border-bottom: 1px solid #d4d4d4; padding: 10px 5px 5px 5px; margin: 5px; box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); z-index: 2;">\n' +
+                    '                                <div class="row">\n' +
+                    '                                    <div class="col-md-9">\n' +
+                    '                                        <h4 class="title font-weight-bold">' + item.title + '</h4>\n' +
+                    '                                        <p class="description">' + item.description + '</p>\n' +
+                    '                                    </div>\n' +
+                    '                                    <div class="col-md-3 text-right">\n' +
+                    '                                        <span class="small text-muted">' + item.created_at + '</span>\n' +
+                    '                                        <p style="display:none;">\n' +
+                    '                                            <a href="#" class="delete-task" data-id="\' + v.id + \'">\n' +
+                    '                                                <i class="fa fa-trash text-danger"></i>\n' +
+                    '                                            </a>\n' +
+                    '                                        </p>\n' +
+                    '                                    </div>\n' +
+                    '                                </div>\n' +
+                    '                            </li>');
+
+                if (item.type == 1) {
+                    card.css('border-top', '3px solid #00ff00');
+                }
+                if (item.type == 2) {
+                    card.css('border-top', '3px solid #ff0000');
+                }
+                $('#financeDown').append(card);
+            }
+        },
+        error: () => {
+            console.log('error');
+        }
+    })
+</script>
 
 {% endblock %}

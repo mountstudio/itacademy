@@ -433,9 +433,9 @@ $router->add('admin/finance/{id:\d+}/edit', ['controller' => 'Admin\Finance', 'a
 
 
 
-$router->add('admin/ajax/finance/list', ['controller' => 'Admin\Ajax\Finance', 'action' => 'list']);
+$router->add('admin/ajax/finance/list', ['controller' => 'Admin\Ajax\FinanceController', 'action' => 'list']);
 $router->add('admin/ajax/finance/create', ['controller' => 'Admin\Ajax\Finance', 'action' => 'create']);
-$router->add('admin/ajax/finance/add', ['controller' => 'Admin\Ajax\Finance', 'action' => 'add']);
+$router->add('admin/ajax/finance/add', ['controller' => 'Admin\Ajax\FinanceController', 'action' => 'add']);
 $router->add('admin/ajax/finance/delete', ['controller' => 'Admin\Ajax\Finance', 'action' => 'delete']);
 $router->add('admin/ajax/finance/edit', ['controller' => 'Admin\Ajax\Finance', 'action' => 'edit']);
 $router->add('admin/ajax/finance/update', ['controller' => 'Admin\Ajax\Finance', 'action' => 'update']);
